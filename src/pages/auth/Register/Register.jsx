@@ -5,36 +5,14 @@ import {
   Divider,
   TextField,
   Typography,
+  Alert,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import axios from "axios";
-
-const schema = yup.object().shape({
-  fullName: yup.string().required("Full Name is required"),
-  userName: yup
-    .string()
-    .required("Username is required")
-    .matches(
-      /^[A-Za-z0-9][A-Za-z0-9-_\.]*$/,
-      "Username must start with letter/number and can contain -, _, ."
-    ),
-  email: yup.string().email("Invalid email").required("Email is required"),
-  phoneNumber: yup
-    .string()
-    .matches(/^[0-9]{10,15}$/, "Phone must be 10-15 digits")
-    .required("Phone number is required"),
-  password: yup
-    .string()
-    .required("Password is required")
-    .min(8, "Password must be at least 8 characters")
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).+$/,
-      "Password must contain uppercase, lowercase, number and special character"
-    ),
-});
+import { useState } from "react";
+import { schema } from "../../../Validation/schema.js"; // استورد schema من الملف
 
 const Register = () => {
   const {
@@ -43,11 +21,14 @@ const Register = () => {
     reset,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema), // استخدم الاستيراد مباشرة
   });
+
+  const [serverError, setServerError] = useState("");
 
   const onSubmit = async (values) => {
     try {
+      setServerError(""); // مسح الأخطاء السابقة
       const response = await axios.post(
         "https://knowledgeshop.runasp.net/api/auth/Account/Register",
         values
@@ -57,12 +38,14 @@ const Register = () => {
       reset();
     } catch (error) {
       if (error.response) {
-        alert(
+        setServerError(
           error.response.data.message +
-            (error.response.data.errors ? " - " + error.response.data.errors.join(", ") : "")
+            (error.response.data.errors
+              ? " - " + error.response.data.errors.join(", ")
+              : "")
         );
       } else {
-        alert("Network error or server not reachable");
+        setServerError("Network error or server not reachable");
       }
     }
   };
@@ -87,21 +70,40 @@ const Register = () => {
             SHOP
           </Box>
         </Typography>
-        <Typography sx={{ mt: 1, fontSize: "13px", letterSpacing: "3px", color: "text.secondary" }}>
+        <Typography
+          sx={{ mt: 1, fontSize: "13px", letterSpacing: "3px", color: "text.secondary" }}
+        >
           MODERN E-COMMERCE
         </Typography>
         <Divider sx={{ width: 80, my: 3 }} />
-        <Typography variant="h6" sx={{ color: "text.secondary", textAlign: "center", maxWidth: 400 }}>
+        <Typography
+          variant="h6"
+          sx={{ color: "text.secondary", textAlign: "center", maxWidth: 400 }}
+        >
           Smart shopping starts here.
         </Typography>
       </Box>
 
       {/* RIGHT SIDE */}
-      <Box sx={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center", px: 3 }}>
-        <Box component="form" sx={{ width: "100%", maxWidth: 380 }} onSubmit={handleSubmit(onSubmit)}>
+      <Box
+        sx={{
+          flex: 1,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          px: 3,
+        }}
+      >
+        <Box
+          component="form"
+          sx={{ width: "100%", maxWidth: 380 }}
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <Typography variant="h4" fontWeight="bold" mb={2}>
             Create your account
           </Typography>
+
+          {serverError && <Alert severity="error" sx={{ mb: 2 }}>{serverError}</Alert>}
 
           <TextField
             {...register("fullName")}
