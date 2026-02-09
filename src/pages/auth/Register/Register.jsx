@@ -5,42 +5,64 @@ import {
   Divider,
   TextField,
   Typography,
-  Alert,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import axios from "axios";
-import { useState } from "react";
+
+const schema = yup.object().shape({
+  fullName: yup.string().required("Full Name is required"),
+  userName: yup
+    .string()
+    .required("Username is required")
+    .matches(
+      /^[A-Za-z0-9][A-Za-z0-9-_\.]*$/,
+      "Username must start with letter/number and can contain -, _, ."
+    ),
+  email: yup.string().email("Invalid email").required("Email is required"),
+  phoneNumber: yup
+    .string()
+    .matches(/^[0-9]{10,15}$/, "Phone must be 10-15 digits")
+    .required("Phone number is required"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).+$/,
+      "Password must contain uppercase, lowercase, number and special character"
+    ),
+});
 
 const Register = () => {
-  const { register, handleSubmit, reset } = useForm();
-  const [errorMsg, setErrorMsg] = useState("");
-  const [successMsg, setSuccessMsg] = useState("");
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
-  const registerForm = async (values) => {
+  const onSubmit = async (values) => {
     try {
-      setErrorMsg("");
-      setSuccessMsg("");
-
       const response = await axios.post(
         "https://knowledgeshop.runasp.net/api/auth/Account/Register",
         values
       );
-
       console.log("Server response:", response.data);
-      setSuccessMsg("Account created successfully!");
-      reset(); 
+      alert("Account created successfully!");
+      reset();
     } catch (error) {
-      console.error("Error registering:", error);
-
       if (error.response) {
-     
-        setErrorMsg(error.response.data.message || "Server error");
-      } else if (error.request) {
-      
-        setErrorMsg("Network error: cannot reach server");
+        alert(
+          error.response.data.message +
+            (error.response.data.errors ? " - " + error.response.data.errors.join(", ") : "")
+        );
       } else {
-        setErrorMsg("Error: " + error.message);
+        alert("Network error or server not reachable");
       }
     }
   };
@@ -65,53 +87,62 @@ const Register = () => {
             SHOP
           </Box>
         </Typography>
-        <Typography
-          sx={{ mt: 1, fontSize: "13px", letterSpacing: "3px", color: "text.secondary" }}
-        >
+        <Typography sx={{ mt: 1, fontSize: "13px", letterSpacing: "3px", color: "text.secondary" }}>
           MODERN E-COMMERCE
         </Typography>
         <Divider sx={{ width: 80, my: 3 }} />
-        <Typography
-          variant="h6"
-          sx={{ color: "text.secondary", textAlign: "center", maxWidth: 400 }}
-        >
+        <Typography variant="h6" sx={{ color: "text.secondary", textAlign: "center", maxWidth: 400 }}>
           Smart shopping starts here.
         </Typography>
       </Box>
 
       {/* RIGHT SIDE */}
-      <Box
-        sx={{
-          flex: 1,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          px: 3,
-        }}
-      >
-        <Box
-          component="form"
-          sx={{ width: "100%", maxWidth: 380 }}
-          onSubmit={handleSubmit(registerForm)}
-        >
+      <Box sx={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center", px: 3 }}>
+        <Box component="form" sx={{ width: "100%", maxWidth: 380 }} onSubmit={handleSubmit(onSubmit)}>
           <Typography variant="h4" fontWeight="bold" mb={2}>
             Create your account
           </Typography>
 
-          {/* رسائل الخطأ أو النجاح */}
-          {errorMsg && <Alert severity="error" sx={{ mb: 2 }}>{errorMsg}</Alert>}
-          {successMsg && <Alert severity="success" sx={{ mb: 2 }}>{successMsg}</Alert>}
-
-          <TextField {...register("fullName")} fullWidth label="Full Name" margin="normal" />
-          <TextField {...register("userName")} fullWidth label="Username" margin="normal" />
-          <TextField {...register("email")} fullWidth label="Email Address" margin="normal" />
-          <TextField {...register("phoneNumber")} fullWidth label="Phone Number" margin="normal" />
+          <TextField
+            {...register("fullName")}
+            fullWidth
+            label="Full Name"
+            margin="normal"
+            error={!!errors.fullName}
+            helperText={errors.fullName?.message}
+          />
+          <TextField
+            {...register("userName")}
+            fullWidth
+            label="Username"
+            margin="normal"
+            error={!!errors.userName}
+            helperText={errors.userName?.message}
+          />
+          <TextField
+            {...register("email")}
+            fullWidth
+            label="Email Address"
+            margin="normal"
+            error={!!errors.email}
+            helperText={errors.email?.message}
+          />
+          <TextField
+            {...register("phoneNumber")}
+            fullWidth
+            label="Phone Number"
+            margin="normal"
+            error={!!errors.phoneNumber}
+            helperText={errors.phoneNumber?.message}
+          />
           <TextField
             {...register("password")}
             fullWidth
             label="Password"
             type="password"
             margin="normal"
+            error={!!errors.password}
+            helperText={errors.password?.message}
           />
 
           <Box sx={{ display: "flex", alignItems: "center", my: 2 }}>
@@ -123,12 +154,7 @@ const Register = () => {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{
-              py: 1.3,
-              mt: 1,
-              backgroundColor: "#111",
-              "&:hover": { backgroundColor: "#000" },
-            }}
+            sx={{ py: 1.3, mt: 1, backgroundColor: "#111", "&:hover": { backgroundColor: "#000" } }}
           >
             Sign Up
           </Button>
