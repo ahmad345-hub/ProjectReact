@@ -21,14 +21,15 @@ const Register = () => {
     reset,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema), // استخدم الاستيراد مباشرة
+    resolver: yupResolver(schema), 
   });
 
   const [serverError, setServerError] = useState("");
 
   const onSubmit = async (values) => {
+    console.log(values)
     try {
-      setServerError(""); // مسح الأخطاء السابقة
+      setServerError(""); 
       const response = await axios.post(
         "https://knowledgeshop.runasp.net/api/auth/Account/Register",
         values
@@ -52,7 +53,7 @@ const Register = () => {
 
   return (
     <Box sx={{ minHeight: "calc(100vh - 64px)", display: "flex", mt: "64px" }}>
-      {/* LEFT SIDE */}
+   
       <Box
         sx={{
           flex: 1,
@@ -84,7 +85,6 @@ const Register = () => {
         </Typography>
       </Box>
 
-      {/* RIGHT SIDE */}
       <Box
         sx={{
           flex: 1,
