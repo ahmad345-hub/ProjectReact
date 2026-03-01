@@ -9,8 +9,9 @@ import {
   Divider
 } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-
+import useCounterStore from "../../store/useCounterStore";  
 export default function Footer() {
+ 
   return (
     <Box sx={{ bgcolor: "#000", color: "#fff", pt: 6, pb: 3 }}>
       <Container maxWidth="lg">
@@ -24,7 +25,8 @@ export default function Footer() {
               {/* Column 1 */}
               <Grid item xs={12} md={6}>
                 <Typography variant="h6" fontWeight="bold">
-                  3legant.
+                  3legant. 
+              
                 </Typography>
                 <Typography variant="body2" sx={{ mt: 2, color: "grey.400" }}>
                   43111 Hai Trieu street.<br />

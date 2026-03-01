@@ -67,6 +67,7 @@ if (isError)
   );
 
   const categoriesArray = data?.response.data || [];
+  
 
  return (
   <Box sx={{ py: 8, px: { xs: 2, md: 6 }, backgroundColor: "#f5f7fa" }}>
@@ -76,7 +77,7 @@ if (isError)
       mb={5}
       textAlign="center"
     >
-      Our Categories
+      Our Categories 
     </Typography>
 
     <Swiper
