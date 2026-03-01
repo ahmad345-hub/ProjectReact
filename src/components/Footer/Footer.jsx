@@ -9,7 +9,7 @@ import {
   Divider
 } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import useCounterStore from "../../store/useCounterStore";  
+ 
 export default function Footer() {
  
   return (
