@@ -10,6 +10,8 @@ export default function usecatagories() {
       }
     });
     return response.data;
+      console.log(response.data);
+
   };
 
   return useQuery({

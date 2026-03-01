@@ -48,6 +48,15 @@ const Navbar = () => {
   const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
   const handleMenuClose = () => setAnchorEl(null);
 
+  const hoverStyle = {
+    borderRadius: "12px",
+    transition: "all 0.25s ease",
+    "&:hover": {
+      backgroundColor: "#f2f2f2",
+      transform: "translateY(-2px)",
+    },
+  };
+
   return (
     <>
       <AppBar
@@ -77,7 +86,6 @@ const Navbar = () => {
               color: "inherit",
               fontWeight: "bold",
               fontSize: scrolled ? "1.2rem" : "1.4rem",
-              transition: "all 0.3s ease",
             }}
           >
             KASHOP
@@ -85,21 +93,18 @@ const Navbar = () => {
 
           {/* Desktop Links */}
           {!isMobile && (
-            <Box sx={{ display: "flex", gap: 3 }}>
+            <Box sx={{ display: "flex", gap: 2 }}>
               {navLinks.map((link) => (
                 <Button
                   key={link.title}
                   component={Link}
                   to={link.path}
                   sx={{
-                    color: "inherit",
+                    color: "black",
                     textTransform: "none",
                     fontWeight: 500,
-                    transition: "all 0.3s ease",
-                    "&:hover": {
-                      color: "#ffb703",
-                      transform: "scale(1.05)",
-                    },
+                    px: 2,
+                    ...hoverStyle,
                   }}
                 >
                   {link.title}
@@ -111,23 +116,11 @@ const Navbar = () => {
           {/* Right Section */}
           {!isMobile ? (
             <Box sx={{ display: "flex", gap: 1 }}>
-              <IconButton
-                sx={{
-                  transition: "all 0.3s ease",
-                  "&:hover": { color: "#ffb703", transform: "scale(1.1)" },
-                }}
-              >
+              <IconButton sx={hoverStyle}>
                 <SearchIcon />
               </IconButton>
 
-              {/* Person Dropdown */}
-              <IconButton
-                onClick={handleMenuOpen}
-                sx={{
-                  transition: "all 0.3s ease",
-                  "&:hover": { color: "#ffb703", transform: "scale(1.1)" },
-                }}
-              >
+              <IconButton onClick={handleMenuOpen} sx={hoverStyle}>
                 <PersonIcon />
               </IconButton>
 
@@ -150,25 +143,12 @@ const Navbar = () => {
                 </MenuItem>
               </Menu>
 
-              <IconButton
-                component={Link}
-                to="/cart"
-                sx={{
-                  transition: "all 0.3s ease",
-                  "&:hover": { color: "#ffb703", transform: "scale(1.1)" },
-                }}
-              >
+              <IconButton component={Link} to="/cart" sx={hoverStyle}>
                 <ShoppingCartIcon />
               </IconButton>
             </Box>
           ) : (
-            <IconButton
-              onClick={() => setOpenDrawer(true)}
-              sx={{
-                transition: "all 0.3s ease",
-                "&:hover": { color: "#ffb703", transform: "scale(1.1)" },
-              }}
-            >
+            <IconButton onClick={() => setOpenDrawer(true)} sx={hoverStyle}>
               <MenuIcon />
             </IconButton>
           )}
@@ -181,51 +161,48 @@ const Navbar = () => {
         open={openDrawer}
         onClose={() => setOpenDrawer(false)}
       >
-        <Box sx={{ width: 250 }}>
+        <Box sx={{ width: 250, mt: 2 }}>
           <List>
             {navLinks.map((link) => (
               <ListItem
-                button
                 key={link.title}
                 component={Link}
                 to={link.path}
                 onClick={() => setOpenDrawer(false)}
                 sx={{
-                  "&:hover": { backgroundColor: "#ffb70322" },
+                  mx: 1,
+                  ...hoverStyle,
                 }}
               >
                 <ListItemText primary={link.title} />
               </ListItem>
             ))}
 
-            <Divider />
+            <Divider sx={{ my: 1 }} />
 
             <ListItem
-              button
               component={Link}
               to="/login"
               onClick={() => setOpenDrawer(false)}
-              sx={{ "&:hover": { backgroundColor: "#ffb70322" } }}
+              sx={{ mx: 1, ...hoverStyle }}
             >
               <ListItemText primary="Login" />
             </ListItem>
 
             <ListItem
-              button
               component={Link}
               to="/register"
               onClick={() => setOpenDrawer(false)}
-              sx={{ "&:hover": { backgroundColor: "#ffb70322" } }}
+              sx={{ mx: 1, ...hoverStyle }}
             >
               <ListItemText primary="Register" />
             </ListItem>
 
             <ListItem
-              button
               component={Link}
               to="/cart"
               onClick={() => setOpenDrawer(false)}
-              sx={{ "&:hover": { backgroundColor: "#ffb70322" } }}
+              sx={{ mx: 1, ...hoverStyle }}
             >
               <ListItemText primary="Cart" />
             </ListItem>
