@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import axiosinstance from '../api/axiosinstance';
 
-export default function usecatagories() {
+export default function usecatagories(limit=4) {
 
   const getCategories = async () => {
-    const response = await axiosinstance.get('/Categories',{
+    const response = await axiosinstance.get(`/Categories?limit=${limit}`,{
       headers:{
        "Accept-language":"en"
       }
@@ -15,7 +15,7 @@ export default function usecatagories() {
   };
 
   return useQuery({
-    queryKey: ['categories'],
+    queryKey: ['categories', limit],
     queryFn: getCategories,
     staleTime: 1000 * 60 * 5
   });

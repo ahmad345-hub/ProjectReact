@@ -27,7 +27,7 @@ const categoryImages = {
 };
 
 export default function Categories() {
-  const { data, isLoading, isError } = usecatagories();
+  const { data, isLoading, isError } = usecatagories(10);
 
   if (isLoading)
   return (
@@ -75,7 +75,6 @@ if (isError)
   <Box sx={{ py: 8, px: { xs: 2, md: 6 }, backgroundColor: "#f5f7fa" }}>
 
 
-    <Link to="/CatagoriesExtra" className="ml-287.5 px-4 py-2 border rounded-md hover:bg-black hover:text-white transition-all hover:scale-150">Show More</Link>
     <Typography
       variant="h4"
       fontWeight={800}
