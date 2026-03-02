@@ -6,6 +6,7 @@ import usecatagories from "../../hooks/usecatagories";
 
 import { Box, Typography, Button, CircularProgress } from "@mui/material";
 import { Link } from "react-router-dom";
+import Catagory from "../../UI/catagory/Catagory.jsx";
 // صور مخصصة لكل كاتيجوري
 const categoryImages = {
   Mobiles:
@@ -72,94 +73,5 @@ if (isError)
 
  return (
   
-  <Box sx={{ py: 8, px: { xs: 2, md: 6 }, backgroundColor: "#f5f7fa" }}>
-
-
-    <Link to="/CatagoriesExtra" className="ml-287.5 px-4 py-2 border rounded-md hover:bg-black hover:text-white transition-all hover:scale-150">Show More</Link>
-    <Typography
-      variant="h4"
-      fontWeight={800}
-      mb={5}
-      textAlign="center"
-    >
-      Our Categories 
-    </Typography>
-
-    <Swiper
-      slidesPerView={1}
-      spaceBetween={25}
-      loop={true}
-      breakpoints={{
-        600: { slidesPerView: 2 },
-        900: { slidesPerView: 3 },
-        1200: { slidesPerView: 4 },
-      }}
-    >
-      {categoriesArray.map((cat) => (
-        <SwiperSlide key={cat.id}>
-          <Box
-            sx={{
-              backgroundColor: "#fff",
-              borderRadius: "20px",
-              overflow: "hidden",
-              boxShadow: "0 8px 25px rgba(0,0,0,0.08)",
-              transition: "0.4s",
-              cursor: "pointer",
-              "&:hover": {
-                transform: "translateY(-10px)",
-                boxShadow: "0 15px 35px rgba(0,0,0,0.15)",
-              },
-            }}
-          >
-            {/* Image */}
-            <Box sx={{ height: 200, overflow: "hidden" }}>
-              <img
-                src={
-                  categoryImages[cat.name] ||
-                  "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800"
-                }
-                alt={cat.name}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  transition: "0.4s",
-                }}
-              />
-            </Box>
-
-            {/* Content */}
-            <Box sx={{ p: 3, textAlign: "center" }}>
-              <Typography
-                variant="h6"
-                fontWeight={700}
-                mb={2}
-              >
-                {cat.name}
-              </Typography>
-
-              <Button
-  variant="contained"
-  sx={{
-    backgroundColor: "#000",
-    color: "#fff",
-    borderRadius: "12px",
-    px: 3,
-    py: 1,
-    textTransform: "none",
-    fontWeight: 600,
-    "&:hover": {
-      backgroundColor: "#222",
-    },
-  }}
->
-  Shop Now
-</Button>
-            </Box>
-          </Box>
-        </SwiperSlide>
-      ))}
-    </Swiper>
-  </Box>
-
+  <Catagory categoriesArray={categoriesArray} />
 )};
