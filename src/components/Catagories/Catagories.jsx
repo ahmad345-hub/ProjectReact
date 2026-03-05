@@ -6,7 +6,7 @@ import usecatagories from "../../hooks/usecatagories";
 
 import { Box, Typography, Button, CircularProgress } from "@mui/material";
 import { Link } from "react-router-dom";
-import Catagory from "../../UI/Catagory/Catagory.jsx";
+import Catagory from "../../UI/Category/Category.jsx";
 // صور مخصصة لكل كاتيجوري
 const categoryImages = {
   Mobiles:
