@@ -3,10 +3,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
-import { useState } from "react";
+import { use, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-
-const schema = yup.object().shape({
+import useAuthStore from "../../../store/useAuthStore.js";const schema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
   password: yup.string().required("Password is required"),
 });
@@ -19,7 +18,7 @@ const Login = () => {
 
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
-
+ const SetToken=useAuthStore((state)=>state.SetToken);
   const onSubmit = async (values) => {
     try {
       setErrorMsg("");
@@ -28,7 +27,7 @@ const Login = () => {
       const response = await axios.post(
         "https://knowledgeshop.runasp.net/api/auth/Account/Login",values);
         if(response.status==200){
-          localStorage.setItem("accessToken",response.data.accessToken)
+            SetToken(response.data.accessToken);
         }
 
       if (response.data.success) {
@@ -45,6 +44,7 @@ const Login = () => {
       );
     }
   };
+ 
 
   return (
     <Box

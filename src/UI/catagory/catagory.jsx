@@ -29,21 +29,30 @@ export default function CategoriesSection({ categoriesArray }) {
   return (
     <Box sx={{ py: 8, px: { xs: 2, md: 6 }, backgroundColor: "#f5f7fa" }}>
       
-      <Link
-        to="/CatagoriesExtra"
-        className="px-4 py-2 border rounded-md hover:bg-black hover:text-white transition-all"
-      >
-        Show More
-      </Link>
+     
 
-      <Typography
-        variant="h4"
-        fontWeight={800}
-        mb={5}
-        textAlign="center"
-      >
-        Our Categories
-      </Typography>
+     <Typography
+  variant="h4"
+  fontWeight={800}
+  mb={5}
+  textAlign="center"
+  sx={{
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+     // المسافة بين العنوان واللينك
+  textContent: "center",
+  }}
+>
+  Our Categories
+
+  <Link
+    to="/CatagoriesExtra"
+    className="inline-block px-4 py-2 border rounded-md ml-[740px] hover:bg-black hover:text-white transition-transform duration-300 hover:scale-110"
+  >
+    Show More
+  </Link>
+</Typography>
 
       <Swiper
         slidesPerView={1}

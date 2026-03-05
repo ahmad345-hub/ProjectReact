@@ -1,10 +1,13 @@
 import axios from "axios";
-const token=localStorage.getItem("accessToken");
+
+const token = localStorage.getItem("accessToken");
+
 const Authaxiosinstance = axios.create({
-  baseURL: '/api',
+  baseURL: "/api",
   headers: {
-    'Accept-Language': 'en'
-  }
+    "Accept-Language": "en",
+    Authorization: `Bearer ${token}`,
+  },
 });
 
 export default Authaxiosinstance;
