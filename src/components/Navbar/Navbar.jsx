@@ -64,6 +64,7 @@ const Navbar = () => {
         position="fixed"
         elevation={0}
         sx={{
+          
           backgroundColor: scrolled ? "rgba(0,0,0,0.85)" : "transparent",
           color: "white",
           transition: "all 0.4s ease",

@@ -1,14 +1,13 @@
 import usecart from "../../hooks/usecart";
 import useRemoveFromCart from "../../hooks/useRemoveFromCart";
-
+import useChangeQuantity from "../../hooks/useChangeQuantity";  
+import useClearCart from "../../hooks/useClearCart";
 export default function Cart() {
 
   const { data, isLoading, isError, error } = usecart();
-const{mutate,isPending}=useRemoveFromCart();
-  const handleRemove = (id) => {
-    console.log("remove item", id);
-  };
-
+  const { mutate: removeItem, isPending } = useRemoveFromCart();
+  const { mutate: updateQuantity } =useChangeQuantity();
+const { mutate: clearCart , isPending: isClearingCart } = useClearCart();
   if (isLoading) return <h2>Loading...</h2>;
   if (isError) return <h2>Error: {error.message}</h2>;
 
@@ -24,6 +23,7 @@ const{mutate,isPending}=useRemoveFromCart();
             key={item.productId}
             className="flex items-center justify-between border-b p-4"
           >
+
             <div>
               <h2 className="text-lg font-semibold">
                 {item.productName}
@@ -33,23 +33,57 @@ const{mutate,isPending}=useRemoveFromCart();
                 Price: ${item.price}
               </p>
 
-              <p className="text-gray-500">
-                Quantity: {item.count}
-              </p>
+              {/* quantity control */}
+              <div className="flex items-center gap-3 mt-2">
+
+                <button
+                  onClick={() =>
+                    item.count > 1 &&
+                    updateQuantity({
+                      id: item.productId,
+                      count: item.count - 1,
+                    })
+                  }
+                  className="bg-gray-200 px-3 py-1 rounded"
+                >
+                  -
+                </button>
+
+                <span className="font-semibold">
+                  {item.count}
+                </span>
+
+                <button
+                  onClick={() =>
+                    updateQuantity({
+                      id: item.productId,
+                      count: item.count + 1,
+                    })
+                  }
+                  className="bg-gray-200 px-3 py-1 rounded"
+                >
+                  +
+                </button>
+
+              </div>
             </div>
 
             <div className="flex items-center gap-4">
+
               <div className="text-lg font-bold">
                 ${item.totalPrice}
               </div>
 
-              <button disabled={isPending}
-                onClick={() => mutate(item.productId)}
+              <button
+                disabled={isPending}
+                onClick={() => removeItem(item.productId)}
                 className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600"
               >
                 Remove
               </button>
+
             </div>
+
           </div>
         ))}
 
@@ -64,6 +98,13 @@ const{mutate,isPending}=useRemoveFromCart();
         </div>
 
       </div>
+      <button
+  onClick={() => clearCart()}
+  disabled={isClearingCart}
+  className="bg-black text-white px-4 py-2 rounded-lg"
+>
+  Clear Cart
+</button>
 
     </div>
   );
