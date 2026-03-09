@@ -7,6 +7,7 @@ import Register from "./pages/auth/Register/Register.jsx";
 import ProductDetails from "./pages/Products/ProductDetails.jsx";
 import CatagoriesExtra from "./pages/CatagoriesExtra/CatagoriesExtra.jsx";  
 import ProtectedRouter from "./ProtectedRouter.jsx";
+import Checkout from "./pages/checkout/checkout.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
        {
         path:"register",
         element:<Register />
+      },
+      {
+        path:"checkout",
+        element:<Checkout />
       },
       {
          path:"/product/:id",

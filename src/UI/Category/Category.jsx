@@ -2,7 +2,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Link } from "react-router-dom";
 import React from "react";
 import { Box, Typography, Button } from "@mui/material";
-
+import { useTranslation } from "react-i18next";
 import "swiper/css";
 const categoryImages = {
   Mobiles:
@@ -24,8 +24,9 @@ const categoryImages = {
 };
 
 
-
 export default function CategoriesSection({ categoriesArray }) {
+  const { t } = useTranslation();
+
   return (
     <Box sx={{ py: 8, px: { xs: 2, md: 6 }, backgroundColor: "#f5f7fa" }}>
       
@@ -44,7 +45,7 @@ export default function CategoriesSection({ categoriesArray }) {
   textContent: "center",
   }}
 >
-  Our Categories
+   {t('Our Categories')}
 
   <Link
     to="/CatagoriesExtra"

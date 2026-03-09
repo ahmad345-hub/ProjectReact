@@ -2,12 +2,14 @@ import usecart from "../../hooks/usecart";
 import useRemoveFromCart from "../../hooks/useRemoveFromCart";
 import useChangeQuantity from "../../hooks/useChangeQuantity";  
 import useClearCart from "../../hooks/useClearCart";
+import { useNavigate } from "react-router-dom";
 export default function Cart() {
 
   const { data, isLoading, isError, error } = usecart();
   const { mutate: removeItem, isPending } = useRemoveFromCart();
   const { mutate: updateQuantity } =useChangeQuantity();
 const { mutate: clearCart , isPending: isClearingCart } = useClearCart();
+const navigate = useNavigate();
   if (isLoading) return <h2>Loading...</h2>;
   if (isError) return <h2>Error: {error.message}</h2>;
 
@@ -98,14 +100,24 @@ const { mutate: clearCart , isPending: isClearingCart } = useClearCart();
         </div>
 
       </div>
+
+      <div className="flex gap-55">
       <button
   onClick={() => clearCart()}
   disabled={isClearingCart}
-  className="bg-black text-white px-4 py-2 rounded-lg"
+  className="bg-black text-white px-14 py-2 rounded-lg cursor-pointer mt-6 hover:bg-gray-800 disabled:bg-gray-400"
 >
   Clear Cart
 </button>
 
+<button onClick={()=>navigate('/checkout')} className="bg-green-500 text-white px-4 py-2 rounded-lg cursor-pointer mt-6 hover:bg-green-600">
+  Process to Checkout
+</button>
+<button  onClick={()=>navigate('/')} className="bg-blue-500 text-white px-4 py-2 rounded-lg cursor-pointer mt-6 hover:bg-blue-600">
+  Continue Shopping
+</button>
+
+</div>
     </div>
   );
 }
