@@ -7,44 +7,59 @@ import { useTranslation } from "react-i18next";
 
 export default function CategoriesSection({ categoriesArray = [] }) {
   const { t } = useTranslation();
-  const showMore = true; // الزر سيكون دائمًا على اليمين
+  const showMore = true;
 
   return (
-    <Box sx={{ py: 8, px: { xs: 2, md: 6 }, backgroundColor: "#f5f7fa" }}>
+    <Box sx={{ py: { xs: 4, md: 8 }, px: { xs: 2, md: 6 }, backgroundColor: "#f5f7fa" }}>
       {/* العنوان + زر Show More */}
       <Box
         sx={{
           display: "flex",
-          justifyContent: "center",
+          flexDirection: { xs: "column", md: "row" }, // عمودي على الموبايل وأفقي على الديسكتوب
           alignItems: "center",
-          mb: 5,
-          position: "relative", // يسمح بوضع الزر على اليمين
+          justifyContent: "center",
+          mb: { xs: 4, md: 5 },
+          position: "relative",
         }}
       >
         {/* العنوان في الوسط */}
-        <Typography variant="h4" fontWeight={800} sx={{ textAlign: "center" }}>
+        <Typography
+          variant="h4"
+          fontWeight={800}
+          sx={{
+            textAlign: "center",
+            fontSize: { xs: "1.6rem", md: "2.125rem" },
+          }}
+        >
           {t("Our Categories")}
         </Typography>
 
-        {/* الزر على اليمين */}
+        {/* زر Show More */}
         {showMore && (
-          <Link
-            to="/CatagoriesExtra"
-            className="inline-block px-4 py-2 border rounded-md hover:bg-black hover:text-white transition-transform duration-300 hover:scale-110"
-            style={{ position: "absolute", right: 0 }}
+          <Box
+            sx={{
+              mt: { xs: 2, md: 0 }, // يضع المسافة أسفل العنوان على الموبايل
+              ml: { xs: 0, md: "auto" }, // يدفع الزر لليمين على الديسكتوب
+            }}
           >
-            Show More
-          </Link>
+            <Link
+              to="/CatagoriesExtra"
+              className="inline-block px-4 py-2 border rounded-md hover:bg-black hover:text-white transition-transform duration-300 hover:scale-105"
+            >
+              Show More
+            </Link>
+          </Box>
         )}
       </Box>
 
       {/* قائمة الكاتيجوريز */}
       <Swiper
         slidesPerView={1}
-        spaceBetween={25}
+        spaceBetween={20}
         loop={true}
         breakpoints={{
-          600: { slidesPerView: 2 },
+          500: { slidesPerView: 1 },
+          640: { slidesPerView: 2 },
           900: { slidesPerView: 3 },
           1200: { slidesPerView: 4 },
         }}
@@ -60,13 +75,13 @@ export default function CategoriesSection({ categoriesArray = [] }) {
                 transition: "0.4s",
                 cursor: "pointer",
                 "&:hover": {
-                  transform: "translateY(-10px)",
-                  boxShadow: "0 15px 35px rgba(0,0,0,0.15)",
+                  transform: "translateY(-5px)",
+                  boxShadow: "0 12px 30px rgba(0,0,0,0.12)",
                 },
               }}
             >
-              <Box sx={{ p: 3, textAlign: "center" }}>
-                <Typography variant="h6" fontWeight={700} mb={2}>
+              <Box sx={{ p: { xs: 2, md: 3 }, textAlign: "center" }}>
+                <Typography variant="h6" fontWeight={700} mb={2} sx={{ fontSize: { xs: "1rem", md: "1.125rem" } }}>
                   {cat.name}
                 </Typography>
               </Box>

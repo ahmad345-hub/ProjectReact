@@ -1,4 +1,3 @@
-// pages/Products.jsx
 import React from "react";
 import { Link } from "react-router-dom";
 import useProducts from "../../hooks/use Products";
@@ -21,7 +20,7 @@ export default function Products() {
   const products = data.response.data || [];
 
   return (
-    <div className="container mx-auto px-6 py-10 bg-amber-700">
+    <div className="container mx-auto px-6 py-10">
       <h1 className="text-3xl font-bold text-center mb-8">Our Products</h1>
 
       <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-8">
@@ -29,7 +28,7 @@ export default function Products() {
           <Link
             to={`/product/${product.id}`}
             key={product.id}
-            className="block bg-white shadow-lg rounded-2xl overflow-hidden hover:scale-105 transition duration-300"
+            className="block bg-white rounded-2xl overflow-hidden transition-all duration-200 hover:shadow-lg hover:-translate-y-1"
           >
             <div className="w-full aspect-square bg-gray-100 flex items-center justify-center p-4">
               <img
@@ -53,16 +52,6 @@ export default function Products() {
               <p className="text-green-600 font-bold text-xl mb-4">
                 ${product.price}
               </p>
-
-              <button
-                className="w-full bg-black text-white py-2 rounded-xl hover:bg-gray-800 transition"
-                onClick={(e) => {
-                  e.preventDefault(); // يمنع الانتقال للصفحة عند الضغط على الزر
-                  console.log("Add to Cart clicked", product.id);
-                }}
-              >
-                Add to Cart
-              </button>
             </div>
           </Link>
         ))}

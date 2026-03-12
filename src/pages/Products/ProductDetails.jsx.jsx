@@ -1,11 +1,13 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import useProduct from "../../hooks/useproduct";
+import useAddtoCart from "../../hooks/useAddtoCart";
 
 export default function ProductDetails() {
   const { id } = useParams();
 
   const { data, isLoading, isError, error } = useProduct(id);
+ const { mutate ,isPending} =useAddtoCart();
 
   if (isLoading)
     return <h2 className="text-center mt-10 text-xl">Loading...</h2>;
@@ -17,8 +19,7 @@ export default function ProductDetails() {
   return (
     <div className="container mx-auto px-6 py-10">
       <div className="flex flex-col md:flex-row gap-10">
-        {/* صورة المنتج */}
-        <div className="md:w-1/2 flex items-center justify-center p-4 rounded-2xl shadow-lg">
+        <div className="md:w-1/2 bg-gray-100 flex items-center justify-center p-4 rounded-2xl shadow-lg">
           <img
             src={product.image}
             alt={product.name || "Product"}
@@ -29,15 +30,19 @@ export default function ProductDetails() {
             }
           />
         </div>
-
-        {/* تفاصيل المنتج */}
+        \
         <div className="md:w-1/2 flex flex-col justify-start">
           <h1 className="text-3xl font-bold mb-4">
             {product.name || "No Name"}
           </h1>
           <p className="text-gray-600 mb-2">⭐ {product.rate}</p>
-          <p className="font-bold text-2xl mb-6">${product.price}</p>
+          <p className="text-green-600 font-bold text-2xl mb-6">
+            ${product.price}
+          </p>
           <p className="text-gray-700 mb-6">{product.description}</p>
+          <button onClick={() => mutate({ ProductId: product.id, Count: 1 })}        className="w-full md:w-1/2 bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition">
+            Add to Cart
+          </button>
         </div>
       </div>
     </div>
