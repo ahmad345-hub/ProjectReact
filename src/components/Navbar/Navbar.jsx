@@ -74,7 +74,7 @@ const Navbar = () => {
 
   return (
     <>
-      <AppBar position="fixed" elevation={0} sx={{ backgroundColor: "#000" }}>
+      <AppBar position="fixed" elevation={0}  >
         <Toolbar sx={{ justifyContent: "space-between", minHeight: "70px" }}>
           
           {/* Logo */}
@@ -88,7 +88,7 @@ const Navbar = () => {
               fontSize: "1.4rem",
             }}
           >
-            KASHOP
+       3legant.
           </Typography>
 
           {/* Desktop Links */}

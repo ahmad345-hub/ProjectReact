@@ -1,103 +1,66 @@
-import { Box, Button, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
-import heroImg from "../../assets/Image Placeholder.png";
+import { useState } from "react";
 
-const Hero = () => {
+import sofa1 from "../../assets/sofa1.png";
+import sofa2 from "../../assets/sofa2.png";
+import sofa3 from "../../assets/sofa3.png";
+
+export default function Hero() {
+
+  const images = [sofa1, sofa2, sofa3];
+
+  const [current, setCurrent] = useState(0);
+
+  const nextSlide = () => {
+    setCurrent((current + 1) % images.length);
+  };
+
+  const prevSlide = () => {
+    setCurrent((current - 1 + images.length) % images.length);
+  };
+
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        width: "100%",
-        overflow: "hidden",
-        backgroundImage: `url(${heroImg})`,
-        backgroundSize: {
-          xs: "contain", // بالموبايل ما يقص الصورة
-          md: "cover",   // بالديسكتوب cover
-        },
-        backgroundPosition: {
-          xs: "center top",   // بالموبايل متمركزة أعلى
-          md: "left center",  // بالديسكتوب عاليسار
-        },
-        backgroundRepeat: "no-repeat",
-        backgroundColor: "#f5f5f5", // لون احتياطي لو صار فراغ
-        display: "flex",
-        alignItems: "center",
-        justifyContent: {
-          xs: "center",   // بالموبايل النص بالنص
-          md: "flex-end", // بالديسكتوب النص عاليمين
-        },
-        textAlign: {
-          xs: "center",
-          md: "left",
-        },
-        px: { xs: 3, sm: 5, md: 10 },
-        boxSizing: "border-box",
-        flexDirection: {
-          xs: "column",   // بالموبايل النص تحت الصورة
-          md: "row",      // بالديسكتوب جنب الصورة
-        },
-        pt: { xs: 8, md: 0 }, // مساحة فوق النص بالموبايل
-      }}
-    >
-      {/* النص */}
-      <Box
-        sx={{
-          maxWidth: { xs: "100%", sm: 500 },
-          color: "#111",
-          mt: { xs: 4, md: 0 },
-        }}
-      >
-        <Typography
-          variant="h3"
-          sx={{
-            fontWeight: 800,
-            lineHeight: 1.2,
-            fontSize: {
-              xs: "2rem",
-              sm: "2.5rem",
-              md: "3rem",
-            },
-          }}
-        >
-          Discover the power of{" "}
-          <Box component="span" sx={{ color: "#ffb703" }}>
-            KASHOP
-          </Box>
-        </Typography>
+    <div className="pt-[70px]">
+      <div className="w-full h-[250px] sm:h-[350px] md:h-[450px] lg:h-[536px] relative overflow-hidden">
 
-        <Typography
-          sx={{
-            mt: 2,
-            fontSize: {
-              xs: 16,
-              sm: 18,
-            },
-          }}
-        >
-          Shop smarter. Find premium products with a smooth and modern
-          shopping experience.
-        </Typography>
+        <img
+          src={images[current]}
+          alt="slider"
+          className="w-full h-full object-cover"
+        />
 
-        <Button
-          component={Link}
-          to="/shop"
-          variant="contained"
-          sx={{
-            mt: 4,
-            px: { xs: 3, sm: 4 },
-            py: 1.4,
-            backgroundColor: "#111",
-            color: "#fff",
-            fontWeight: 600,
-            fontSize: { xs: "0.9rem", sm: "1rem" },
-            "&:hover": { backgroundColor: "#333" },
-          }}
+        {/* left arrow */}
+
+        <button
+          onClick={prevSlide}
+          className="absolute left-2 sm:left-4 md:left-5 top-1/2 -translate-y-1/2 bg-white w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full shadow flex items-center justify-center"
         >
-          Shop Now
-        </Button>
-      </Box>
-    </Box>
+          ❮
+        </button>
+
+        {/* right arrow */}
+
+        <button
+          onClick={nextSlide}
+          className="absolute right-2 sm:right-4 md:right-5 top-1/2 -translate-y-1/2 bg-white w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full shadow flex items-center justify-center"
+        >
+          ❯
+        </button>
+
+        {/* dots */}
+
+        <div className="absolute bottom-3 sm:bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+          {images.map((_, index) => (
+            <div
+              key={index}
+              onClick={() => setCurrent(index)}
+              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full cursor-pointer ${
+                current === index ? "bg-white" : "bg-white/50"
+              }`}
+            />
+          ))}
+        </div>
+
+      </div>
+    </div>
   );
-};
-
-export default Hero;
+}
