@@ -5,7 +5,9 @@ import * as yup from "yup";
 import axios from "axios";
 import { use, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import useAuthStore from "../../../store/useAuthStore.js";const schema = yup.object().shape({
+import useAuthStore from "../../../store/useAuthStore.js";
+import axiosinstance from "../../../api/axiosinstance.js";
+const schema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
   password: yup.string().required("Password is required"),
 });
@@ -24,8 +26,8 @@ const Login = () => {
       setErrorMsg("");
       setSuccessMsg("");
 
-      const response = await axios.post(
-        "https://knowledgeshop.runasp.net/api/auth/Account/Login",values);
+      const response = await axiosinstance.post(
+        "auth/Account/Login",values);
         if(response.status==200){
             SetToken(response.data.accessToken);
         }
