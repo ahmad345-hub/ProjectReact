@@ -8,6 +8,9 @@ import ProductDetails from "./pages/Products/ProductDetails.jsx";
 import CatagoriesExtra from "./pages/CatagoriesExtra/CatagoriesExtra.jsx";  
 import ProtectedRouter from "./ProtectedRouter.jsx";
 import Checkout from "./pages/checkout/checkout.jsx";
+import Profile from "./pages/Profile/Profile.jsx";
+import ProfileInfo from "./pages/Profile/ProfileInfo.jsx";
+import ProfileOrders from "./pages/Profile/ProfileOrders.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -29,6 +32,24 @@ const router = createBrowserRouter([
         path:"login",
         element:<Login />
       },
+      {
+  path: "Profile",
+  element: (
+    <ProtectedRouter>
+      <Profile />
+    </ProtectedRouter>
+  ),
+  children: [
+    {
+      index: true,
+      element: <ProfileInfo />
+    },
+    {
+      path: "ProfileOrders",
+      element: <ProfileOrders />
+    }
+  ]
+},
       {
         path:"CatagoriesExtra",
         element:<CatagoriesExtra />

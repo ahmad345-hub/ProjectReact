@@ -153,9 +153,9 @@ const Navbar = () => {
               flexWrap: "wrap",
             }}
           >
-            <IconButton sx={{ color: "black", ...hoverStyle }}>
-              <SearchIcon />
-            </IconButton>
+            <Link to="/Profile" sx={{ color: "black", ...hoverStyle }}>
+              Profile
+            </Link>
 
             <Select
               value={i18n.language}
