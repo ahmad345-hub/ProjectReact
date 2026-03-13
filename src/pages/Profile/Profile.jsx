@@ -1,7 +1,9 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
-
+import useProfile from "../../hooks/useProfile";
 export default function Profile() {
+    const {data} = useProfile();
+    console.log(data);
   return (
     <div className="min-h-screen flex flex-col items-center">
 
