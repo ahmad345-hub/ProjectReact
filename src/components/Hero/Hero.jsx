@@ -1,27 +1,21 @@
 import { useState } from "react";
+import { Box, useTheme, IconButton } from "@mui/material";
 
 import sofa1 from "../../assets/sofa1.png";
 import sofa2 from "../../assets/sofa2.png";
 import sofa3 from "../../assets/sofa3.png";
 
 export default function Hero() {
-
+  const theme = useTheme(); // جلب الثيم
   const images = [sofa1, sofa2, sofa3];
-
   const [current, setCurrent] = useState(0);
 
-  const nextSlide = () => {
-    setCurrent((current + 1) % images.length);
-  };
-
-  const prevSlide = () => {
-    setCurrent((current - 1 + images.length) % images.length);
-  };
+  const nextSlide = () => setCurrent((current + 1) % images.length);
+  const prevSlide = () => setCurrent((current - 1 + images.length) % images.length);
 
   return (
     <div className="pt-[70px]">
-      <div className="w-full h-[250px] sm:h-[350px] md:h-[450px] lg:h-[536px] relative overflow-hidden">
-
+      <Box className="w-full h-[250px] sm:h-[350px] md:h-[450px] lg:h-[536px] relative overflow-hidden">
         <img
           src={images[current]}
           alt="slider"
@@ -29,38 +23,75 @@ export default function Hero() {
         />
 
         {/* left arrow */}
-
-        <button
+        <IconButton
           onClick={prevSlide}
-          className="absolute left-2 sm:left-4 md:left-5 top-1/2 -translate-y-1/2 bg-white w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full shadow flex items-center justify-center"
+          sx={{
+            position: "absolute",
+            left: { xs: 2, sm: 4, md: 5 },
+            top: "50%",
+            transform: "translateY(-50%)",
+            bgcolor: "background.paper",
+            width: { xs: 32, sm: 36, md: 40 },
+            height: { xs: 32, sm: 36, md: 40 },
+            borderRadius: "50%",
+            boxShadow: 3,
+            color: "text.primary",
+            "&:hover": { bgcolor: "action.hover" },
+          }}
         >
           ❮
-        </button>
+        </IconButton>
 
         {/* right arrow */}
-
-        <button
+        <IconButton
           onClick={nextSlide}
-          className="absolute right-2 sm:right-4 md:right-5 top-1/2 -translate-y-1/2 bg-white w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full shadow flex items-center justify-center"
+          sx={{
+            position: "absolute",
+            right: { xs: 2, sm: 4, md: 5 },
+            top: "50%",
+            transform: "translateY(-50%)",
+            bgcolor: "background.paper",
+            width: { xs: 32, sm: 36, md: 40 },
+            height: { xs: 32, sm: 36, md: 40 },
+            borderRadius: "50%",
+            boxShadow: 3,
+            color: "text.primary",
+            "&:hover": { bgcolor: "action.hover" },
+          }}
         >
           ❯
-        </button>
+        </IconButton>
 
         {/* dots */}
-
-        <div className="absolute bottom-3 sm:bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: { xs: 3, sm: 4, md: 6 },
+            left: "50%",
+            transform: "translateX(-50%)",
+            display: "flex",
+            gap: 1,
+          }}
+        >
           {images.map((_, index) => (
-            <div
+            <Box
               key={index}
               onClick={() => setCurrent(index)}
-              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full cursor-pointer ${
-                current === index ? "bg-white" : "bg-white/50"
-              }`}
+              sx={{
+                width: { xs: 8, sm: 12 },
+                height: { xs: 8, sm: 12 },
+                borderRadius: "50%",
+                bgcolor:
+                  current === index
+                    ? "text.primary"
+                    : "text.primary",
+                opacity: current === index ? 1 : 0.5,
+                cursor: "pointer",
+              }}
             />
           ))}
-        </div>
-
-      </div>
+        </Box>
+      </Box>
     </div>
   );
 }

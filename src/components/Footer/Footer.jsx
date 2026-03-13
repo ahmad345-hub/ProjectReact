@@ -12,26 +12,24 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 export default function Footer() {
   return (
-    <Box sx={{ bgcolor: "#F3F5F7", color: "#111", pt: 6, pb: 3 }}>
+    <Box sx={{ bgcolor: "background.default", color: "text.primary", pt: 6, pb: 3 }}>
       <Container maxWidth="lg">
-
         <Grid container>
 
           {/* أول 3 أعمدة */}
           <Grid item xs={12} md={8}>
             <Grid container columnSpacing={6}>
-
               {/* Column 1 */}
               <Grid item xs={12} md={6}>
                 <Typography variant="h6" fontWeight="bold">
                   3legant.
                 </Typography>
-                <Typography variant="body2" sx={{ mt: 2, color: "grey.700" }}>
+                <Typography variant="body2" sx={{ mt: 2, color: "text.secondary" }}>
                   43111 Hai Trieu street.<br />
                   District 1, HCMC<br />
                   Vietnam
                 </Typography>
-                <Typography variant="body2" sx={{ mt: 1, color: "grey.700" }}>
+                <Typography variant="body2" sx={{ mt: 1, color: "text.secondary" }}>
                   84-756-3237
                 </Typography>
               </Grid>
@@ -43,7 +41,7 @@ export default function Footer() {
                   <Typography
                     key={item}
                     variant="body2"
-                    sx={{ mt: 1, color: "grey.700", cursor: "pointer" }}
+                    sx={{ mt: 1, color: "text.secondary", cursor: "pointer" }}
                   >
                     {item}
                   </Typography>
@@ -57,27 +55,19 @@ export default function Footer() {
                   <Typography
                     key={item}
                     variant="body2"
-                    sx={{ mt: 1, color: "grey.700", cursor: "pointer" }}
+                    sx={{ mt: 1, color: "text.secondary", cursor: "pointer" }}
                   >
                     {item}
                   </Typography>
                 ))}
               </Grid>
-
             </Grid>
           </Grid>
 
           {/* Column 4 */}
-          <Grid
-            item
-            xs={12}
-            md={4}
-            sx={{ ml: { md: 23 } }}
-          >
-            <Typography fontWeight="bold">
-              Join Newsletter
-            </Typography>
-            <Typography variant="body2" sx={{ mt: 1, color: "grey.700" }}>
+          <Grid item xs={12} md={4} sx={{ ml: { md: 23 } }}>
+            <Typography fontWeight="bold">Join Newsletter</Typography>
+            <Typography variant="body2" sx={{ mt: 1, color: "text.secondary" }}>
               Subscribe our newsletter to get more deals, new products and promotions
             </Typography>
 
@@ -89,30 +79,29 @@ export default function Footer() {
                 fullWidth
                 InputProps={{
                   sx: {
-                    bgcolor: "#fff",
-                    color: "#111",
-                    "& fieldset": { borderColor: "#ccc" }
+                    bgcolor: "background.paper",
+                    color: "text.primary",
+                    "& fieldset": { borderColor: "divider" }
                   }
                 }}
               />
-              <IconButton sx={{ bgcolor: "#111", ml: 1 }}>
-                <ArrowForwardIcon sx={{ color: "#fff" }} />
+              <IconButton sx={{ bgcolor: "text.primary", ml: 1, "&:hover": { bgcolor: "text.secondary" } }}>
+                <ArrowForwardIcon sx={{ color: "background.paper" }} />
               </IconButton>
             </Box>
           </Grid>
 
         </Grid>
 
-        <Divider sx={{ my: 4, borderColor: "#ccc" }} />
+        <Divider sx={{ my: 4, borderColor: "divider" }} />
 
         <Typography
           variant="body2"
           align="center"
-          sx={{ color: "grey.600" }}
+          sx={{ color: "text.secondary" }}
         >
           © 2023 3legant. All rights reserved | Privacy Policy | Terms & Conditions
         </Typography>
-
       </Container>
     </Box>
   );
