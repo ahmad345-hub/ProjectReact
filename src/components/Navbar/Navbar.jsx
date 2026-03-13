@@ -21,13 +21,16 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 
 import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
 
 import useAuthStore from "../../store/useAuthStore.js";
 import usecart from "../../hooks/usecart";
 import { useTranslation } from "react-i18next";
 import i18n from "../../i18next.jsx";
+
+import useThemeStore from "../../store/useThemeStore";
 
 const Navbar = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -44,11 +47,6 @@ const Navbar = () => {
 
   const { data } = usecart();
 
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
-    document.dir = lng === "ar" ? "rtl" : "ltr";
-  };
-
   const cartCount =
     data?.items?.reduce((total, item) => total + item.count, 0) || 0;
 
@@ -63,9 +61,7 @@ const Navbar = () => {
     borderRadius: "12px",
     transition: "all 0.25s ease",
     "&:hover": {
-      backgroundColor: scrolled
-        ? "rgba(0,0,0,0.05)"
-        : "rgba(0,0,0,0.05)",
+      backgroundColor: "action.hover",
       transform: "translateY(-2px)",
     },
   };
@@ -75,11 +71,19 @@ const Navbar = () => {
     navigate("/login");
   };
 
-  // Listen to scroll
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    document.dir = lng === "ar" ? "rtl" : "ltr";
+  };
+
+  // Theme toggle
+  const mode = useThemeStore((state) => state.theme);
+  const toggleTheme = useThemeStore((state) => state.toggleTheme);
+
+  // Scroll effect
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) setScrolled(true);
-      else setScrolled(false);
+      setScrolled(window.scrollY > 50);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -91,8 +95,8 @@ const Navbar = () => {
         position="fixed"
         elevation={scrolled ? 4 : 0}
         sx={{
-          backgroundColor: scrolled ? "white" : "transparent",
-          color: "black",
+          backgroundColor: scrolled ? "background.paper" : "transparent",
+          color: "text.primary",
           transition: "background-color 0.3s ease, box-shadow 0.3s ease",
         }}
       >
@@ -109,7 +113,7 @@ const Navbar = () => {
             to="/"
             sx={{
               textDecoration: "none",
-              color: "black",
+              color: "text.primary",
               fontWeight: "bold",
               fontSize: "1.4rem",
             }}
@@ -117,7 +121,7 @@ const Navbar = () => {
             3legant.
           </Typography>
 
-          {/* Desktop Links (hide on mobile) */}
+          {/* Desktop Links */}
           {!isMobile && (
             <Box
               sx={{
@@ -133,7 +137,7 @@ const Navbar = () => {
                   component={Link}
                   to={link.path}
                   sx={{
-                    color: "black",
+                    color: "text.primary",
                     textTransform: "none",
                     ...hoverStyle,
                   }}
@@ -153,27 +157,30 @@ const Navbar = () => {
               flexWrap: "wrap",
             }}
           >
-            <Link to="/Profile" sx={{ color: "black", ...hoverStyle }}>
-              Profile
+            {/* Profile */}
+            <Link
+              to="/Profile"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <Box sx={{ px: 1, ...hoverStyle }}>Profile</Box>
             </Link>
 
+            {/* Language Selector */}
             <Select
               value={i18n.language}
               onChange={(e) => changeLanguage(e.target.value)}
               size="small"
               sx={{
-                color: "black",
+                color: "text.primary",
                 minWidth: 100,
                 ".MuiOutlinedInput-notchedOutline": {
-                  borderColor: "black",
+                  borderColor: "divider",
                 },
-                "& .MuiSvgIcon-root": { color: "black" },
+                "& .MuiSvgIcon-root": { color: "text.primary" },
                 "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#555",
+                  borderColor: "text.primary",
                 },
-                backgroundColor: scrolled
-                  ? "rgba(0,0,0,0.05)"
-                  : "rgba(0,0,0,0.05)",
+                backgroundColor: "action.hover",
                 borderRadius: "8px",
               }}
             >
@@ -181,13 +188,27 @@ const Navbar = () => {
               <MenuItem value="ar">العربية</MenuItem>
             </Select>
 
+            {/* Theme Toggle */}
+            <IconButton
+              onClick={toggleTheme}
+              sx={{
+                color: "text.primary",
+                backgroundColor: "action.hover",
+                "&:hover": { backgroundColor: "action.selected" },
+                borderRadius: "8px",
+              }}
+            >
+              {mode === "dark" ? <LightModeIcon /> : <DarkModeIcon />}
+            </IconButton>
+
+            {/* Cart / Auth Buttons */}
             {token ? (
               <>
                 <IconButton
                   component={Link}
                   to="/cart"
                   sx={{
-                    color: "black",
+                    color: "text.primary",
                     ...hoverStyle,
                   }}
                 >
@@ -198,7 +219,7 @@ const Navbar = () => {
 
                 <Button
                   onClick={handleLogout}
-                  sx={{ color: "black", ...hoverStyle }}
+                  sx={{ color: "text.primary", ...hoverStyle }}
                 >
                   {t("Logout")}
                 </Button>
@@ -208,7 +229,7 @@ const Navbar = () => {
                 <Button
                   component={Link}
                   to="/login"
-                  sx={{ color: "black", ...hoverStyle }}
+                  sx={{ color: "text.primary", ...hoverStyle }}
                 >
                   {t("Login")}
                 </Button>
@@ -216,20 +237,21 @@ const Navbar = () => {
                 <Button
                   component={Link}
                   to="/register"
-                  sx={{ color: "black", ...hoverStyle }}
+                  sx={{ color: "text.primary", ...hoverStyle }}
                 >
                   {t("Register")}
                 </Button>
               </>
             )}
 
+            {/* Mobile menu icon */}
             {isMobile && (
               <IconButton
                 onClick={() => setOpenDrawer(true)}
                 sx={{
-                  color: "black",
-                  backgroundColor: "rgba(0,0,0,0.05)",
-                  "&:hover": { backgroundColor: "rgba(0,0,0,0.1)" },
+                  color: "text.primary",
+                  backgroundColor: "action.hover",
+                  "&:hover": { backgroundColor: "action.selected" },
                   borderRadius: "8px",
                 }}
               >
@@ -240,14 +262,15 @@ const Navbar = () => {
         </Toolbar>
       </AppBar>
 
+      {/* Drawer for mobile */}
       <Drawer
         anchor="right"
         open={openDrawer}
         onClose={() => setOpenDrawer(false)}
         PaperProps={{
           sx: {
-            backgroundColor: "rgba(255,255,255,0.95)",
-            color: "black",
+            backgroundColor: "background.paper",
+            color: "text.primary",
           },
         }}
       >
@@ -262,14 +285,14 @@ const Navbar = () => {
                 sx={{
                   mx: 1,
                   borderRadius: "12px",
-                  "&:hover": { backgroundColor: "rgba(0,0,0,0.05)" },
+                  "&:hover": { backgroundColor: "action.hover" },
                 }}
               >
                 <ListItemText primary={link.title} />
               </ListItem>
             ))}
 
-            <Divider sx={{ my: 1, backgroundColor: "#ccc" }} />
+            <Divider sx={{ my: 1 }} />
 
             {token ? (
               <>
@@ -280,7 +303,7 @@ const Navbar = () => {
                   sx={{
                     mx: 1,
                     borderRadius: "12px",
-                    "&:hover": { backgroundColor: "rgba(0,0,0,0.05)" },
+                    "&:hover": { backgroundColor: "action.hover" },
                   }}
                 >
                   <ListItemText primary={t("Cart")} />
@@ -294,7 +317,7 @@ const Navbar = () => {
                   sx={{
                     mx: 1,
                     borderRadius: "12px",
-                    "&:hover": { backgroundColor: "rgba(0,0,0,0.05)" },
+                    "&:hover": { backgroundColor: "action.hover" },
                   }}
                 >
                   <ListItemText primary={t("Logout")} />
@@ -309,7 +332,7 @@ const Navbar = () => {
                   sx={{
                     mx: 1,
                     borderRadius: "12px",
-                    "&:hover": { backgroundColor: "rgba(0,0,0,0.05)" },
+                    "&:hover": { backgroundColor: "action.hover" },
                   }}
                 >
                   <ListItemText primary={t("Login")} />
@@ -322,7 +345,7 @@ const Navbar = () => {
                   sx={{
                     mx: 1,
                     borderRadius: "12px",
-                    "&:hover": { backgroundColor: "rgba(0,0,0,0.05)" },
+                    "&:hover": { backgroundColor: "action.hover" },
                   }}
                 >
                   <ListItemText primary={t("Register")} />
