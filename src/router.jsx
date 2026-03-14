@@ -14,6 +14,7 @@ import ProfileOrders from "./pages/Profile/ProfileOrders.jsx";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword.jsx";
 import ResetPassword from "./pages/ResetPassword/ResetPassword.jsx";
 import VerifyCode from "./pages/VerifyCode/VerifyCode.jsx";
+import CategoryProducts from "./pages/CategoryProducts/CategoryProducts.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -85,6 +86,11 @@ const router = createBrowserRouter([
          path:"/product/:id",
          element:<ProductDetails />
       },
+
+      {
+  path: "/category/:categoryId",
+  element: <CategoryProducts />
+}
     ]
   }
 ]);
