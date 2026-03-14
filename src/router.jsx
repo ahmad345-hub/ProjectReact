@@ -59,6 +59,14 @@ const router = createBrowserRouter([
         element:<Register />
       },
       {
+        path:"register",
+        element:<Register />
+      },
+      {
+        path:"forgot-password",
+        element:<ForgotPassword />
+      },
+      {
         path:"checkout",
         element:<Checkout />
       },

@@ -1,123 +1,119 @@
+import React from "react";
+import { Box, Grid, Typography, Button, Divider } from "@mui/material";
+import Navbar from "../../components/Navbar/Navbar"; // عدل المسار حسب مشروعك
+import Footer from "../../components/Footer/Footer"; // عدل المسار حسب مشروعك
 import usecart from "../../hooks/usecart";
 import useRemoveFromCart from "../../hooks/useRemoveFromCart";
 import useChangeQuantity from "../../hooks/useChangeQuantity";  
 import useClearCart from "../../hooks/useClearCart";
 import { useNavigate } from "react-router-dom";
-export default function Cart() {
 
+export default function Cart() {
   const { data, isLoading, isError, error } = usecart();
   const { mutate: removeItem, isPending } = useRemoveFromCart();
-  const { mutate: updateQuantity } =useChangeQuantity();
-const { mutate: clearCart , isPending: isClearingCart } = useClearCart();
-const navigate = useNavigate();
-  if (isLoading) return <h2>Loading...</h2>;
-  if (isError) return <h2>Error: {error.message}</h2>;
+  const { mutate: updateQuantity } = useChangeQuantity();
+  const { mutate: clearCart, isPending: isClearingCart } = useClearCart();
+  const navigate = useNavigate();
+
+  if (isLoading) return <Typography variant="h4" textAlign="center" mt={10}>Loading...</Typography>;
+  if (isError) return <Typography variant="h4" textAlign="center" mt={10} color="error">Error: {error.message}</Typography>;
 
   return (
-    <div className="max-w-5xl mx-auto p-6">
+    <Box sx={{ bgcolor: "background.default", color: "text.primary", minHeight: "100vh" }}>
+      {/* Navbar */}
+      <Navbar />
 
-      <h1 className="text-3xl font-bold mb-6">Shopping Cart</h1>
+      {/* Main Cart Section */}
+      <Box sx={{ maxWidth: "1200px", mx: "auto", px: 2, py: 8 }}>
+        <Typography variant="h3" fontWeight={700} mb={4} textAlign="center">
+          Shopping Cart
+        </Typography>
 
-      <div className="bg-white shadow-md rounded-xl overflow-hidden">
+        <Box sx={{ bgcolor: "background.paper", borderRadius: 2, overflow: "hidden", boxShadow: 3 }}>
+          {data.items.map((item) => (
+            <Grid
+              container
+              key={item.productId}
+              alignItems="center"
+              justifyContent="space-between"
+              sx={{ borderBottom: 1, borderColor: "divider", p: 2 }}
+              spacing={2}
+            >
+              <Grid item xs={12} md={6}>
+                <Typography variant="h6" fontWeight={600}>{item.productName}</Typography>
+                <Typography variant="body2" color="text.secondary">Price: ${item.price}</Typography>
 
-        {data.items.map((item) => (
-          <div
-            key={item.productId}
-            className="flex items-center justify-between border-b p-4"
+                {/* Quantity Controls */}
+                <Box sx={{ display: "flex", alignItems: "center", gap: 2, mt: 1 }}>
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    onClick={() => item.count > 1 && updateQuantity({ id: item.productId, count: item.count - 1 })}
+                  >
+                    -
+                  </Button>
+                  <Typography>{item.count}</Typography>
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    onClick={() => updateQuantity({ id: item.productId, count: item.count + 1 })}
+                  >
+                    +
+                  </Button>
+                </Box>
+              </Grid>
+
+              <Grid item xs={12} md={6} sx={{ textAlign: { xs: "left", md: "right" } }}>
+                <Typography variant="h6" fontWeight={700}>${item.totalPrice}</Typography>
+                <Button
+                  variant="contained"
+                  color="error"
+                  disabled={isPending}
+                  onClick={() => removeItem(item.productId)}
+                  sx={{ mt: 1 }}
+                >
+                  Remove
+                </Button>
+              </Grid>
+            </Grid>
+          ))}
+
+          {/* Cart Total */}
+          <Box sx={{ display: "flex", justifyContent: "space-between", p: 3, bgcolor: "background.default" }}>
+            <Typography variant="h5" fontWeight={600}>Total</Typography>
+            <Typography variant="h4" fontWeight={700} color="success.main">${data.cartTotal}</Typography>
+          </Box>
+        </Box>
+
+        {/* Action Buttons */}
+        <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, gap: 2, mt: 4, justifyContent: "center" }}>
+          <Button
+            variant="contained"
+            color="secondary"
+            disabled={isClearingCart}
+            onClick={() => clearCart()}
           >
+            Clear Cart
+          </Button>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => navigate("/checkout")}
+          >
+            Proceed to Checkout
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => navigate("/")}
+          >
+            Continue Shopping
+          </Button>
+        </Box>
+      </Box>
 
-            <div>
-              <h2 className="text-lg font-semibold">
-                {item.productName}
-              </h2>
-
-              <p className="text-gray-500">
-                Price: ${item.price}
-              </p>
-
-              {/* quantity control */}
-              <div className="flex items-center gap-3 mt-2">
-
-                <button
-                  onClick={() =>
-                    item.count > 1 &&
-                    updateQuantity({
-                      id: item.productId,
-                      count: item.count - 1,
-                    })
-                  }
-                  className="bg-gray-200 px-3 py-1 rounded"
-                >
-                  -
-                </button>
-
-                <span className="font-semibold">
-                  {item.count}
-                </span>
-
-                <button
-                  onClick={() =>
-                    updateQuantity({
-                      id: item.productId,
-                      count: item.count + 1,
-                    })
-                  }
-                  className="bg-gray-200 px-3 py-1 rounded"
-                >
-                  +
-                </button>
-
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4">
-
-              <div className="text-lg font-bold">
-                ${item.totalPrice}
-              </div>
-
-              <button
-                disabled={isPending}
-                onClick={() => removeItem(item.productId)}
-                className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600"
-              >
-                Remove
-              </button>
-
-            </div>
-
-          </div>
-        ))}
-
-        <div className="flex justify-between items-center p-6 bg-gray-50">
-          <span className="text-xl font-semibold">
-            Total
-          </span>
-
-          <span className="text-2xl font-bold text-green-600">
-            ${data.cartTotal}
-          </span>
-        </div>
-
-      </div>
-
-      <div className="flex gap-55">
-      <button
-  onClick={() => clearCart()}
-  disabled={isClearingCart}
-  className="bg-black text-white px-14 py-2 rounded-lg cursor-pointer mt-6 hover:bg-gray-800 disabled:bg-gray-400"
->
-  Clear Cart
-</button>
-
-<button onClick={()=>navigate('/checkout')} className="bg-green-500 text-white px-4 py-2 rounded-lg cursor-pointer mt-6 hover:bg-green-600">
-  Process to Checkout
-</button>
-<button  onClick={()=>navigate('/')} className="bg-blue-500 text-white px-4 py-2 rounded-lg cursor-pointer mt-6 hover:bg-blue-600">
-  Continue Shopping
-</button>
-
-</div>
-    </div>
+      {/* Footer */}
+      <Footer />
+    </Box>
   );
 }
