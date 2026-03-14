@@ -15,6 +15,7 @@ import ForgotPassword from "./pages/ForgotPassword/ForgotPassword.jsx";
 import ResetPassword from "./pages/ResetPassword/ResetPassword.jsx";
 import VerifyCode from "./pages/VerifyCode/VerifyCode.jsx";
 import CategoryProducts from "./pages/CategoryProducts/CategoryProducts.jsx";
+import Shop from "./pages/Shop/Shop.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -85,6 +86,10 @@ const router = createBrowserRouter([
       {
          path:"/product/:id",
          element:<ProductDetails />
+      },
+      {
+         path:"shop",
+         element:<Shop />
       },
 
       {
