@@ -2,11 +2,11 @@ import { Box, Button, TextField, Typography, Alert, Divider } from "@mui/materia
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios from "axios";
-import { use, useState } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import useAuthStore from "../../../store/useAuthStore.js";
 import axiosinstance from "../../../api/axiosinstance.js";
+
 const schema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
   password: yup.string().required("Password is required"),
@@ -20,17 +20,17 @@ const Login = () => {
 
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
- const SetToken=useAuthStore((state)=>state.SetToken);
+  const SetToken = useAuthStore((state) => state.SetToken);
+
   const onSubmit = async (values) => {
     try {
       setErrorMsg("");
       setSuccessMsg("");
 
-      const response = await axiosinstance.post(
-        "auth/Account/Login",values);
-        if(response.status==200){
-            SetToken(response.data.accessToken);
-        }
+      const response = await axiosinstance.post("auth/Account/Login", values);
+      if (response.status === 200) {
+        SetToken(response.data.accessToken);
+      }
 
       if (response.data.success) {
         setSuccessMsg("Login successful 👁️ Redirecting...");
@@ -46,7 +46,6 @@ const Login = () => {
       );
     }
   };
- 
 
   return (
     <Box
@@ -152,6 +151,19 @@ const Login = () => {
             error={!!errors.password}
             helperText={errors.password?.message}
           />
+
+          {/* ✅ Forgot Password Link */}
+          <Typography
+            variant="body2"
+            sx={{ textAlign: "right", mt: 1 }}
+          >
+            <Link
+              to="/forgot-password"
+              style={{ textDecoration: "none", fontWeight: 500 }}
+            >
+              Forgot Password?
+            </Link>
+          </Typography>
 
           <Button
             type="submit"

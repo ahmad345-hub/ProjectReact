@@ -11,6 +11,7 @@ import Checkout from "./pages/checkout/checkout.jsx";
 import Profile from "./pages/Profile/Profile.jsx";
 import ProfileInfo from "./pages/Profile/ProfileInfo.jsx";
 import ProfileOrders from "./pages/Profile/ProfileOrders.jsx";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
