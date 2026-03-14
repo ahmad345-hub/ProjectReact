@@ -12,6 +12,8 @@ import Profile from "./pages/Profile/Profile.jsx";
 import ProfileInfo from "./pages/Profile/ProfileInfo.jsx";
 import ProfileOrders from "./pages/Profile/ProfileOrders.jsx";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword.jsx";
+import ResetPassword from "./pages/ResetPassword/ResetPassword.jsx";
+import VerifyCode from "./pages/VerifyCode/VerifyCode.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -66,6 +68,14 @@ const router = createBrowserRouter([
       {
         path:"forgot-password",
         element:<ForgotPassword />
+      },
+      {
+        path:"reset-password",
+        element:<ResetPassword />
+      },
+      {
+        path:"verify-code",
+        element:<VerifyCode />
       },
       {
         path:"checkout",

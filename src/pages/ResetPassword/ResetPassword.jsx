@@ -1,28 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, TextField, Typography, Alert, AppBar, Toolbar } from "@mui/material";
-import useSendCode from "../../hooks/useSendCode.jsx";
-import { Link, useNavigate } from "react-router-dom";
+import useResetPassword from "../../hooks/useResetPassword.jsx";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
-export default function ForgotPassword() {
+export default function ResetPassword() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
+  const [code, setCode] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
-  const sendCodeMutation = useSendCode();
-  const navigate = useNavigate();
+  const resetPasswordMutation = useResetPassword();
 
-  const handleSendCode = () => {
+  // تمرير الإيميل من VerifyCode
+  useEffect(() => {
+    if (location.state?.email) setEmail(location.state.email);
+  }, [location.state]);
+
+  const handleResetPassword = () => {
     setSuccessMsg("");
     setErrorMsg("");
 
-    sendCodeMutation.mutate(email, {
-      onSuccess: () => {
-        setSuccessMsg("Code sent! Redirecting to verification...");
-        // Redirect لصفحة VerifyCode وتمرير الإيميل
-        setTimeout(() => navigate("/verify-code", { state: { email } }), 1000);
-      },
-      onError: (err) => setErrorMsg(err.response?.data?.message || "Something went wrong"),
-    });
+    resetPasswordMutation.mutate(
+      { email, code, newPassword },
+      {
+        onSuccess: () => {
+          setSuccessMsg("Password reset successful! Redirecting to login...");
+          setTimeout(() => navigate("/login"), 2000);
+        },
+        onError: (err) => setErrorMsg(err.response?.data?.message || "Something went wrong"),
+      }
+    );
   };
 
   return (
@@ -43,31 +54,48 @@ export default function ForgotPassword() {
       {/* Main Content */}
       <Box sx={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center", px: 2, py: 6 }}>
         <Box sx={{ width: 400, p: 4, boxShadow: 3, borderRadius: 3, bgcolor: "#fff" }}>
-          <Typography variant="h5" fontWeight="bold" mb={2}>Forgot Password</Typography>
+          <Typography variant="h5" fontWeight="bold" mb={2}>Reset Password</Typography>
           <Typography variant="body2" color="text.secondary" mb={3}>
-            Enter your email and we'll send you a code to reset your password.
+            Enter the code you received and set a new password.
           </Typography>
 
           {errorMsg && <Alert severity="error" sx={{ mb: 2 }}>{errorMsg}</Alert>}
           {successMsg && <Alert severity="success" sx={{ mb: 2 }}>{successMsg}</Alert>}
 
+          {/* Email read-only */}
           <TextField
             label="Email"
             type="email"
             fullWidth
             margin="normal"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            InputProps={{ readOnly: true }}
+          />
+          <TextField
+            label="Code"
+            type="text"
+            fullWidth
+            margin="normal"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+          />
+          <TextField
+            label="New Password"
+            type="password"
+            fullWidth
+            margin="normal"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
           />
 
           <Button
             fullWidth
             variant="contained"
             sx={{ mt: 2, py: 1.3, backgroundColor: "#111", "&:hover": { backgroundColor: "#000" } }}
-            onClick={handleSendCode}
-            disabled={sendCodeMutation.isLoading}
+            onClick={handleResetPassword}
+            disabled={resetPasswordMutation.isLoading}
           >
-            {sendCodeMutation.isLoading ? "Sending..." : "Send Code"}
+            {resetPasswordMutation.isLoading ? "Resetting..." : "Reset Password"}
           </Button>
 
           <Typography variant="body2" sx={{ mt: 2, textAlign: "center" }}>
