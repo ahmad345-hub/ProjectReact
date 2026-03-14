@@ -20,8 +20,7 @@ const Login = () => {
 
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
-  const SetToken = useAuthStore((state) => state.SetToken);
-
+const setToken = useAuthStore((state) => state.setToken);
   const onSubmit = async (values) => {
     try {
       setErrorMsg("");
@@ -29,8 +28,8 @@ const Login = () => {
 
       const response = await axiosinstance.post("auth/Account/Login", values);
       if (response.status === 200) {
-        SetToken(response.data.accessToken);
-      }
+  setToken(response.data.accessToken);
+}
 
       if (response.data.success) {
         setSuccessMsg("Login successful 👁️ Redirecting...");
