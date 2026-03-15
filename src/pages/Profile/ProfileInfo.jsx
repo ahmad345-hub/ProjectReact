@@ -1,28 +1,19 @@
 import React, { useState } from "react";
 import useProfile from "../../hooks/useProfile";
-import {
-  Box,
-  Typography,
-  Grid,
-  Paper,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent
-} from "@mui/material";
+import { Box, Typography, Grid, Paper, Button, Dialog, DialogTitle, DialogContent } from "@mui/material";
 import EditProfile from "../../components/EditProfile/EditProfile.jsx";
+import ChangeEmailForm from "../../components/ChangeEmailForm/ChangeEmailForm.jsx";
 
 export default function ProfileInfo() {
   const { data, isLoading } = useProfile();
-  const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openEmail, setOpenEmail] = useState(false);
 
   if (isLoading) return <p>Loading...</p>;
 
   return (
     <Box>
-
       <Grid container spacing={3}>
-
         <Grid item xs={12} md={6}>
           <Paper sx={{ p: 2 }}>
             <Typography fontWeight="bold">Name</Typography>
@@ -50,26 +41,33 @@ export default function ProfileInfo() {
             <Typography>{data.city || "No city added"}</Typography>
           </Paper>
         </Grid>
-
       </Grid>
 
-      {/* Edit Button */}
-      <Box mt={3}>
-        <Button variant="contained" onClick={() => setOpen(true)}>
+      {/* Buttons */}
+      <Box mt={3} display="flex" gap={2}>
+        <Button variant="contained" onClick={() => setOpenEdit(true)}>
           Edit Profile
+        </Button>
+        <Button variant="outlined" onClick={() => setOpenEmail(true)}>
+          Change Email
         </Button>
       </Box>
 
-      {/* Dialog */}
-      <Dialog open={open} onClose={() => setOpen(false)} fullWidth>
+      {/* Edit Profile Dialog */}
+      <Dialog open={openEdit} onClose={() => setOpenEdit(false)} fullWidth>
         <DialogTitle>Edit Profile</DialogTitle>
-
         <DialogContent>
-          <EditProfile />
+          <EditProfile onClose={() => setOpenEdit(false)} />
         </DialogContent>
-
       </Dialog>
 
+      {/* Change Email Dialog */}
+      <Dialog open={openEmail} onClose={() => setOpenEmail(false)} fullWidth>
+        <DialogTitle>Change Email</DialogTitle>
+        <DialogContent>
+          <ChangeEmailForm onClose={() => setOpenEmail(false)} />
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 }
