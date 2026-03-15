@@ -1,15 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
-import axiosinstance from '../api/axiosinstance';
+import React from 'react';
+import Authaxiosinstance from '../api/Authaxiosinstance';
 
-export default function useProductsByCategory(categoryId) {
+export default function useProfile() {
   return useQuery({
-    queryKey: ['categoryProducts', categoryId],
+    queryKey: ['profile'],
     queryFn: async () => {
-      const response = await axiosinstance.get(`/Products/category/${categoryId}`);
-   
-      return Array.isArray(response.data) ? response.data : response.data?.data || [];
+      const response = await Authaxiosinstance.get('/profile');
+      return response.data;
     },
-    enabled: !!categoryId,       
-    staleTime: 1000 * 60 * 5,    
-  });
-}
+        staleTime: 1000 * 60 * 5
+
+    });
+}  
