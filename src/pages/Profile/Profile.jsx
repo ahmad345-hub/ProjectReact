@@ -1,37 +1,40 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
-import useProfile from "../../hooks/useProfile";
+import { Container, Typography, Tabs, Tab, Box } from "@mui/material";
+import { useLocation } from "react-router-dom";
+
 export default function Profile() {
-    const {data} = useProfile();
-    console.log(data);
+  const location = useLocation();
+
+  const currentTab = location.pathname.includes("ProfileOrders") ? 1 : 0;
+
   return (
-    <div className="min-h-screen flex flex-col items-center">
+    <Container maxWidth="md" sx={{ mt: 6 }}>
 
-      {/* Title */}
-      <h2 className="text-3xl font-bold mt-10 mb-6">My Profile</h2>
+      <Typography variant="h4" fontWeight="bold" textAlign="center" mb={4}>
+        My Profile
+      </Typography>
 
-      {/* Links */}
-      <div className="flex gap-8 mb-10 border-b pb-4">
-        <Link
-          to=""
-          className="text-lg font-medium hover:text-blue-600 transition"
-        >
-          Info
-        </Link>
+      <Tabs
+        value={currentTab}
+        centered
+        sx={{ mb: 4 }}
+      >
+        <Tab label="Info" component={Link} to="" />
+        <Tab label="Orders" component={Link} to="ProfileOrders" />
+      </Tabs>
 
-        <Link
-          to="ProfileOrders"
-          className="text-lg font-medium hover:text-blue-600 transition"
-        >
-          Orders
-        </Link>
-      </div>
-
-      {/* Content */}
-      <div className="w-full max-w-3xl bg-white shadow-md rounded-lg p-6">
+      <Box
+        sx={{
+          p: 3,
+          borderRadius: 2,
+          boxShadow: 2,
+          bgcolor: "background.paper",
+        }}
+      >
         <Outlet />
-      </div>
+      </Box>
 
-    </div>
+    </Container>
   );
 }

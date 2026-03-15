@@ -1,30 +1,49 @@
-import React from 'react';
-import useProfile from '../../hooks/useProfile';
+import React from "react";
+import useProfile from "../../hooks/useProfile";
+import {
+  Box,
+  Typography,
+  Paper,
+  Stack,
+  CircularProgress,
+} from "@mui/material";
+
 export default function ProfileOrders() {
   const { data, isLoading } = useProfile();
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <CircularProgress />;
 
   return (
-    <div className="space-y-4">
+    <Stack spacing={2}>
 
       {data.orders.map((order) => (
-        <div
+        <Paper
           key={order.id}
-          className="border p-4 rounded flex justify-between"
+          sx={{
+            p: 2,
+            display: "flex",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+          }}
         >
-          <div>
-            <p className="font-semibold">Order #{order.id}</p>
-            <p>Status: {order.status}</p>
-          </div>
+          <Box>
+            <Typography fontWeight="bold">
+              Order #{order.id}
+            </Typography>
+            <Typography>Status: {order.status}</Typography>
+          </Box>
 
-          <div>
-            <p>Amount: {order.amountPaid} ₪</p>
-            <p>Payment: {order.paymentStatus || "pending"}</p>
-          </div>
-        </div>
+          <Box textAlign="right">
+            <Typography>
+              Amount: {order.amountPaid} ₪
+            </Typography>
+            <Typography>
+              Payment: {order.paymentStatus || "pending"}
+            </Typography>
+          </Box>
+        </Paper>
       ))}
 
-    </div>
+    </Stack>
   );
 }

@@ -1,33 +1,75 @@
-import React from 'react';
-import useProfile from '../../hooks/useProfile';
+import React, { useState } from "react";
+import useProfile from "../../hooks/useProfile";
+import {
+  Box,
+  Typography,
+  Grid,
+  Paper,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent
+} from "@mui/material";
+import EditProfile from "../../components/EditProfile/EditProfile.jsx";
+
 export default function ProfileInfo() {
   const { data, isLoading } = useProfile();
+  const [open, setOpen] = useState(false);
 
   if (isLoading) return <p>Loading...</p>;
 
   return (
-    <div className="space-y-4">
+    <Box>
 
-      <div className="border p-4 rounded">
-        <p className="font-semibold">Name</p>
-        <p>{data.fullName}</p>
-      </div>
+      <Grid container spacing={3}>
 
-      <div className="border p-4 rounded">
-        <p className="font-semibold">Email</p>
-        <p>{data.email}</p>
-      </div>
+        <Grid item xs={12} md={6}>
+          <Paper sx={{ p: 2 }}>
+            <Typography fontWeight="bold">Name</Typography>
+            <Typography>{data.fullName}</Typography>
+          </Paper>
+        </Grid>
 
-      <div className="border p-4 rounded">
-        <p className="font-semibold">Phone</p>
-        <p>{data.phoneNumber}</p>
-      </div>
+        <Grid item xs={12} md={6}>
+          <Paper sx={{ p: 2 }}>
+            <Typography fontWeight="bold">Email</Typography>
+            <Typography>{data.email}</Typography>
+          </Paper>
+        </Grid>
 
-      <div className="border p-4 rounded">
-        <p className="font-semibold">City</p>
-        <p>{data.city || "No city added"}</p>
-      </div>
+        <Grid item xs={12} md={6}>
+          <Paper sx={{ p: 2 }}>
+            <Typography fontWeight="bold">Phone</Typography>
+            <Typography>{data.phoneNumber}</Typography>
+          </Paper>
+        </Grid>
 
-    </div>
+        <Grid item xs={12} md={6}>
+          <Paper sx={{ p: 2 }}>
+            <Typography fontWeight="bold">City</Typography>
+            <Typography>{data.city || "No city added"}</Typography>
+          </Paper>
+        </Grid>
+
+      </Grid>
+
+      {/* Edit Button */}
+      <Box mt={3}>
+        <Button variant="contained" onClick={() => setOpen(true)}>
+          Edit Profile
+        </Button>
+      </Box>
+
+      {/* Dialog */}
+      <Dialog open={open} onClose={() => setOpen(false)} fullWidth>
+        <DialogTitle>Edit Profile</DialogTitle>
+
+        <DialogContent>
+          <EditProfile />
+        </DialogContent>
+
+      </Dialog>
+
+    </Box>
   );
 }
