@@ -2,63 +2,128 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import useProduct from "../../hooks/useproduct";
 import useAddtoCart from "../../hooks/useAddtoCart";
+import { Box, Typography, Button, CircularProgress, useTheme } from "@mui/material";
 
 export default function ProductDetails() {
   const { id } = useParams();
+  const theme = useTheme();
 
   const { data, isLoading, isError, error } = useProduct(id);
   const { mutate, isPending } = useAddtoCart();
 
   if (isLoading)
-    return <h2 className="text-center mt-10 text-xl text-white">Loading...</h2>;
+    return (
+      <Typography
+        variant="h5"
+        align="center"
+        sx={{ mt: 10, color: theme.palette.text.primary }}
+      >
+        Loading...
+      </Typography>
+    );
 
   if (isError)
-    return <h2 className="text-center mt-10 text-red-500">{error.message}</h2>;
+    return (
+      <Typography
+        variant="h5"
+        align="center"
+        sx={{ mt: 10, color: theme.palette.error.main }}
+      >
+        {error.message}
+      </Typography>
+    );
 
   const product = data.response;
 
   return (
-    <div className="container mx-auto px-6 pt-28 pb-10 text-white">
-
-      <div className="flex flex-col md:flex-row gap-10">
-
+    <Box
+      sx={{
+        px: { xs: 3, md: 6 },
+        py: { xs: 6, md: 10 },
+        backgroundColor: theme.palette.background.default,
+        minHeight: "calc(100vh - 64px)", // أسفل Navbar
+        color: theme.palette.text.primary,
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          gap: 4,
+          maxWidth: 1200,
+          mx: "auto",
+        }}
+      >
         {/* Image */}
-        <div className="md:w-1/2 bg-gray-800 flex items-center justify-center p-4 rounded-2xl shadow-lg">
-          <img
+        <Box
+          sx={{
+            flex: 1,
+            backgroundColor: theme.palette.mode === "dark" ? "#111" : "#f5f5f5",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            p: 2,
+            borderRadius: 3,
+            boxShadow:
+              theme.palette.mode === "dark"
+                ? "0 4px 12px rgba(255,255,255,0.1)"
+                : "0 4px 12px rgba(0,0,0,0.1)",
+          }}
+        >
+          <Box
+            component="img"
             src={product.image}
             alt={product.name || "Product"}
-            className="max-h-[400px] max-w-full object-contain"
+            sx={{
+              maxHeight: 400,
+              maxWidth: "100%",
+              objectFit: "contain",
+            }}
             onError={(e) =>
               (e.target.src =
                 "https://via.placeholder.com/400x400?text=No+Image")
             }
           />
-        </div>
+        </Box>
 
         {/* Info */}
-        <div className="md:w-1/2 flex flex-col justify-start">
-          <h1 className="text-3xl font-bold mb-4">
+        <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
+          <Typography variant="h4" fontWeight="bold" mb={2}>
             {product.name || "No Name"}
-          </h1>
+          </Typography>
 
-          <p className="mb-2">⭐ {product.rate}</p>
+          <Typography variant="body1" mb={1}>
+            ⭐ {product.rate}
+          </Typography>
 
-          <p className="text-green-400 font-bold text-2xl mb-6">
+          <Typography
+            variant="h5"
+            fontWeight="bold"
+            mb={3}
+            sx={{ color: theme.palette.success.main }}
+          >
             ${product.price}
-          </p>
+          </Typography>
 
-          <p className="mb-6">{product.description}</p>
+          <Typography variant="body1" mb={4}>
+            {product.description}
+          </Typography>
 
-          <button
+          <Button
+            variant="contained"
+            color="primary"
             onClick={() => mutate({ ProductId: product.id, Count: 1 })}
             disabled={isPending}
-            className="w-full md:w-1/2 bg-white text-black py-3 rounded-xl hover:bg-gray-200 transition"
+            sx={{
+              width: { xs: "100%", md: "50%" },
+              py: 1.5,
+              borderRadius: 2,
+            }}
           >
-            {isPending ? "Adding..." : "Add to Cart"}
-          </button>
-        </div>
-
-      </div>
-    </div>
+            {isPending ? <CircularProgress size={22} sx={{ color: "#fff" }} /> : "Add to Cart"}
+          </Button>
+        </Box>
+      </Box>
+    </Box>
   );
 }
