@@ -45,9 +45,7 @@ const Navbar = () => {
   const { t } = useTranslation();
 
   const { data } = usecart();
-
-  const cartCount =
-    data?.items?.reduce((total, item) => total + item.count, 0) || 0;
+  const cartCount = data?.items?.reduce((total, item) => total + item.count, 0) || 0;
 
   const navLinks = [
     { title: t("Home"), path: "/" },
@@ -79,9 +77,7 @@ const Navbar = () => {
   const toggleTheme = useThemeStore((state) => state.toggleTheme);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -92,183 +88,107 @@ const Navbar = () => {
         position="fixed"
         elevation={scrolled ? 4 : 0}
         sx={{
-          backgroundColor: scrolled
-            ? "background.paper"
-            : "background.default",
+          backgroundColor: scrolled ? "background.paper" : "background.default",
           color: "text.primary",
           transition: "all 0.3s ease",
         }}
       >
-        <Toolbar
-          sx={{
-            justifyContent: "space-between",
-            minHeight: "70px",
-            flexWrap: "wrap",
-          }}
-        >
+        <Toolbar sx={{ justifyContent: "space-between", minHeight: "70px", flexWrap: "wrap" }}>
           {/* Logo */}
           <Typography
             component={Link}
             to="/"
-            sx={{
-              textDecoration: "none",
-              color: "text.primary",
-              fontWeight: "bold",
-              fontSize: "1.4rem",
-            }}
+            sx={{ textDecoration: "none", color: "text.primary", fontWeight: "bold", fontSize: "1.4rem" }}
           >
             3legant.
           </Typography>
 
           {/* Desktop Links */}
           {!isMobile && (
-            <Box
-              sx={{
-                display: "flex",
-                gap: 2,
-                flexGrow: 1,
-                justifyContent: "center",
-              }}
-            >
+            <Box sx={{ display: "flex", gap: 2, flexGrow: 1, justifyContent: "center" }}>
               {navLinks.map((link) => (
-                <Button
-                  key={link.title}
-                  component={Link}
-                  to={link.path}
-                  sx={{
-                    color: "text.primary",
-                    textTransform: "none",
-                    ...hoverStyle,
-                  }}
-                >
+                <Button key={link.title} component={Link} to={link.path} sx={{ color: "text.primary", textTransform: "none", ...hoverStyle }}>
                   {link.title}
                 </Button>
               ))}
             </Box>
           )}
 
-          {/* Right Section */}
-          <Box
-            sx={{
-              display: "flex",
-              gap: 1,
-              alignItems: "center",
-              flexWrap: "wrap",
-            }}
-          >
-            <Link
-              to="/Profile"
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <Box sx={{ px: 1, ...hoverStyle }}>Profile</Box>
-            </Link>
+          {/* Desktop Right Section */}
+          {!isMobile && (
+            <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+              {token && (
+                <>
+                  {/* 1. Logout */}
+                  <Link to="/Profile" style={{ textDecoration: "none", color: "inherit" }}>
+                    <Box sx={{ px: 1, ...hoverStyle }}>Profile</Box>
+                  </Link>
 
-            {/* Language */}
-            <Select
-              value={i18n.language}
-              onChange={(e) => changeLanguage(e.target.value)}
-              size="small"
-              sx={{
-                color: "text.primary",
-                minWidth: 100,
-                ".MuiOutlinedInput-notchedOutline": {
-                  borderColor: "divider",
-                },
-                "& .MuiSvgIcon-root": { color: "text.primary" },
-                backgroundColor: "action.hover",
-                borderRadius: "8px",
-              }}
-            >
-              <MenuItem value="en">English</MenuItem>
-              <MenuItem value="ar">العربية</MenuItem>
-            </Select>
+                  {/* 2. Cart */}
+                  <IconButton component={Link} to="/cart" sx={{ color: "text.primary", ...hoverStyle }}>
+                    <Badge badgeContent={cartCount} color="error">
+                      <ShoppingCartIcon />
+                    </Badge>
+                  </IconButton>
 
-            {/* Theme */}
-            <IconButton
-              onClick={toggleTheme}
-              sx={{
-                color: "text.primary",
-                backgroundColor: "action.hover",
-                "&:hover": { backgroundColor: "action.selected" },
-                borderRadius: "8px",
-              }}
-            >
-              {mode === "dark" ? <LightModeIcon /> : <DarkModeIcon />}
-            </IconButton>
+                  {/* 3. Theme */}
+                  <IconButton
+                    onClick={toggleTheme}
+                    sx={{ color: "text.primary", backgroundColor: "action.hover", "&:hover": { backgroundColor: "action.selected" }, borderRadius: "8px" }}
+                  >
+                    {mode === "dark" ? <LightModeIcon /> : <DarkModeIcon />}
+                  </IconButton>
 
-            {/* Cart */}
-            {token ? (
-              <>
-                <IconButton
-                  component={Link}
-                  to="/cart"
-                  sx={{
-                    color: "text.primary",
-                    ...hoverStyle,
-                  }}
-                >
-                  <Badge badgeContent={cartCount} color="error">
-                    <ShoppingCartIcon />
-                  </Badge>
-                </IconButton>
+                  {/* 4. Language */}
+                  <Select
+                    value={i18n.language}
+                    onChange={(e) => changeLanguage(e.target.value)}
+                    size="small"
+                    sx={{
+                      color: "text.primary",
+                      minWidth: 100,
+                      ".MuiOutlinedInput-notchedOutline": { borderColor: "divider" },
+                      "& .MuiSvgIcon-root": { color: "text.primary" },
+                      backgroundColor: "action.hover",
+                      borderRadius: "8px",
+                    }}
+                  >
+                    <MenuItem value="en">English</MenuItem>
+                    <MenuItem value="ar">العربية</MenuItem>
+                  </Select>
+                       
 
-                <Button
-                  onClick={handleLogout}
-                  sx={{ color: "text.primary", ...hoverStyle }}
-                >
+                       <Button onClick={handleLogout} sx={{ color: "text.primary", ...hoverStyle }}>
+                    {t("Logout")}
+                  </Button>
+                  {/* 5. Profile */}
+                  
+                </>
+              )}
+            </Box>
+          )}
+
+          {/* Mobile Section */}
+          {isMobile && (
+            <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+              {token && (
+                <Button onClick={handleLogout} sx={{ color: "text.primary" }}>
                   {t("Logout")}
                 </Button>
-              </>
-            ) : (
-              <>
-                <Button
-                  component={Link}
-                  to="/login"
-                  sx={{ color: "text.primary", ...hoverStyle }}
-                >
-                  {t("Login")}
-                </Button>
-
-                <Button
-                  component={Link}
-                  to="/register"
-                  sx={{ color: "text.primary", ...hoverStyle }}
-                >
-                  {t("Register")}
-                </Button>
-              </>
-            )}
-
-            {/* Mobile */}
-            {isMobile && (
+              )}
               <IconButton
                 onClick={() => setOpenDrawer(true)}
-                sx={{
-                  color: "text.primary",
-                  backgroundColor: "action.hover",
-                  "&:hover": { backgroundColor: "action.selected" },
-                  borderRadius: "8px",
-                }}
+                sx={{ color: "text.primary", backgroundColor: "action.hover", "&:hover": { backgroundColor: "action.selected" }, borderRadius: "8px" }}
               >
                 <MenuIcon />
               </IconButton>
-            )}
-          </Box>
+            </Box>
+          )}
         </Toolbar>
       </AppBar>
 
       {/* Drawer */}
-      <Drawer
-        anchor="right"
-        open={openDrawer}
-        onClose={() => setOpenDrawer(false)}
-        PaperProps={{
-          sx: {
-            backgroundColor: "background.paper",
-            color: "text.primary",
-          },
-        }}
-      >
+      <Drawer anchor="right" open={openDrawer} onClose={() => setOpenDrawer(false)} PaperProps={{ sx: { backgroundColor: "background.paper", color: "text.primary" } }}>
         <Box sx={{ width: 250, mt: 2 }}>
           <List>
             {navLinks.map((link) => (
@@ -277,11 +197,7 @@ const Navbar = () => {
                 component={Link}
                 to={link.path}
                 onClick={() => setOpenDrawer(false)}
-                sx={{
-                  mx: 1,
-                  borderRadius: "12px",
-                  "&:hover": { backgroundColor: "action.hover" },
-                }}
+                sx={{ mx: 1, borderRadius: "12px", "&:hover": { backgroundColor: "action.hover" } }}
               >
                 <ListItemText primary={link.title} />
               </ListItem>
@@ -289,61 +205,28 @@ const Navbar = () => {
 
             <Divider sx={{ my: 1 }} />
 
-            {token ? (
+            {token && (
               <>
-                <ListItem
-                  component={Link}
-                  to="/cart"
-                  onClick={() => setOpenDrawer(false)}
-                  sx={{
-                    mx: 1,
-                    borderRadius: "12px",
-                    "&:hover": { backgroundColor: "action.hover" },
-                  }}
-                >
+                {/* Same order inside drawer */}
+                <ListItem component={Link} to="/cart" onClick={() => setOpenDrawer(false)}>
                   <ListItemText primary={t("Cart")} />
                 </ListItem>
 
-                <ListItem
-                  onClick={() => {
-                    handleLogout();
-                    setOpenDrawer(false);
-                  }}
-                  sx={{
-                    mx: 1,
-                    borderRadius: "12px",
-                    "&:hover": { backgroundColor: "action.hover" },
-                  }}
-                >
-                  <ListItemText primary={t("Logout")} />
-                </ListItem>
-              </>
-            ) : (
-              <>
-                <ListItem
-                  component={Link}
-                  to="/login"
-                  onClick={() => setOpenDrawer(false)}
-                  sx={{
-                    mx: 1,
-                    borderRadius: "12px",
-                    "&:hover": { backgroundColor: "action.hover" },
-                  }}
-                >
-                  <ListItemText primary={t("Login")} />
+                <ListItem>
+                  <IconButton onClick={toggleTheme} sx={{ width: "100%" }}>
+                    {mode === "dark" ? <LightModeIcon /> : <DarkModeIcon />}
+                  </IconButton>
                 </ListItem>
 
-                <ListItem
-                  component={Link}
-                  to="/register"
-                  onClick={() => setOpenDrawer(false)}
-                  sx={{
-                    mx: 1,
-                    borderRadius: "12px",
-                    "&:hover": { backgroundColor: "action.hover" },
-                  }}
-                >
-                  <ListItemText primary={t("Register")} />
+                <ListItem>
+                  <Select value={i18n.language} onChange={(e) => changeLanguage(e.target.value)} fullWidth size="small">
+                    <MenuItem value="en">English</MenuItem>
+                    <MenuItem value="ar">العربية</MenuItem>
+                  </Select>
+                </ListItem>
+
+                <ListItem component={Link} to="/Profile" onClick={() => setOpenDrawer(false)}>
+                  <ListItemText primary="Profile" />
                 </ListItem>
               </>
             )}
