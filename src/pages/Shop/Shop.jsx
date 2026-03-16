@@ -14,14 +14,13 @@ import { Link } from "react-router-dom";
 import useProductsOperation from "../../hooks/useProductsOperation.jsx";
 import useAddReview from "../../hooks/useAddReview.jsx";
 
-// مكون فرعي لكل منتج
 function ProductCard({ product }) {
-  const [reviews, setReviews] = useState([]); // state محلي للريفيوز
+  const [reviews, setReviews] = useState([]);
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
-  const addReview = useAddReview(product.id); // تمرير id للهوك
 
-  // ✅ دالة handleSubmit صحيحة الآن
+  const addReview = useAddReview(product.id);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!comment) return;
@@ -30,7 +29,6 @@ function ProductCard({ product }) {
       { rating, comment },
       {
         onSuccess: () => {
-          // أضف المراجعة مباشرة للـ state بعد POST ناجح
           setReviews((prev) => [
             ...prev,
             { id: Date.now(), rating, comment },
@@ -57,7 +55,7 @@ function ProductCard({ product }) {
         sx={{
           width: "100%",
           height: 130,
-          bgcolor: "#e0e0e0",
+          bgcolor: "action.hover",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -74,16 +72,19 @@ function ProductCard({ product }) {
         <Typography variant="h6" noWrap sx={{ fontWeight: 600 }}>
           {product.name || "No Name"}
         </Typography>
+
         <Typography color="text.secondary" sx={{ mt: 0.5 }}>
           ⭐ {product.rate || "N/A"}
         </Typography>
-        <Typography color="#2e7d32" fontWeight="bold" sx={{ mt: 1 }}>
+
+        <Typography color="success.main" fontWeight="bold" sx={{ mt: 1 }}>
           ${product.price || "0"}
         </Typography>
 
-        {/* عرض الريفيوز */}
+        {/* Reviews */}
         <Box sx={{ mt: 2 }}>
           <Typography variant="subtitle2">Reviews:</Typography>
+
           {reviews.length === 0 ? (
             <Typography variant="body2" color="text.secondary">
               No reviews yet
@@ -99,7 +100,7 @@ function ProductCard({ product }) {
           )}
         </Box>
 
-        {/* إضافة مراجعة جديدة */}
+        {/* Add Review */}
         <Box sx={{ mt: 1 }}>
           <form onSubmit={handleSubmit}>
             <Box sx={{ display: "flex", gap: 1, mb: 1 }}>
@@ -112,6 +113,7 @@ function ProductCard({ product }) {
                 size="small"
                 sx={{ width: 80 }}
               />
+
               <TextField
                 type="text"
                 label="Comment"
@@ -121,6 +123,7 @@ function ProductCard({ product }) {
                 fullWidth
               />
             </Box>
+
             <Button
               type="submit"
               variant="contained"
@@ -130,13 +133,15 @@ function ProductCard({ product }) {
               {addReview.isLoading ? "Submitting..." : "Add Review"}
             </Button>
           </form>
+
           {addReview.isError && (
             <Typography color="error" variant="body2">
               Error adding review
             </Typography>
           )}
+
           {addReview.isSuccess && (
-            <Typography color="green" variant="body2">
+            <Typography color="success.main" variant="body2">
               Review added!
             </Typography>
           )}
@@ -150,8 +155,6 @@ function ProductCard({ product }) {
           variant="contained"
           fullWidth
           sx={{
-            backgroundColor: "#111",
-            "&:hover": { backgroundColor: "#000" },
             borderRadius: 2,
           }}
         >
@@ -162,9 +165,13 @@ function ProductCard({ product }) {
   );
 }
 
-// الصفحة الرئيسية Shop
 export default function Shop() {
-  const { data: products = [], isLoading, isError, error } = useProductsOperation({
+  const {
+    data: products = [],
+    isLoading,
+    isError,
+    error,
+  } = useProductsOperation({
     page: 1,
     limit: 3,
     sortBy: "price",
@@ -177,16 +184,23 @@ export default function Shop() {
 
   const displayedProducts = useMemo(() => {
     let result = [...products];
+
     if (searchTerm) {
       result = result.filter((p) =>
         p.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
+
     result.sort((a, b) => {
-      if (sortBy === "price") return ascending ? a.price - b.price : b.price - a.price;
-      if (sortBy === "rate") return ascending ? a.rate - b.rate : b.rate - a.rate;
+      if (sortBy === "price")
+        return ascending ? a.price - b.price : b.price - a.price;
+
+      if (sortBy === "rate")
+        return ascending ? a.rate - b.rate : b.rate - a.rate;
+
       return 0;
     });
+
     return result;
   }, [products, searchTerm, sortBy, ascending]);
 
@@ -196,6 +210,7 @@ export default function Shop() {
         Loading products...
       </Typography>
     );
+
   if (isError)
     return (
       <Typography variant="h6" textAlign="center" mt={10} color="error">
@@ -204,26 +219,48 @@ export default function Shop() {
     );
 
   return (
-    <Box sx={{ px: { xs: 2, md: 6 }, py: 6, bgcolor: "#f5f5f5", minHeight: "100vh" }}>
-      <Typography variant="h3" mb={4} textAlign="center" sx={{ fontWeight: 700, color: "#222" }}>
+    <Box
+      sx={{
+        px: { xs: 2, md: 6 },
+        pt: 12,
+        pb: 6,
+        bgcolor: "background.default",
+        color: "text.primary",
+        minHeight: "100vh",
+      }}
+    >
+      <Typography
+        variant="h3"
+        mb={4}
+        textAlign="center"
+        sx={{ fontWeight: 700 }}
+      >
         Our Products
       </Typography>
 
-      {/* البحث */}
+      {/* Search */}
       <TextField
         label="Search products..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         fullWidth
-        sx={{ mb: 4, bgcolor: "#fff", borderRadius: 2 }}
+        sx={{
+          mb: 4,
+          bgcolor: "background.paper",
+          borderRadius: 2,
+        }}
       />
 
-      {/* الترتيب */}
+      {/* Sort */}
       <Box sx={{ display: "flex", gap: 2, mb: 4, flexWrap: "wrap" }}>
         <Select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
-          sx={{ minWidth: 120, bgcolor: "#fff", borderRadius: 2 }}
+          sx={{
+            minWidth: 120,
+            bgcolor: "background.paper",
+            borderRadius: 2,
+          }}
         >
           <MenuItem value="price">Price</MenuItem>
           <MenuItem value="rate">Rate</MenuItem>
@@ -232,17 +269,26 @@ export default function Shop() {
         <Select
           value={ascending}
           onChange={(e) => setAscending(e.target.value === "true")}
-          sx={{ minWidth: 150, bgcolor: "#fff", borderRadius: 2 }}
+          sx={{
+            minWidth: 150,
+            bgcolor: "background.paper",
+            borderRadius: 2,
+          }}
         >
           <MenuItem value="true">Ascending</MenuItem>
           <MenuItem value="false">Descending</MenuItem>
         </Select>
       </Box>
 
-      {/* قائمة المنتجات */}
+      {/* Products */}
       <Grid container spacing={3}>
         {displayedProducts.length === 0 && (
-          <Typography variant="h6" textAlign="center" mt={5} color="text.secondary">
+          <Typography
+            variant="h6"
+            textAlign="center"
+            mt={5}
+            color="text.secondary"
+          >
             No products found.
           </Typography>
         )}
