@@ -241,7 +241,7 @@ export default function Shop() {
       {/* Search */}
       <TextField
         label="Search product..."
-        fullWidth
+        sx={{ width: "50%", mb: 4 }}
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         sx={{ mb: 4 }}
