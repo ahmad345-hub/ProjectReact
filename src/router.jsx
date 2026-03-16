@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import Mainlayout from "./Layout/Mainlayout";
 import Home from "./pages/Home/Home.jsx";
 import Cart from "./pages/Cart/Cart.jsx";
@@ -16,17 +16,22 @@ import ResetPassword from "./pages/ResetPassword/ResetPassword.jsx";
 import VerifyCode from "./pages/VerifyCode/VerifyCode.jsx";
 import CategoryProducts from "./pages/CategoryProducts/CategoryProducts.jsx";
 import Shop from "./pages/Shop/Shop.jsx";
-import { Navigate } from "react-router-dom";
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Mainlayout />,
     children: [
+      // 🔹 الصفحة الرئيسية محمية عبر ProtectedRouter
       {
-        // بدل Home مباشرة، نرسل أي دخول للـ Login
         index: true,
-        element: <Navigate to="/login" replace />
+        element: (
+          <ProtectedRouter>
+            <Home />
+          </ProtectedRouter>
+        ),
       },
+
       {
         path: "cart",
         element: (
@@ -35,42 +40,52 @@ const router = createBrowserRouter([
           </ProtectedRouter>
         ),
       },
+
       {
         path: "login",
-        element: <Login />
+        element: <Login />,
       },
+
       {
         path: "register",
-        element: <Register />
+        element: <Register />,
       },
+
       {
         path: "forgot-password",
-        element: <ForgotPassword />
+        element: <ForgotPassword />,
       },
+
       {
         path: "reset-password",
-        element: <ResetPassword />
+        element: <ResetPassword />,
       },
+
       {
         path: "verify-code",
-        element: <VerifyCode />
+        element: <VerifyCode />,
       },
+
       {
         path: "checkout",
-        element: <Checkout />
+        element: <Checkout />,
       },
+
       {
         path: "/product/:id",
-        element: <ProductDetails />
+        element: <ProductDetails />,
       },
+
       {
         path: "shop",
-        element: <Shop />
+        element: <Shop />,
       },
+
       {
         path: "CatagoriesExtra",
-        element: <CatagoriesExtra />
+        element: <CatagoriesExtra />,
       },
+
       {
         path: "Profile",
         element: (
@@ -81,21 +96,21 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <ProfileInfo />
+            element: <ProfileInfo />,
           },
           {
             path: "ProfileOrders",
-            element: <ProfileOrders />
-          }
-        ]
+            element: <ProfileOrders />,
+          },
+        ],
       },
+
       {
         path: "/category/:categoryId",
-        element: <CategoryProducts />
+        element: <CategoryProducts />,
       },
-    ]
-  }
+    ],
+  },
 ]);
 
 export default router;
-
