@@ -16,6 +16,7 @@ import ResetPassword from "./pages/ResetPassword/ResetPassword.jsx";
 import VerifyCode from "./pages/VerifyCode/VerifyCode.jsx";
 import CategoryProducts from "./pages/CategoryProducts/CategoryProducts.jsx";
 import Shop from "./pages/Shop/Shop.jsx";
+import { Navigate } from "react-router-dom";
 const router = createBrowserRouter([
   {
     path: "/",
