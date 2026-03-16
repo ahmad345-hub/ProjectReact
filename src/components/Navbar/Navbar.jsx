@@ -29,7 +29,6 @@ import useAuthStore from "../../store/useAuthStore.js";
 import usecart from "../../hooks/usecart";
 import { useTranslation } from "react-i18next";
 import i18n from "../../i18next.jsx";
-
 import useThemeStore from "../../store/useThemeStore";
 
 const Navbar = () => {
@@ -76,11 +75,9 @@ const Navbar = () => {
     document.dir = lng === "ar" ? "rtl" : "ltr";
   };
 
-  // Theme toggle
   const mode = useThemeStore((state) => state.theme);
   const toggleTheme = useThemeStore((state) => state.toggleTheme);
 
-  // Scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -95,9 +92,11 @@ const Navbar = () => {
         position="fixed"
         elevation={scrolled ? 4 : 0}
         sx={{
-          backgroundColor: scrolled ? "background.paper" : "transparent",
+          backgroundColor: scrolled
+            ? "background.paper"
+            : "background.default",
           color: "text.primary",
-          transition: "background-color 0.3s ease, box-shadow 0.3s ease",
+          transition: "all 0.3s ease",
         }}
       >
         <Toolbar
@@ -157,7 +156,6 @@ const Navbar = () => {
               flexWrap: "wrap",
             }}
           >
-            {/* Profile */}
             <Link
               to="/Profile"
               style={{ textDecoration: "none", color: "inherit" }}
@@ -165,7 +163,7 @@ const Navbar = () => {
               <Box sx={{ px: 1, ...hoverStyle }}>Profile</Box>
             </Link>
 
-            {/* Language Selector */}
+            {/* Language */}
             <Select
               value={i18n.language}
               onChange={(e) => changeLanguage(e.target.value)}
@@ -177,9 +175,6 @@ const Navbar = () => {
                   borderColor: "divider",
                 },
                 "& .MuiSvgIcon-root": { color: "text.primary" },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "text.primary",
-                },
                 backgroundColor: "action.hover",
                 borderRadius: "8px",
               }}
@@ -188,7 +183,7 @@ const Navbar = () => {
               <MenuItem value="ar">العربية</MenuItem>
             </Select>
 
-            {/* Theme Toggle */}
+            {/* Theme */}
             <IconButton
               onClick={toggleTheme}
               sx={{
@@ -201,7 +196,7 @@ const Navbar = () => {
               {mode === "dark" ? <LightModeIcon /> : <DarkModeIcon />}
             </IconButton>
 
-            {/* Cart / Auth Buttons */}
+            {/* Cart */}
             {token ? (
               <>
                 <IconButton
@@ -244,7 +239,7 @@ const Navbar = () => {
               </>
             )}
 
-            {/* Mobile menu icon */}
+            {/* Mobile */}
             {isMobile && (
               <IconButton
                 onClick={() => setOpenDrawer(true)}
@@ -262,7 +257,7 @@ const Navbar = () => {
         </Toolbar>
       </AppBar>
 
-      {/* Drawer for mobile */}
+      {/* Drawer */}
       <Drawer
         anchor="right"
         open={openDrawer}

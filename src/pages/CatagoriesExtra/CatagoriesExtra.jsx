@@ -31,48 +31,54 @@ export default function Categories() {
   const { data, isLoading, isError } = usecatagories(10);
 
   if (isLoading)
-  return (
-    <Box
-      sx={{
-        minHeight: "40vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 2,
-      }}
-    >
-      <CircularProgress sx={{ color: "#000" }} />
-      <Typography variant="h6" fontWeight={600}>
-        Loading Categories...
-      </Typography>
-    </Box>
-  );
+    return (
+      <Box
+        sx={{
+          minHeight: "40vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 2,
+        }}
+      >
+        <CircularProgress color="inherit" />
 
-if (isError)
-  return (
-    <Box
-      sx={{
-        minHeight: "40vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 2,
-      }}
-    >
-      <Typography variant="h6" fontWeight={700} color="error">
-       Server went wrong
-      </Typography>
-      
-    </Box>
-  );
+        <Typography variant="h6" fontWeight={600} color="text.primary">
+          Loading Categories...
+        </Typography>
+      </Box>
+    );
+
+  if (isError)
+    return (
+      <Box
+        sx={{
+          minHeight: "40vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 2,
+        }}
+      >
+        <Typography variant="h6" fontWeight={700} color="error">
+          Server went wrong
+        </Typography>
+      </Box>
+    );
 
   const categoriesArray = data?.response.data || [];
-  
 
- return (
-  
-    <Catagory categoriesArray={categoriesArray} />
-  
-)};
+  return (
+    <Box
+      sx={{
+        mt: 18,
+      
+        bgcolor: "background.default",
+      }}
+    >
+      <Catagory categoriesArray={categoriesArray} />
+    </Box>
+  );
+}
