@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import Mainlayout from "./Layout/Mainlayout";
 import Home from "./pages/Home/Home.jsx";
 import Cart from "./pages/Cart/Cart.jsx";
@@ -16,101 +16,88 @@ import ResetPassword from "./pages/ResetPassword/ResetPassword.jsx";
 import VerifyCode from "./pages/VerifyCode/VerifyCode.jsx";
 import CategoryProducts from "./pages/CategoryProducts/CategoryProducts.jsx";
 import Shop from "./pages/Shop/Shop.jsx";
-
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Mainlayout />,
     children: [
-      // 🔹 الصفحة الرئيسية محمية عبر ProtectedRouter
       {
-        index: true,
-        element: (
-          <ProtectedRouter>
-            <Home />
-          </ProtectedRouter>
-        ),
+        index:true,
+        element: <Home />
       },
-
       {
         path: "cart",
-        element: (
-          <ProtectedRouter>
-            <Cart />
-          </ProtectedRouter>
-        ),
+        element:
+        <ProtectedRouter>
+          <Cart />
+        </ProtectedRouter>
+       
+      },
+      {
+        path:"login",
+        element:<Login />
+      },
+      {
+  path: "Profile",
+  element: (
+    <ProtectedRouter>
+      <Profile />
+    </ProtectedRouter>
+  ),
+  children: [
+    {
+      index: true,
+      element: <ProfileInfo />
+    },
+    {
+      path: "ProfileOrders",
+      element: <ProfileOrders />
+    }
+  ]
+},
+      {
+        path:"CatagoriesExtra",
+        element:<CatagoriesExtra />
+      },
+       {
+        path:"register",
+        element:<Register />
+      },
+      {
+        path:"register",
+        element:<Register />
+      },
+      {
+        path:"forgot-password",
+        element:<ForgotPassword />
+      },
+      {
+        path:"reset-password",
+        element:<ResetPassword />
+      },
+      {
+        path:"verify-code",
+        element:<VerifyCode />
+      },
+      {
+        path:"checkout",
+        element:<Checkout />
+      },
+      {
+         path:"/product/:id",
+         element:<ProductDetails />
+      },
+      {
+         path:"shop",
+         element:<Shop />
       },
 
       {
-        path: "login",
-        element: <Login />,
-      },
-
-      {
-        path: "register",
-        element: <Register />,
-      },
-
-      {
-        path: "forgot-password",
-        element: <ForgotPassword />,
-      },
-
-      {
-        path: "reset-password",
-        element: <ResetPassword />,
-      },
-
-      {
-        path: "verify-code",
-        element: <VerifyCode />,
-      },
-
-      {
-        path: "checkout",
-        element: <Checkout />,
-      },
-
-      {
-        path: "/product/:id",
-        element: <ProductDetails />,
-      },
-
-      {
-        path: "shop",
-        element: <Shop />,
-      },
-
-      {
-        path: "CatagoriesExtra",
-        element: <CatagoriesExtra />,
-      },
-
-      {
-        path: "Profile",
-        element: (
-          <ProtectedRouter>
-            <Profile />
-          </ProtectedRouter>
-        ),
-        children: [
-          {
-            index: true,
-            element: <ProfileInfo />,
-          },
-          {
-            path: "ProfileOrders",
-            element: <ProfileOrders />,
-          },
-        ],
-      },
-
-      {
-        path: "/category/:categoryId",
-        element: <CategoryProducts />,
-      },
-    ],
-  },
+  path: "/category/:categoryId",
+  element: <CategoryProducts />
+}
+    ]
+  }
 ]);
 
 export default router;
