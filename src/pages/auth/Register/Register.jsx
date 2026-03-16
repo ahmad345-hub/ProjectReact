@@ -8,6 +8,7 @@ import {
   Alert,
   CircularProgress,
   Snackbar,
+  useTheme,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -17,6 +18,7 @@ import { useState } from "react";
 import { schema } from "../../../Validation/schema.js";
 
 const Register = () => {
+  const theme = useTheme();
   const {
     register,
     handleSubmit,
@@ -42,7 +44,7 @@ const Register = () => {
 
       console.log("Server response:", response.data);
 
-      setOpenSuccess(true); // ✅ إشعار نجاح
+      setOpenSuccess(true);
       reset();
     } catch (error) {
       if (error.response) {
@@ -60,28 +62,43 @@ const Register = () => {
     }
   };
 
+  // اللون الأساسي للأزرار والنصوص المهمة
+  const primaryBlue = "#1976d2"; // أزرق MUI القياسي
+
   return (
     <>
-      <Box sx={{ minHeight: "100vh", display: "flex" }}>
+      <Box
+        sx={{
+          minHeight: "calc(100vh - 64px)",
+          mt: "64px",
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          backgroundColor: theme.palette.background.default,
+        }}
+      >
         {/* Left Side */}
         <Box
           sx={{
             flex: 1,
-            backgroundColor: "#f5f5f5",
+            backgroundColor: theme.palette.mode === "dark" ? "#111" : "#f5f5f5",
             display: { xs: "none", md: "flex" },
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            px: 6,
+            px: { xs: 3, md: 6 },
           }}
         >
           <Typography
             variant="h3"
-            sx={{ fontWeight: 800, letterSpacing: "6px" }}
-          >
-            KA
+            sx={{
+              fontWeight: 800,
+              letterSpacing: "6px",
+             
+            }}
+          >       
+            3le
             <Box component="span" sx={{ color: "#ffb703" }}>
-              SHOP
+              gant
             </Box>
           </Typography>
 
@@ -90,17 +107,27 @@ const Register = () => {
               mt: 1,
               fontSize: "13px",
               letterSpacing: "3px",
-              color: "text.secondary",
+              color: theme.palette.text.secondary,
             }}
           >
             MODERN E-COMMERCE
           </Typography>
 
-          <Divider sx={{ width: 80, my: 3 }} />
+          <Divider
+            sx={{
+              width: 80,
+              my: 3,
+              bgcolor: theme.palette.text.secondary,
+            }}
+          />
 
           <Typography
             variant="h6"
-            sx={{ color: "text.secondary", textAlign: "center", maxWidth: 400 }}
+            sx={{
+              color: theme.palette.text.secondary,
+              textAlign: "center",
+              maxWidth: 400,
+            }}
           >
             Smart shopping starts here.
           </Typography>
@@ -113,15 +140,32 @@ const Register = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            px: 3,
+            px: { xs: 3, md: 6 },
+            py: { xs: 5, md: 0 },
           }}
         >
           <Box
             component="form"
-            sx={{ width: "100%", maxWidth: 380 }}
+            sx={{
+              width: "100%",
+              maxWidth: 380,
+              backgroundColor:
+                theme.palette.mode === "dark" ? "#222" : "#fff",
+              p: 4,
+              borderRadius: 2,
+              boxShadow:
+                theme.palette.mode === "dark"
+                  ? "0 0 10px rgba(255,255,255,0.1)"
+                  : "0 0 10px rgba(0,0,0,0.1)",
+            }}
             onSubmit={handleSubmit(onSubmit)}
           >
-            <Typography variant="h4" fontWeight="bold" mb={2}>
+            <Typography
+              variant="h4"
+              fontWeight="bold"
+              mb={2}
+              sx={{ color: primaryBlue }}
+            >
               Create your account
             </Typography>
 
@@ -138,6 +182,10 @@ const Register = () => {
               margin="normal"
               error={!!errors.fullName}
               helperText={errors.fullName?.message}
+              sx={{
+                input: { color: theme.palette.text.primary },
+                label: { color: theme.palette.text.secondary },
+              }}
             />
 
             <TextField
@@ -147,6 +195,10 @@ const Register = () => {
               margin="normal"
               error={!!errors.userName}
               helperText={errors.userName?.message}
+              sx={{
+                input: { color: theme.palette.text.primary },
+                label: { color: theme.palette.text.secondary },
+              }}
             />
 
             <TextField
@@ -156,6 +208,10 @@ const Register = () => {
               margin="normal"
               error={!!errors.email}
               helperText={errors.email?.message}
+              sx={{
+                input: { color: theme.palette.text.primary },
+                label: { color: theme.palette.text.secondary },
+              }}
             />
 
             <TextField
@@ -165,6 +221,10 @@ const Register = () => {
               margin="normal"
               error={!!errors.phoneNumber}
               helperText={errors.phoneNumber?.message}
+              sx={{
+                input: { color: theme.palette.text.primary },
+                label: { color: theme.palette.text.secondary },
+              }}
             />
 
             <TextField
@@ -175,11 +235,18 @@ const Register = () => {
               margin="normal"
               error={!!errors.password}
               helperText={errors.password?.message}
+              sx={{
+                input: { color: theme.palette.text.primary },
+                label: { color: theme.palette.text.secondary },
+              }}
             />
 
             <Box sx={{ display: "flex", alignItems: "center", my: 2 }}>
-              <Checkbox />
-              <Typography variant="body2">
+              <Checkbox sx={{ color: primaryBlue }} />
+              <Typography
+                variant="body2"
+                sx={{ color: theme.palette.text.secondary }}
+              >
                 I agree to the Terms & Privacy Policy
               </Typography>
             </Box>
@@ -192,8 +259,8 @@ const Register = () => {
               sx={{
                 py: 1.3,
                 mt: 1,
-                backgroundColor: "#111",
-                "&:hover": { backgroundColor: "#000" },
+                backgroundColor: primaryBlue,
+                "&:hover": { backgroundColor: "#115293" }, // أزرق أغمق عند الهفر
               }}
             >
               {loading ? (
@@ -203,11 +270,27 @@ const Register = () => {
               )}
             </Button>
 
-            <Typography variant="body2" sx={{ mt: 3, textAlign: "center" }}>
+            <Typography
+              variant="body2"
+              sx={{
+                mt: 3,
+                textAlign: "center",
+                color: theme.palette.text.secondary,
+              }}
+            >
               Already have an account?{" "}
               <Link
                 to="/login"
-                style={{ textDecoration: "none", fontWeight: 500 }}
+                style={{
+                  textDecoration: "none",
+                  fontWeight: 500,
+                  padding: "2px 6px",
+                  borderRadius: 4,
+                  transition: "0.3s",
+                  color: primaryBlue,
+                }}
+                onMouseEnter={(e) => (e.target.style.backgroundColor = "#e3f2fd")}
+                onMouseLeave={(e) => (e.target.style.backgroundColor = "transparent")}
               >
                 Sign in
               </Link>
@@ -216,7 +299,6 @@ const Register = () => {
         </Box>
       </Box>
 
-      {/* Success Snackbar */}
       <Snackbar
         open={openSuccess}
         autoHideDuration={3000}
