@@ -2,60 +2,116 @@ import React from "react";
 import { Link } from "react-router-dom";
 import useProducts from "../../hooks/use Products";
 
+import {
+  Container,
+  Grid,
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Box,
+  CircularProgress,
+  Alert,
+} from "@mui/material";
+
 export default function Products() {
   const { data, isLoading, isError, error } = useProducts();
 
   if (isLoading) {
-    return <h2 className="text-center mt-10 text-xl">Loading...</h2>;
+    return (
+      <Box display="flex" justifyContent="center" mt={10}>
+        <CircularProgress />
+      </Box>
+    );
   }
 
   if (isError) {
     return (
-      <h2 className="text-center mt-10 text-red-500">
-        {error.message || "Error loading products"}
-      </h2>
+      <Container sx={{ mt: 10 }}>
+        <Alert severity="error">
+          {error.message || "Error loading products"}
+        </Alert>
+      </Container>
     );
   }
 
-  const products = data.response.data || [];
+  const products = data?.response?.data || [];
 
   return (
-    <div className="container mx-auto px-6 py-10">
-      <h1 className="text-3xl font-bold text-center mb-8">Our Products</h1>
+    <Container maxWidth="lg" sx={{ py: 6 }}>
+      <Typography variant="h4" fontWeight="bold" align="center" mb={6}>
+        Our Products
+      </Typography>
 
-      <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-8">
+      <Grid
+        container
+        spacing={4}
+        justifyContent="space-between"
+      >
         {products.map((product) => (
-          <Link
-            to={`/product/${product.id}`}
-            key={product.id}
-            className="block bg-white rounded-2xl overflow-hidden transition-all duration-200 hover:shadow-lg hover:-translate-y-1"
-          >
-            <div className="w-full aspect-square bg-gray-100 flex items-center justify-center p-4">
-              <img
-                src={product.image}
-                alt={product.name || "product"}
-                className="max-h-full max-w-full object-contain"
-                onError={(e) =>
-                  (e.target.src =
-                    "https://via.placeholder.com/300x300?text=No+Image")
-                }
-              />
-            </div>
+          <Grid item xs={12} sm={6} md={4} key={product.id}>
+            <Card
+              component={Link}
+              to={`/product/${product.id}`}
+              sx={{
+                textDecoration: "none",
+                borderRadius: 3,
+                height: "100%",
+                transition: "0.3s",
+                "&:hover": {
+                  transform: "translateY(-6px)",
+                  boxShadow: 6,
+                },
+              }}
+            >
+              <Box
+                sx={{
+                  height: 220,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  bgcolor: "background.default",
+                  p: 2,
+                }}
+              >
+                <CardMedia
+                  component="img"
+                  image={product.image}
+                  alt={product.name}
+                  sx={{
+                    maxHeight: "100%",
+                    maxWidth: "100%",
+                    objectFit: "contain",
+                  }}
+                  onError={(e) =>
+                    (e.target.src =
+                      "https://via.placeholder.com/300x300?text=No+Image")
+                  }
+                />
+              </Box>
 
-            <div className="p-4">
-              <h2 className="text-lg font-semibold mb-2 truncate">
-                {product.name || "No Name"}
-              </h2>
+              <CardContent>
+                <Typography variant="h6" fontWeight={600} noWrap gutterBottom>
+                  {product.name || "No Name"}
+                </Typography>
 
-              <p className="text-gray-600 mb-2">⭐ {product.rate}</p>
+                <Typography variant="body2" color="text.secondary">
+                  ⭐ {product.rate}
+                </Typography>
 
-              <p className="text-green-600 font-bold text-xl mb-4">
-                ${product.price}
-              </p>
-            </div>
-          </Link>
+                <Typography
+                  variant="h6"
+                  color="success.main"
+                  fontWeight="bold"
+                  mt={1}
+                >
+                  ${product.price}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
         ))}
-      </div>
-    </div>
+      </Grid>
+    </Container>
   );
 }
