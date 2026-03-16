@@ -7,19 +7,23 @@ export default function ProductDetails() {
   const { id } = useParams();
 
   const { data, isLoading, isError, error } = useProduct(id);
- const { mutate ,isPending} =useAddtoCart();
+  const { mutate, isPending } = useAddtoCart();
 
   if (isLoading)
-    return <h2 className="text-center mt-10 text-xl">Loading...</h2>;
+    return <h2 className="text-center mt-10 text-xl text-white">Loading...</h2>;
+
   if (isError)
     return <h2 className="text-center mt-10 text-red-500">{error.message}</h2>;
 
   const product = data.response;
 
   return (
-    <div className="container mx-auto px-6 py-10">
+    <div className="container mx-auto px-6 pt-28 pb-10 text-white">
+
       <div className="flex flex-col md:flex-row gap-10">
-        <div className="md:w-1/2 bg-gray-100 flex items-center justify-center p-4 rounded-2xl shadow-lg">
+
+        {/* Image */}
+        <div className="md:w-1/2 bg-gray-800 flex items-center justify-center p-4 rounded-2xl shadow-lg">
           <img
             src={product.image}
             alt={product.name || "Product"}
@@ -30,20 +34,30 @@ export default function ProductDetails() {
             }
           />
         </div>
-        \
+
+        {/* Info */}
         <div className="md:w-1/2 flex flex-col justify-start">
           <h1 className="text-3xl font-bold mb-4">
             {product.name || "No Name"}
           </h1>
-          <p className="text-gray-600 mb-2">⭐ {product.rate}</p>
-          <p className="text-green-600 font-bold text-2xl mb-6">
+
+          <p className="mb-2">⭐ {product.rate}</p>
+
+          <p className="text-green-400 font-bold text-2xl mb-6">
             ${product.price}
           </p>
-          <p className="text-gray-700 mb-6">{product.description}</p>
-          <button onClick={() => mutate({ ProductId: product.id, Count: 1 })}        className="w-full md:w-1/2 bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition">
-            Add to Cart
+
+          <p className="mb-6">{product.description}</p>
+
+          <button
+            onClick={() => mutate({ ProductId: product.id, Count: 1 })}
+            disabled={isPending}
+            className="w-full md:w-1/2 bg-white text-black py-3 rounded-xl hover:bg-gray-200 transition"
+          >
+            {isPending ? "Adding..." : "Add to Cart"}
           </button>
         </div>
+
       </div>
     </div>
   );
