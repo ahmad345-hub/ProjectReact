@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Box, useTheme, IconButton } from "@mui/material";
 
 import sofa1 from "../../assets/sofa1.png";
-import sofa2 from "../../assets/sofa2.png";
+import sofa2 from "../../assets/sofa2.jpg";
 import sofa3 from "../../assets/sofa3.png";
 
 export default function Hero() {

@@ -1,5 +1,5 @@
 import axios from "axios";
-import useAuthStore from "../store/useAuthStore.js"; // تأكد من المسار الصحيح
+import useAuthStore from "../store/useAuthStore.js";
 import i18n from "../i18next.jsx";
 
 const authAxiosInstance = axios.create({

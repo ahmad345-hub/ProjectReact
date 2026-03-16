@@ -10,6 +10,7 @@ export default defineConfig({
         target: 'https://knowledgeshop.runasp.net',
         changeOrigin: true,
         secure: false,
+        
       },
     },
   },
