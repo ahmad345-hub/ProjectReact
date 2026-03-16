@@ -22,82 +22,79 @@ const router = createBrowserRouter([
     element: <Mainlayout />,
     children: [
       {
-        index:true,
-        element: <Home />
+        // بدل Home مباشرة، نرسل أي دخول للـ Login
+        index: true,
+        element: <Navigate to="/login" replace />
       },
       {
         path: "cart",
-        element:
-        <ProtectedRouter>
-          <Cart />
-        </ProtectedRouter>
-       
+        element: (
+          <ProtectedRouter>
+            <Cart />
+          </ProtectedRouter>
+        ),
       },
       {
-        path:"login",
-        element:<Login />
+        path: "login",
+        element: <Login />
       },
       {
-  path: "Profile",
-  element: (
-    <ProtectedRouter>
-      <Profile />
-    </ProtectedRouter>
-  ),
-  children: [
-    {
-      index: true,
-      element: <ProfileInfo />
-    },
-    {
-      path: "ProfileOrders",
-      element: <ProfileOrders />
-    }
-  ]
-},
-      {
-        path:"CatagoriesExtra",
-        element:<CatagoriesExtra />
-      },
-       {
-        path:"register",
-        element:<Register />
+        path: "register",
+        element: <Register />
       },
       {
-        path:"register",
-        element:<Register />
+        path: "forgot-password",
+        element: <ForgotPassword />
       },
       {
-        path:"forgot-password",
-        element:<ForgotPassword />
+        path: "reset-password",
+        element: <ResetPassword />
       },
       {
-        path:"reset-password",
-        element:<ResetPassword />
+        path: "verify-code",
+        element: <VerifyCode />
       },
       {
-        path:"verify-code",
-        element:<VerifyCode />
+        path: "checkout",
+        element: <Checkout />
       },
       {
-        path:"checkout",
-        element:<Checkout />
+        path: "/product/:id",
+        element: <ProductDetails />
       },
       {
-         path:"/product/:id",
-         element:<ProductDetails />
+        path: "shop",
+        element: <Shop />
       },
       {
-         path:"shop",
-         element:<Shop />
+        path: "CatagoriesExtra",
+        element: <CatagoriesExtra />
       },
-
       {
-  path: "/category/:categoryId",
-  element: <CategoryProducts />
-}
+        path: "Profile",
+        element: (
+          <ProtectedRouter>
+            <Profile />
+          </ProtectedRouter>
+        ),
+        children: [
+          {
+            index: true,
+            element: <ProfileInfo />
+          },
+          {
+            path: "ProfileOrders",
+            element: <ProfileOrders />
+          }
+        ]
+      },
+      {
+        path: "/category/:categoryId",
+        element: <CategoryProducts />
+      },
     ]
   }
 ]);
 
+export default router;
 export default router;
