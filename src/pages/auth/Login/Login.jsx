@@ -122,7 +122,7 @@ const Login = () => {
           }}
         >
           <Typography variant="h4" fontWeight="bold" mb={1}>
-            Welcome back 👋
+            Welcome back 
           </Typography>
 
           <Typography variant="body2" color="text.secondary" mb={3}>
