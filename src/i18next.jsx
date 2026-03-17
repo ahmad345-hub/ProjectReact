@@ -253,6 +253,22 @@ i18n
           // General
           "Loading...": "جاري التحميل...",
           "Server went wrong": "حدث خطأ في الخادم",
+          "Create your account": "إنشاء حسابك",
+          "Full Name": "الاسم الكامل",
+          "Username": "اسم المستخدم",
+          "Email Address": "البريد الإلكتروني",
+          "Phone Number": "رقم الهاتف",
+          "Password": "كلمة المرور",
+          "I agree to the Terms & Privacy Policy": "أوافق على الشروط وسياسة الخصوصية",
+          "Sign Up": "تسجيل",
+          "Already have an account?": "هل لديك حساب بالفعل؟",
+          "Sign in": "تسجيل الدخول",
+          "Account created successfully 🎉": "تم إنشاء الحساب بنجاح 🎉",
+          "Network error or server not reachable": "خطأ في الشبكة أو الخادم غير متاح",
+          "Server went wrong": "حدث خطأ في الخادم",
+          // Common / Left Side
+          "MODERN E-COMMERCE": "تجارة إلكترونية عصرية",
+          "Smart shopping starts here.": "ابدأ التسوق الذكي من هنا",
   
 
         }
