@@ -8,6 +8,7 @@ import useChangeQuantity from "../../hooks/useChangeQuantity";
 import useClearCart from "../../hooks/useClearCart";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import Swal from "sweetalert2";
 
 export default function Cart() {
   const { t } = useTranslation();
@@ -21,6 +22,27 @@ export default function Cart() {
     return <Typography variant="h4" textAlign="center" mt={10}>{t("Loading...")}</Typography>;
   if (isError)
     return <Typography variant="h4" textAlign="center" mt={10} color="error">{t("Server went wrong")}: {error.message}</Typography>;
+
+  const handleRemove = (productId) => {
+    Swal.fire({
+      title: t("Are you sure you want to remove this item?"),
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: t("Yes, remove it"),
+      cancelButtonText: t("Cancel"),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        removeItem(productId);
+        Swal.fire({
+          title: t("Removed!"),
+          text: t("The item has been removed from your cart."),
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      }
+    });
+  };
 
   return (
     <Box sx={{ bgcolor: "background.default", color: "text.primary", minHeight: "100vh" }}>
@@ -70,7 +92,7 @@ export default function Cart() {
                   variant="contained"
                   color="error"
                   disabled={isPending}
-                  onClick={() => removeItem(item.productId)}
+                  onClick={() => handleRemove(item.productId)}
                   sx={{ mt: 1 }}
                 >
                   {t("Remove")}
