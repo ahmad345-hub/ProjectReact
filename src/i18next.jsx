@@ -269,6 +269,17 @@ i18n
           // Common / Left Side
           "MODERN E-COMMERCE": "تجارة إلكترونية عصرية",
           "Smart shopping starts here.": "ابدأ التسوق الذكي من هنا",
+          "Login": "تسجيل الدخول",
+      "Register": "إنشاء حساب",
+      "Forgot Password": "نسيت كلمة المرور",
+      "Enter your email and we'll send you a code to reset your password.": "أدخل بريدك الإلكتروني وسنرسل لك رمزًا لإعادة تعيين كلمة المرور.",
+      "Email": "البريد الإلكتروني",
+      "Send Code": "إرسال الرمز",
+      "Sending...": "جاري الإرسال...",
+      "Something went wrong": "حدث خطأ ما",
+      "Code sent! Redirecting to verification...": "تم إرسال الرمز! جاري التحويل للتحقق...",
+      "Remembered your password?": "هل تذكرت كلمة المرور؟",
+      "© 2026 KA SHOP. All rights reserved.": "© 2026 KA SHOP. جميع الحقوق محفوظة.",
   
 
         }

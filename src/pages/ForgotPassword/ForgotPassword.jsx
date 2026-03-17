@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { Box, Button, TextField, Typography, Alert, AppBar, Toolbar } from "@mui/material";
 import useSendCode from "../../hooks/useSendCode.jsx";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function ForgotPassword() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
@@ -17,11 +19,10 @@ export default function ForgotPassword() {
 
     sendCodeMutation.mutate(email, {
       onSuccess: () => {
-        setSuccessMsg("Code sent! Redirecting to verification...");
-        // Redirect لصفحة VerifyCode وتمرير الإيميل
+        setSuccessMsg(t("Code sent! Redirecting to verification..."));
         setTimeout(() => navigate("/verify-code", { state: { email } }), 1000);
       },
-      onError: (err) => setErrorMsg(err.response?.data?.message || "Something went wrong"),
+      onError: (err) => setErrorMsg(err.response?.data?.message || t("Something went wrong")),
     });
   };
 
@@ -34,8 +35,12 @@ export default function ForgotPassword() {
             KA<Box component="span" sx={{ color: "#ffb703" }}>SHOP</Box>
           </Typography>
           <Box>
-            <Link to="/login" style={{ textDecoration: "none", color: "#fff", marginRight: 16 }}>Login</Link>
-            <Link to="/register" style={{ textDecoration: "none", color: "#fff" }}>Register</Link>
+            <Link to="/login" style={{ textDecoration: "none", color: "#fff", marginRight: 16 }}>
+              {t("Login")}
+            </Link>
+            <Link to="/register" style={{ textDecoration: "none", color: "#fff" }}>
+              {t("Register")}
+            </Link>
           </Box>
         </Toolbar>
       </AppBar>
@@ -43,16 +48,18 @@ export default function ForgotPassword() {
       {/* Main Content */}
       <Box sx={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center", px: 2, py: 6 }}>
         <Box sx={{ width: 400, p: 4, boxShadow: 3, borderRadius: 3, bgcolor: "#fff" }}>
-          <Typography variant="h5" fontWeight="bold" mb={2}>Forgot Password</Typography>
+          <Typography variant="h5" fontWeight="bold" mb={2}>
+            {t("Forgot Password")}
+          </Typography>
           <Typography variant="body2" color="text.secondary" mb={3}>
-            Enter your email and we'll send you a code to reset your password.
+            {t("Enter your email and we'll send you a code to reset your password.")}
           </Typography>
 
           {errorMsg && <Alert severity="error" sx={{ mb: 2 }}>{errorMsg}</Alert>}
           {successMsg && <Alert severity="success" sx={{ mb: 2 }}>{successMsg}</Alert>}
 
           <TextField
-            label="Email"
+            label={t("Email")}
             type="email"
             fullWidth
             margin="normal"
@@ -67,13 +74,13 @@ export default function ForgotPassword() {
             onClick={handleSendCode}
             disabled={sendCodeMutation.isLoading}
           >
-            {sendCodeMutation.isLoading ? "Sending..." : "Send Code"}
+            {sendCodeMutation.isLoading ? t("Sending...") : t("Send Code")}
           </Button>
 
           <Typography variant="body2" sx={{ mt: 2, textAlign: "center" }}>
-            Remembered your password?{" "}
+            {t("Remembered your password?")}{" "}
             <Link to="/login" style={{ textDecoration: "none", fontWeight: 500 }}>
-              Login
+              {t("Login")}
             </Link>
           </Typography>
         </Box>
@@ -82,7 +89,7 @@ export default function ForgotPassword() {
       {/* Footer */}
       <Box sx={{ bgcolor: "#f5f5f5", py: 3, textAlign: "center" }}>
         <Typography variant="body2" color="text.secondary">
-          © 2026 KA SHOP. All rights reserved.
+          {t("© 2026 KA SHOP. All rights reserved.")}
         </Typography>
       </Box>
     </Box>
