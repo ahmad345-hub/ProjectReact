@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import useProduct from "../../hooks/useproduct";
 import useAddtoCart from "../../hooks/useAddtoCart";
-import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 import {
   Box,
@@ -10,6 +9,8 @@ import {
   Button,
   CircularProgress,
   useTheme,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 
 export default function ProductDetails() {
@@ -20,6 +21,9 @@ export default function ProductDetails() {
 
   const { data, isLoading, isError, error } = useProduct(id);
   const { mutate, isPending } = useAddtoCart();
+
+  // حالة الرسالة للمستخدم
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   if (isLoading)
     return (
@@ -49,22 +53,17 @@ export default function ProductDetails() {
     const token = localStorage.getItem("token");
 
     if (!token) {
-      Swal.fire({
-        icon: "warning",
-        title: t("Login Required"),
-        text: t("You must login first to add items to cart"),
-        confirmButtonText: t("Go to Login"),
-        confirmButtonColor: "#1976d2",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          navigate("/login");
-        }
-      });
-
+      setOpenSnackbar(true); // عرض الرسالة للمستخدم
       return;
     }
 
+    // إذا مسجل دخول → أضف للعربة
     mutate({ ProductId: product.id, Count: 1 });
+  };
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+    navigate("/login"); // بعد إغلاق الرسالة يوديه للـ login
   };
 
   return (
@@ -90,8 +89,7 @@ export default function ProductDetails() {
         <Box
           sx={{
             flex: 1,
-            backgroundColor:
-              theme.palette.mode === "dark" ? "#111" : "#f5f5f5",
+            backgroundColor: theme.palette.mode === "dark" ? "#111" : "#f5f5f5",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -161,6 +159,22 @@ export default function ProductDetails() {
           </Button>
         </Box>
       </Box>
+
+      {/* Snackbar للرسالة */}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="warning"
+          sx={{ width: "100%" }}
+        >
+          {t("You must login first to add items to cart")}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
