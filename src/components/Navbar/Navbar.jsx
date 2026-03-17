@@ -119,17 +119,14 @@ const Navbar = () => {
             <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
               {token && (
                 <>
-                  {/* 1. Logout */}
-                
-
-                  {/* 2. Cart */}
+                  {/* Cart */}
                   <IconButton component={Link} to="/cart" sx={{ color: "text.primary", ...hoverStyle }}>
                     <Badge badgeContent={cartCount} color="error">
                       <ShoppingCartIcon />
                     </Badge>
                   </IconButton>
 
-                  {/* 3. Theme */}
+                  {/* Theme */}
                   <IconButton
                     onClick={toggleTheme}
                     sx={{ color: "text.primary", backgroundColor: "action.hover", "&:hover": { backgroundColor: "action.selected" }, borderRadius: "8px" }}
@@ -137,7 +134,7 @@ const Navbar = () => {
                     {mode === "dark" ? <LightModeIcon /> : <DarkModeIcon />}
                   </IconButton>
 
-                  {/* 4. Language */}
+                  {/* Language */}
                   <Select
                     value={i18n.language}
                     onChange={(e) => changeLanguage(e.target.value)}
@@ -154,13 +151,10 @@ const Navbar = () => {
                     <MenuItem value="en">English</MenuItem>
                     <MenuItem value="ar">العربية</MenuItem>
                   </Select>
-                       
 
-                       <Button onClick={handleLogout} sx={{ color: "text.primary", ...hoverStyle }}>
+                  <Button onClick={handleLogout} sx={{ color: "text.primary", ...hoverStyle }}>
                     {t("Logout")}
                   </Button>
-                  {/* 5. Profile */}
-                  
                 </>
               )}
             </Box>
@@ -205,7 +199,6 @@ const Navbar = () => {
 
             {token && (
               <>
-                {/* Same order inside drawer */}
                 <ListItem component={Link} to="/cart" onClick={() => setOpenDrawer(false)}>
                   <ListItemText primary={t("Cart")} />
                 </ListItem>
@@ -222,8 +215,6 @@ const Navbar = () => {
                     <MenuItem value="ar">العربية</MenuItem>
                   </Select>
                 </ListItem>
-
-               
               </>
             )}
           </List>
