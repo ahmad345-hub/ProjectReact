@@ -9,8 +9,14 @@ import {
   Divider
 } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { useTranslation } from "react-i18next";
 
 export default function Footer() {
+  const { t } = useTranslation();
+
+  const pageLinks = ["Home", "Shop", "Product", "Articles", "Contact Us"];
+  const infoLinks = ["Shipping Policy", "Return & Refund", "Support", "FAQs"];
+
   return (
     <Box sx={{ bgcolor: "background.default", color: "text.primary", pt: 6, pb: 3 }}>
       <Container maxWidth="lg">
@@ -36,28 +42,28 @@ export default function Footer() {
 
               {/* Column 2 */}
               <Grid item xs={6} md={3}>
-                <Typography fontWeight="bold">Page</Typography>
-                {["Home", "Shop", "Product", "Articles", "Contact Us"].map(item => (
+                <Typography fontWeight="bold">{t("Page")}</Typography>
+                {pageLinks.map(item => (
                   <Typography
                     key={item}
                     variant="body2"
                     sx={{ mt: 1, color: "text.secondary", cursor: "pointer" }}
                   >
-                    {item}
+                    {t(item)}
                   </Typography>
                 ))}
               </Grid>
 
               {/* Column 3 */}
               <Grid item xs={6} md={3}>
-                <Typography fontWeight="bold">Info</Typography>
-                {["Shipping Policy", "Return & Refund", "Support", "FAQs"].map(item => (
+                <Typography fontWeight="bold">{t("Info")}</Typography>
+                {infoLinks.map(item => (
                   <Typography
                     key={item}
                     variant="body2"
                     sx={{ mt: 1, color: "text.secondary", cursor: "pointer" }}
                   >
-                    {item}
+                    {t(item)}
                   </Typography>
                 ))}
               </Grid>
@@ -66,14 +72,14 @@ export default function Footer() {
 
           {/* Column 4 */}
           <Grid item xs={12} md={4} sx={{ ml: { md: 23 } }}>
-            <Typography fontWeight="bold">Join Newsletter</Typography>
+            <Typography fontWeight="bold">{t("Join Newsletter")}</Typography>
             <Typography variant="body2" sx={{ mt: 1, color: "text.secondary" }}>
-              Subscribe our newsletter to get more deals, new products and promotions
+              {t("Subscribe our newsletter to get more deals, new products and promotions")}
             </Typography>
 
             <Box sx={{ display: "flex", mt: 2 }}>
               <TextField
-                placeholder="Enter your email"
+                placeholder={t("Enter your email")}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -100,7 +106,7 @@ export default function Footer() {
           align="center"
           sx={{ color: "text.secondary" }}
         >
-          © 2023 3legant. All rights reserved | Privacy Policy | Terms & Conditions
+          {t("© 2023 3legant. All rights reserved | Privacy Policy | Terms & Conditions")}
         </Typography>
       </Container>
     </Box>
