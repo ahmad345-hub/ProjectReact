@@ -238,6 +238,21 @@ i18n
           // General
           "Loading...": "جاري التحميل...",
           "Server went wrong": "حدث خطأ في الخادم",
+          "Welcome back 👋": "مرحبًا بعودتك 👋",
+          "Login to your 3legant account": "تسجيل الدخول إلى حسابك في 3legant",
+          "Email": "البريد الإلكتروني",
+          "Password": "كلمة المرور",
+          "Forgot Password?": "هل نسيت كلمة المرور؟",
+          "LOGIN TO 3LEGANT": "تسجيل الدخول إلى 3legant",
+          "New to 3legant?": "جديد على 3legant؟",
+          "Create Account": "إنشاء حساب",
+          "SMART E-COMMERCE PLATFORM": "منصة التجارة الإلكترونية الذكية",
+          "Discover modern shopping with a smart and elegant experience.": "اكتشف التسوق العصري بطريقة ذكية وأنيقة",
+          "Login successful 👁️ Redirecting...": "تسجيل الدخول ناجح 👁️ جارٍ التحويل...",
+          "Login failed": "فشل تسجيل الدخول",
+          // General
+          "Loading...": "جاري التحميل...",
+          "Server went wrong": "حدث خطأ في الخادم",
   
 
         }

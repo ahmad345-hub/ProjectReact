@@ -6,6 +6,7 @@ import * as yup from "yup";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axiosinstance from "../../../api/axiosinstance.js";
+import { useTranslation } from "react-i18next";
 
 const schema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
@@ -13,6 +14,7 @@ const schema = yup.object().shape({
 });
 
 const Login = () => {
+  const { t } = useTranslation();
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -34,11 +36,11 @@ const Login = () => {
         const token = response.data.accessToken;
         localStorage.setItem("token", token);
 
-        setSuccessMsg("Login successful 👁️ Redirecting...");
+        setSuccessMsg(t("Login successful 👁️ Redirecting..."));
         setTimeout(() => navigate("/"), 1000);
       }
     } catch (error) {
-      setErrorMsg(error.response?.data?.message || "Login failed");
+      setErrorMsg(error.response?.data?.message || t("Login failed"));
     }
   };
 
@@ -74,27 +76,14 @@ const Login = () => {
           </Box>
         </Typography>
 
-        <Typography
-          sx={{
-            mt: 2,
-            fontSize: "14px",
-            letterSpacing: "3px",
-            color: "text.secondary",
-          }}
-        >
-          SMART E-COMMERCE PLATFORM
+        <Typography sx={{ mt: 2, fontSize: "14px", letterSpacing: "3px", color: "text.secondary" }}>
+          {t("SMART E-COMMERCE PLATFORM")}
         </Typography>
 
         <Divider sx={{ width: 80, my: 4 }} />
 
-        <Typography
-          sx={{
-            textAlign: "center",
-            maxWidth: 320,
-            color: "text.secondary",
-          }}
-        >
-          Discover modern shopping with a smart and elegant experience.
+        <Typography sx={{ textAlign: "center", maxWidth: 320, color: "text.secondary" }}>
+          {t("Discover modern shopping with a smart and elegant experience.")}
         </Typography>
       </Box>
 
@@ -122,28 +111,19 @@ const Login = () => {
           }}
         >
           <Typography variant="h4" fontWeight="bold" mb={1}>
-            Welcome back 👋
+            {t("Welcome back 👋")}
           </Typography>
 
           <Typography variant="body2" color="text.secondary" mb={3}>
-            Login to your 3legant account
+            {t("Login to your 3legant account")}
           </Typography>
 
-          {errorMsg && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {errorMsg}
-            </Alert>
-          )}
-
-          {successMsg && (
-            <Alert severity="success" sx={{ mb: 2 }}>
-              {successMsg}
-            </Alert>
-          )}
+          {errorMsg && <Alert severity="error" sx={{ mb: 2 }}>{errorMsg}</Alert>}
+          {successMsg && <Alert severity="success" sx={{ mb: 2 }}>{successMsg}</Alert>}
 
           <TextField
             {...register("email")}
-            label="Email"
+            label={t("Email")}
             fullWidth
             margin="normal"
             error={!!errors.email}
@@ -152,7 +132,7 @@ const Login = () => {
 
           <TextField
             {...register("password")}
-            label="Password"
+            label={t("Password")}
             type="password"
             fullWidth
             margin="normal"
@@ -161,65 +141,47 @@ const Login = () => {
           />
 
           <Typography variant="body2" sx={{ textAlign: "right", mt: 1 }}>
-  <Link
-    to="/forgot-password"
-    style={{ textDecoration: "none" }}
-  >
-    <Box
-      component="span"
-      sx={{
-        px: 1.5,
-        py: 0.5,
-        borderRadius: 1,
-        fontWeight: 500,
-        color: "primary.main",
-        transition: "all 0.2s ease",
-        "&:hover": {
-          backgroundColor: "action.hover",
-          textDecoration: "underline",
-        },
-      }}
-    >
-      Forgot Password?
-    </Box>
-  </Link>
-</Typography>
+            <Link to="/forgot-password" style={{ textDecoration: "none" }}>
+              <Box
+                component="span"
+                sx={{
+                  px: 1.5,
+                  py: 0.5,
+                  borderRadius: 1,
+                  fontWeight: 500,
+                  color: "primary.main",
+                  transition: "all 0.2s ease",
+                  "&:hover": { backgroundColor: "action.hover", textDecoration: "underline" },
+                }}
+              >
+                {t("Forgot Password?")}
+              </Box>
+            </Link>
+          </Typography>
 
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{
-              py: 1.4,
-              mt: 3,
-              borderRadius: 2,
-            }}
-          >
-            LOGIN TO 3LEGANT
+          <Button type="submit" fullWidth variant="contained" sx={{ py: 1.4, mt: 3, borderRadius: 2 }}>
+            {t("LOGIN TO 3LEGANT")}
           </Button>
 
-         <Typography variant="body2" sx={{ mt: 3, textAlign: "center" }}>
-  New to 3legant?{" "}
-  <Link to="/register" style={{ textDecoration: "none" }}>
-    <Box
-      component="span"
-      sx={{
-        px: 1.5,
-        py: 0.5,
-        borderRadius: 1,
-        fontWeight: 600,
-        color: "primary.main",
-        transition: "all 0.2s ease",
-        "&:hover": {
-          backgroundColor: "action.hover",
-          textDecoration: "underline",
-        },
-      }}
-    >
-      Create Account
-    </Box>
-  </Link>
-</Typography>
+          <Typography variant="body2" sx={{ mt: 3, textAlign: "center" }}>
+            {t("New to 3legant?")}{" "}
+            <Link to="/register" style={{ textDecoration: "none" }}>
+              <Box
+                component="span"
+                sx={{
+                  px: 1.5,
+                  py: 0.5,
+                  borderRadius: 1,
+                  fontWeight: 600,
+                  color: "primary.main",
+                  transition: "all 0.2s ease",
+                  "&:hover": { backgroundColor: "action.hover", textDecoration: "underline" },
+                }}
+              >
+                {t("Create Account")}
+              </Box>
+            </Link>
+          </Typography>
         </Box>
       </Box>
     </Box>
