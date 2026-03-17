@@ -15,8 +15,10 @@ import {
 import { Link } from "react-router-dom";
 import useProductsOperation from "../../hooks/useProductsOperation";
 import useAddReview from "../../hooks/useAddReview";
+import { useTranslation } from "react-i18next";
 
 function ProductCard({ product }) {
+  const { t } = useTranslation();
   const [reviews, setReviews] = useState([]);
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
@@ -26,7 +28,6 @@ function ProductCard({ product }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (!comment) return;
 
     addReview.mutate(
@@ -37,7 +38,6 @@ function ProductCard({ product }) {
             ...prev,
             { id: Date.now(), rating, comment },
           ]);
-
           setComment("");
           setRating(5);
           setShowForm(false);
@@ -48,8 +48,6 @@ function ProductCard({ product }) {
 
   return (
     <Box>
-
-      {/* Product Card */}
       <Card
         sx={{
           borderRadius: 3,
@@ -75,10 +73,7 @@ function ProductCard({ product }) {
 
         <CardContent>
           <Typography variant="h6">{product.name}</Typography>
-
-          {/* Rating Stars */}
           <Rating value={product.rate || 0} readOnly />
-
           <Typography color="error.main" fontWeight="bold">
             ${product.price}
           </Typography>
@@ -91,37 +86,28 @@ function ProductCard({ product }) {
             variant="contained"
             fullWidth
           >
-            View Details
+            {t("View Details")}
           </Button>
 
           <Button
             variant="outlined"
             onClick={() => setShowForm(!showForm)}
           >
-            Add Review
+            {t("Add Review")}
           </Button>
         </Box>
       </Card>
 
-      {/* Add Review */}
       {showForm && (
-        <Box
-          sx={{
-            mt: 2,
-            p: 2,
-            bgcolor: "#fafafa",
-            borderRadius: 2,
-          }}
-        >
+        <Box sx={{ mt: 2, p: 2, bgcolor: "#fafafa", borderRadius: 2 }}>
           <form onSubmit={handleSubmit}>
-
             <Rating
               value={rating}
               onChange={(e, newValue) => setRating(newValue)}
             />
 
             <TextField
-              label="Comment"
+              label={t("Comment")}
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               size="small"
@@ -135,33 +121,22 @@ function ProductCard({ product }) {
               size="small"
               disabled={addReview.isLoading}
             >
-              {addReview.isLoading ? "Submitting..." : "Submit Review"}
+              {addReview.isLoading ? t("Submitting...") : t("Submit Review")}
             </Button>
-
           </form>
         </Box>
       )}
 
-      {/* Reviews */}
       {reviews.length > 0 && (
-        <Box
-          sx={{
-            mt: 2,
-            p: 2,
-            bgcolor: "#f1f1f1",
-            borderRadius: 2,
-          }}
-        >
+        <Box sx={{ mt: 2, p: 2, bgcolor: "#f1f1f1", borderRadius: 2 }}>
           <Typography variant="subtitle1" mb={1}>
-            Reviews
+            {t("Reviews")}
           </Typography>
 
           {reviews.map((r) => (
             <Box key={r.id} sx={{ mb: 1 }}>
               <Rating value={r.rating} readOnly size="small" />
-              <Typography variant="body2">
-                {r.comment}
-              </Typography>
+              <Typography variant="body2">{r.comment}</Typography>
             </Box>
           ))}
         </Box>
@@ -171,6 +146,7 @@ function ProductCard({ product }) {
 }
 
 export default function Shop() {
+  const { t } = useTranslation();
   const {
     data: products = [],
     isLoading,
@@ -185,141 +161,68 @@ export default function Shop() {
 
   const displayedProducts = useMemo(() => {
     let result = [...products];
-
-    /* search by name */
-    if (search) {
-      result = result.filter((p) =>
-        p.name.toLowerCase().includes(search.toLowerCase())
-      );
-    }
-
-    /* category filter */
-    if (category !== "all") {
-      result = result.filter((p) => p.category === category);
-    }
-
-    /* sort */
+    if (search) result = result.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()));
+    if (category !== "all") result = result.filter((p) => p.category === category);
     result.sort((a, b) => {
-      if (sortBy === "price")
-        return ascending ? a.price - b.price : b.price - a.price;
-
-      if (sortBy === "rate")
-        return ascending ? a.rate - b.rate : b.rate - a.rate;
-
+      if (sortBy === "price") return ascending ? a.price - b.price : b.price - a.price;
+      if (sortBy === "rate") return ascending ? a.rate - b.rate : b.rate - a.rate;
       return 0;
     });
-
     return result;
   }, [products, category, sortBy, ascending, search]);
 
-  if (isLoading)
-    return (
-      <Typography textAlign="center" mt={10}>
-        Loading products...
-      </Typography>
-    );
-
-  if (isError)
-    return (
-      <Typography textAlign="center" mt={10} color="error">
-        {error?.message || "Error loading products"}
-      </Typography>
-    );
+  if (isLoading) return <Typography textAlign="center" mt={10}>{t("Loading products...")}</Typography>;
+  if (isError) return <Typography textAlign="center" mt={10} color="error">{error?.message || t("Error loading products")}</Typography>;
 
   return (
     <Box sx={{ px: 6, pt: 12, pb: 6, minHeight: "100vh" }}>
-
-      <Typography
-        variant="h4"
-        textAlign="center"
-        mb={4}
-        fontWeight="bold"
-      >
-        Explore Our Exclusive Products
+      <Typography variant="h4" textAlign="center" mb={4} fontWeight="bold">
+        {t("Explore Our Exclusive Products")}
       </Typography>
 
-      {/* Search */}
       <TextField
-        label="Search product..."
+        label={t("Search product...")}
         sx={{ width: "50%", mb: 4 }}
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-      
       />
 
       <Grid container spacing={4}>
-
-        {/* Filters */}
         <Grid item xs={12} md={3}>
           <Paper sx={{ p: 3, borderRadius: 3 }}>
+            <Typography variant="h6" mb={2}>{t("Filters")}</Typography>
 
-            <Typography variant="h6" mb={2}>
-              Filters
-            </Typography>
-
-            <Typography variant="subtitle2" mb={1}>
-              Categories
-            </Typography>
-
-            <Select
-              fullWidth
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              sx={{ mb: 2 }}
-            >
-              <MenuItem value="all">All Categories</MenuItem>
-              <MenuItem value="mobiles">Mobiles</MenuItem>
-              <MenuItem value="clothes">Clothes</MenuItem>
-              <MenuItem value="electronics">Electronics</MenuItem>
+            <Typography variant="subtitle2" mb={1}>{t("Categories")}</Typography>
+            <Select fullWidth value={category} onChange={(e) => setCategory(e.target.value)} sx={{ mb: 2 }}>
+              <MenuItem value="all">{t("All Categories")}</MenuItem>
+              <MenuItem value="mobiles">{t("Mobiles")}</MenuItem>
+              <MenuItem value="clothes">{t("Clothes")}</MenuItem>
+              <MenuItem value="electronics">{t("Electronics")}</MenuItem>
             </Select>
 
-            <Typography variant="subtitle2" mb={1}>
-              Sort By
-            </Typography>
-
-            <Select
-              fullWidth
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              sx={{ mb: 2 }}
-            >
-              <MenuItem value="price">Price</MenuItem>
-              <MenuItem value="rate">Rating</MenuItem>
+            <Typography variant="subtitle2" mb={1}>{t("Sort By")}</Typography>
+            <Select fullWidth value={sortBy} onChange={(e) => setSortBy(e.target.value)} sx={{ mb: 2 }}>
+              <MenuItem value="price">{t("Price")}</MenuItem>
+              <MenuItem value="rate">{t("Rating")}</MenuItem>
             </Select>
 
-            <Select
-              fullWidth
-              value={ascending}
-              onChange={(e) =>
-                setAscending(e.target.value === "true")
-              }
-            >
-              <MenuItem value="true">Ascending</MenuItem>
-              <MenuItem value="false">Descending</MenuItem>
+            <Select fullWidth value={ascending} onChange={(e) => setAscending(e.target.value === "true")}>
+              <MenuItem value="true">{t("Ascending")}</MenuItem>
+              <MenuItem value="false">{t("Descending")}</MenuItem>
             </Select>
-
           </Paper>
         </Grid>
 
-        {/* Products */}
         <Grid item xs={12} md={9}>
           <Grid container spacing={3}>
-
-            {displayedProducts.length === 0 && (
-              <Typography mt={5}>
-                No products found
-              </Typography>
-            )}
-
+            {displayedProducts.length === 0 && <Typography mt={5}>{t("No products found")}</Typography>}
             {displayedProducts.map((product) => (
               <Grid item xs={12} sm={6} md={4} key={product.id}>
                 <ProductCard product={product} />
               </Grid>
             ))}
-
           </Grid>
         </Grid>
-
       </Grid>
     </Box>
   );
