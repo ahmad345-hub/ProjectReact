@@ -1,12 +1,20 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import useProduct from "../../hooks/useproduct";
 import useAddtoCart from "../../hooks/useAddtoCart";
-import { Box, Typography, Button, CircularProgress, useTheme } from "@mui/material";
+import Swal from "sweetalert2";
+import {
+  Box,
+  Typography,
+  Button,
+  CircularProgress,
+  useTheme,
+} from "@mui/material";
 
 export default function ProductDetails() {
   const { id } = useParams();
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const { data, isLoading, isError, error } = useProduct(id);
   const { mutate, isPending } = useAddtoCart();
@@ -35,13 +43,35 @@ export default function ProductDetails() {
 
   const product = data.response;
 
+  const handleAddToCart = () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      Swal.fire({
+        icon: "warning",
+        title: "Login Required",
+        text: "You must login first to add items to cart",
+        confirmButtonText: "Go to Login",
+        confirmButtonColor: "#1976d2",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/login");
+        }
+      });
+
+      return;
+    }
+
+    mutate({ ProductId: product.id, Count: 1 });
+  };
+
   return (
     <Box
       sx={{
         px: { xs: 3, md: 6 },
         py: { xs: 6, md: 10 },
         backgroundColor: theme.palette.background.default,
-        minHeight: "calc(100vh - 64px)", // أسفل Navbar
+        minHeight: "calc(100vh - 64px)", // تحت الناف بار
         color: theme.palette.text.primary,
       }}
     >
@@ -58,7 +88,8 @@ export default function ProductDetails() {
         <Box
           sx={{
             flex: 1,
-            backgroundColor: theme.palette.mode === "dark" ? "#111" : "#f5f5f5",
+            backgroundColor:
+              theme.palette.mode === "dark" ? "#111" : "#f5f5f5",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -112,7 +143,7 @@ export default function ProductDetails() {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => mutate({ ProductId: product.id, Count: 1 })}
+            onClick={handleAddToCart}
             disabled={isPending}
             sx={{
               width: { xs: "100%", md: "50%" },
@@ -120,7 +151,11 @@ export default function ProductDetails() {
               borderRadius: 2,
             }}
           >
-            {isPending ? <CircularProgress size={22} sx={{ color: "#fff" }} /> : "Add to Cart"}
+            {isPending ? (
+              <CircularProgress size={22} sx={{ color: "#fff" }} />
+            ) : (
+              "Add to Cart"
+            )}
           </Button>
         </Box>
       </Box>
