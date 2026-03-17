@@ -50,7 +50,7 @@ const Navbar = () => {
   const navLinks = [
     { title: t("Home"), path: "/" },
     { title: t("Shop"), path: "/shop" },
-    { title: t("Product"), path: "/product" },
+    { title: t("Profile"), path: "/Profile" },
     { title: t("Contact"), path: "/contact" },
   ];
 
@@ -120,9 +120,7 @@ const Navbar = () => {
               {token && (
                 <>
                   {/* 1. Logout */}
-                  <Link to="/Profile" style={{ textDecoration: "none", color: "inherit" }}>
-                    <Box sx={{ px: 1, ...hoverStyle }}>Profile</Box>
-                  </Link>
+                
 
                   {/* 2. Cart */}
                   <IconButton component={Link} to="/cart" sx={{ color: "text.primary", ...hoverStyle }}>
@@ -225,9 +223,7 @@ const Navbar = () => {
                   </Select>
                 </ListItem>
 
-                <ListItem component={Link} to="/Profile" onClick={() => setOpenDrawer(false)}>
-                  <ListItemText primary="Profile" />
-                </ListItem>
+               
               </>
             )}
           </List>
