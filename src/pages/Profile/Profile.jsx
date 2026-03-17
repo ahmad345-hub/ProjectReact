@@ -11,16 +11,18 @@ import {
   IconButton,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useTranslation } from "react-i18next";
 
 export default function Profile() {
+  const { t } = useTranslation(); // ✅ استدعاء الترجمة
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const sidebarWidth = 250; // width of the sidebar
+  const sidebarWidth = 250; // عرض الشريط الجانبي
 
   const sidebarItems = [
-    { label: "Info", to: "" },
-    { label: "Orders", to: "ProfileOrders" },
+    { label: t("Info"), to: "" }, // ترجمة Info
+    { label: t("Orders"), to: "ProfileOrders" }, // ترجمة Orders
   ];
 
   const handleDrawerToggle = () => {
@@ -30,7 +32,7 @@ export default function Profile() {
   const drawer = (
     <Box sx={{ width: sidebarWidth }}>
       <Typography variant="h6" sx={{ p: 2 }}>
-        My Profile
+        {t("My Profile")} {/* ترجمة My Profile */}
       </Typography>
       <List>
         {sidebarItems.map((item) => (
@@ -49,9 +51,8 @@ export default function Profile() {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-      {/* Main Container below Navbar */}
       <Container maxWidth="lg" sx={{ mt: 6, mb: 6, flexGrow: 1 }}>
-        {/* Menu Button for mobile */}
+        {/* زر القائمة للجوال */}
         <IconButton
           color="inherit"
           edge="start"
@@ -62,7 +63,7 @@ export default function Profile() {
         </IconButton>
 
         <Box sx={{ display: "flex" }}>
-          {/* Sidebar for desktop */}
+          {/* Sidebar لأجهزة سطح المكتب */}
           <Box
             sx={{
               display: { xs: "none", md: "block" },
@@ -73,7 +74,7 @@ export default function Profile() {
             {drawer}
           </Box>
 
-          {/* Sidebar Drawer for mobile */}
+          {/* Sidebar Drawer للجوال */}
           <Drawer
             variant="temporary"
             open={mobileOpen}
@@ -87,17 +88,17 @@ export default function Profile() {
             {drawer}
           </Drawer>
 
-          {/* Main content */}
+          {/* المحتوى الرئيسي */}
           <Box
             component="main"
             sx={{
               flexGrow: 1,
               p: 3,
-              ml: { md: 3 }, // margin-left to separate from sidebar
+              ml: { md: 3 }, // مسافة عن الشريط الجانبي
               bgcolor: "background.paper",
               borderRadius: 2,
               boxShadow: 2,
-              minHeight: "70vh", // ensures space above footer
+              minHeight: "70vh",
             }}
           >
             <Outlet />
