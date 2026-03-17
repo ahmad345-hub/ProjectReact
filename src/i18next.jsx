@@ -22,6 +22,9 @@ i18n
           "Clear Cart": "Clear Cart",
           "Process to Checkout": "Process to Checkout",
           "Our Categories": "Our Categories",
+          "Loading Categories": "Loading Categories...",
+    "Server went wrong": "Server went wrong",
+    "Show More":"Show More"
         }
       },
       ar: {
@@ -39,6 +42,9 @@ i18n
           "Clear Cart": "حذف كل السلة",
           "Process to Checkout": "الانتقال إلى الدفع",
           "Our Categories": "فئاتنا",
+           "Loading Categories": "جاري تحميل الفئات...",
+    "Server went wrong": "حدث خطأ في الخادم",
+    "Show More" :"اظهار المزيد"
         }
       }
     },
