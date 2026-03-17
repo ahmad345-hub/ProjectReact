@@ -197,6 +197,21 @@ i18n
       "unpaid": "غير مدفوع",
       "paid": "مدفوع",
       "active": "نشط",
+      "We believe in sustainable decor.": "نحن نؤمن بالديكور المستدام.",
+  "We’re passionate about life at home. Our features timeless furniture, natural fabrics and elegant design.": "نحن شغوفون بالحياة في المنزل. نقدم أثاثًا خالداً، أقمشة طبيعية وتصميم أنيق.",
+  "About Us": "من نحن",
+  "Shop Now →": "تسوق الآن →",
+  "ADDRESS": "العنوان",
+  "CONTACT": "الهاتف",
+  "EMAIL": "البريد الإلكتروني",
+  "Your Name": "اسمك",
+  "Email Address": "البريد الإلكتروني",
+  "Subject": "الموضوع",
+  "Message": "الرسالة",
+  "Send Message": "إرسال الرسالة",
+  "Available for all orders": "متاح لجميع الطلبات",
+  "3legant is a gift & decoration store focused on modern lifestyle and comfort with high quality products.": "3legant هو متجر للهدايا والديكور يركز على أسلوب حياة حديث وراحة مع منتجات عالية الجودة.",
+  
         }
       }
     },
