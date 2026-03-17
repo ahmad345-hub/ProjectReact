@@ -1,48 +1,42 @@
-import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React from "react";
+import { useParams } from "react-router-dom";
 import useProduct from "../../hooks/useproduct";
 import useAddtoCart from "../../hooks/useAddtoCart";
 import { useTranslation } from "react-i18next";
+import useAuthStore from "../../store/useAuthStore";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import "animate.css"; // 🔥 مهم، نضيف animate.css
 import {
   Box,
   Typography,
   Button,
   CircularProgress,
   useTheme,
-  Snackbar,
-  Alert,
 } from "@mui/material";
+
+const MySwal = withReactContent(Swal);
 
 export default function ProductDetails() {
   const { t } = useTranslation();
   const { id } = useParams();
   const theme = useTheme();
-  const navigate = useNavigate();
 
   const { data, isLoading, isError, error } = useProduct(id);
   const { mutate, isPending } = useAddtoCart();
 
-  // حالة الرسالة للمستخدم
-  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const token = useAuthStore((state) => state.token);
 
   if (isLoading)
     return (
-      <Typography
-        variant="h5"
-        align="center"
-        sx={{ mt: 10, color: theme.palette.text.primary }}
-      >
+      <Typography variant="h5" align="center" sx={{ mt: 10, color: theme.palette.text.primary }}>
         {t("Loading...")}
       </Typography>
     );
 
   if (isError)
     return (
-      <Typography
-        variant="h5"
-        align="center"
-        sx={{ mt: 10, color: theme.palette.error.main }}
-      >
+      <Typography variant="h5" align="center" sx={{ mt: 10, color: theme.palette.error.main }}>
         {error.message}
       </Typography>
     );
@@ -50,20 +44,30 @@ export default function ProductDetails() {
   const product = data.response;
 
   const handleAddToCart = () => {
-    const token = localStorage.getItem("token");
-
     if (!token) {
-      setOpenSnackbar(true); // عرض الرسالة للمستخدم
+      MySwal.fire({
+        title: t("Login Required"),
+        text: t("You must login first to add items to cart"),
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: t("Login"),
+        cancelButtonText: t("Cancel"),
+        reverseButtons: true,
+        showClass: {
+          popup: "animate__animated animate__fadeInDown animate__faster",
+        },
+        hideClass: {
+          popup: "animate__animated animate__fadeOutUp animate__faster",
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = "/login";
+        }
+      });
       return;
     }
 
-    // إذا مسجل دخول → أضف للعربة
     mutate({ ProductId: product.id, Count: 1 });
-  };
-
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
-    navigate("/login"); // بعد إغلاق الرسالة يوديه للـ login
   };
 
   return (
@@ -76,15 +80,7 @@ export default function ProductDetails() {
         color: theme.palette.text.primary,
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: { xs: "column", md: "row" },
-          gap: 4,
-          maxWidth: 1200,
-          mx: "auto",
-        }}
-      >
+      <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 4, maxWidth: 1200, mx: "auto" }}>
         {/* الصورة */}
         <Box
           sx={{
@@ -105,15 +101,8 @@ export default function ProductDetails() {
             component="img"
             src={product.image}
             alt={product.name || t("No Name")}
-            sx={{
-              maxHeight: 400,
-              maxWidth: "100%",
-              objectFit: "contain",
-            }}
-            onError={(e) =>
-              (e.target.src =
-                "https://via.placeholder.com/400x400?text=" + t("No Image"))
-            }
+            sx={{ maxHeight: 400, maxWidth: "100%", objectFit: "contain" }}
+            onError={(e) => (e.target.src = "https://via.placeholder.com/400x400?text=" + t("No Image"))}
           />
         </Box>
 
@@ -127,12 +116,7 @@ export default function ProductDetails() {
             ⭐ {product.rate}
           </Typography>
 
-          <Typography
-            variant="h5"
-            fontWeight="bold"
-            mb={3}
-            sx={{ color: theme.palette.success.main }}
-          >
+          <Typography variant="h5" fontWeight="bold" mb={3} sx={{ color: theme.palette.success.main }}>
             ${product.price}
           </Typography>
 
@@ -145,36 +129,12 @@ export default function ProductDetails() {
             color="primary"
             onClick={handleAddToCart}
             disabled={isPending}
-            sx={{
-              width: { xs: "100%", md: "50%" },
-              py: 1.5,
-              borderRadius: 2,
-            }}
+            sx={{ width: { xs: "100%", md: "50%" }, py: 1.5, borderRadius: 2 }}
           >
-            {isPending ? (
-              <CircularProgress size={22} sx={{ color: "#fff" }} />
-            ) : (
-              t("Add to Cart")
-            )}
+            {isPending ? <CircularProgress size={22} sx={{ color: "#fff" }} /> : t("Add to Cart")}
           </Button>
         </Box>
       </Box>
-
-      {/* Snackbar للرسالة */}
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={3000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity="warning"
-          sx={{ width: "100%" }}
-        >
-          {t("You must login first to add items to cart")}
-        </Alert>
-      </Snackbar>
     </Box>
   );
 }
