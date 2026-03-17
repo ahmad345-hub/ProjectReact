@@ -228,6 +228,16 @@ i18n
           "Continue Shopping": "تكملة التسوق",
           "Loading...": "جاري التحميل...",
           "Server went wrong": "حدث خطأ في الخادم",
+          "Checkout": "الدفع",
+          "Quantity": "الكمية",
+          "Payment Method": "طريقة الدفع",
+          "Visa Card": "بطاقة فيزا",
+          "Cash": "نقدًا",
+          "Pay Now": "الدفع الآن",
+          "Processing...": "جارٍ المعالجة...",
+          // General
+          "Loading...": "جاري التحميل...",
+          "Server went wrong": "حدث خطأ في الخادم",
   
 
         }

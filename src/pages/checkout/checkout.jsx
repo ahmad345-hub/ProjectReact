@@ -1,9 +1,11 @@
+import React, { useState } from "react";
+import { Box, Typography, Button, MenuItem, Select, FormControl, InputLabel } from "@mui/material";
 import usecart from "../../hooks/usecart";
 import useCheckOut from "../../hooks/useCheckOut";
-import { useState } from "react";
-import { Box, Typography, Button, MenuItem, Select, FormControl, InputLabel } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 export default function Checkout() {
+  const { t } = useTranslation();
   const { data, isLoading, isError, error } = usecart();
   const { mutate, isPending } = useCheckOut();
   const [paymentMethod, setPaymentMethod] = useState("Cash");
@@ -11,14 +13,14 @@ export default function Checkout() {
   if (isLoading)
     return (
       <Typography variant="h5" textAlign="center" mt={10}>
-        Loading...
+        {t("Loading...")}
       </Typography>
     );
 
   if (isError)
     return (
       <Typography variant="h5" textAlign="center" mt={10} color="error">
-        Error: {error.message}
+        {t("Server went wrong")}: {error.message}
       </Typography>
     );
 
@@ -28,14 +30,14 @@ export default function Checkout() {
         maxWidth: "5xl",
         mx: "auto",
         p: 3,
-        pt: 12, // مسافة للـ Navbar
+        pt: 12,
         bgcolor: "background.default",
         color: "text.primary",
         minHeight: "100vh",
       }}
     >
       <Typography variant="h3" fontWeight="bold" mb={6} textAlign="center">
-        Checkout
+        {t("Checkout")}
       </Typography>
 
       <Box
@@ -61,8 +63,12 @@ export default function Checkout() {
               <Typography variant="h6" fontWeight={600}>
                 {item.productName}
               </Typography>
-              <Typography color="text.secondary">Price: ${item.price}</Typography>
-              <Typography color="text.secondary">Quantity: {item.count}</Typography>
+              <Typography color="text.secondary">
+                {t("Price")}: ${item.price}
+              </Typography>
+              <Typography color="text.secondary">
+                {t("Quantity")}: {item.count}
+              </Typography>
             </Box>
             <Typography variant="h6" fontWeight={700}>
               ${item.totalPrice}
@@ -80,7 +86,7 @@ export default function Checkout() {
           }}
         >
           <Typography variant="h6" fontWeight={600}>
-            Total
+            {t("Total")}
           </Typography>
           <Typography variant="h5" fontWeight={700} color="success.main">
             ${data.cartTotal}
@@ -98,15 +104,15 @@ export default function Checkout() {
         }}
       >
         <FormControl fullWidth sx={{ minWidth: 200 }}>
-          <InputLabel id="payment-method-label">Payment Method</InputLabel>
+          <InputLabel id="payment-method-label">{t("Payment Method")}</InputLabel>
           <Select
             labelId="payment-method-label"
             value={paymentMethod}
             onChange={(e) => setPaymentMethod(e.target.value)}
-            label="Payment Method"
+            label={t("Payment Method")}
           >
-            <MenuItem value="visa">Visa Card</MenuItem>
-            <MenuItem value="Cash">Cash</MenuItem>
+            <MenuItem value="visa">{t("Visa Card")}</MenuItem>
+            <MenuItem value="Cash">{t("Cash")}</MenuItem>
           </Select>
         </FormControl>
 
@@ -125,7 +131,7 @@ export default function Checkout() {
           }}
           disabled={isPending}
         >
-          {isPending ? "Processing..." : "Pay Now"}
+          {isPending ? t("Processing...") : t("Pay Now")}
         </Button>
       </Box>
     </Box>
