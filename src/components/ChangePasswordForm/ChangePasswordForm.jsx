@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { TextField, Button, Stack } from "@mui/material";
 import useChangePassword from "../../hooks/useChangePassword";
+import { useTranslation } from "react-i18next";
 
 export default function ChangePasswordForm({ onClose }) {
+  const { t } = useTranslation();
   const changePassword = useChangePassword();
 
   const [currentPassword, setCurrentPassword] = useState("");
@@ -13,7 +15,7 @@ export default function ChangePasswordForm({ onClose }) {
     e.preventDefault();
 
     if (newPassword !== confirmNewPassword) {
-      alert("New password and confirmation do not match!");
+      alert(t("Passwords do not match!"));
       return;
     }
 
@@ -25,8 +27,8 @@ export default function ChangePasswordForm({ onClose }) {
       },
       {
         onSuccess: () => {
-          if (onClose) onClose(); // يغلق الديالوج بعد النجاح
-          alert("Password changed successfully!");
+          if (onClose) onClose();
+          alert(t("Password changed successfully!"));
         },
       }
     );
@@ -40,7 +42,7 @@ export default function ChangePasswordForm({ onClose }) {
       sx={{ maxWidth: 400 }}
     >
       <TextField
-        label="Current Password"
+        label={t("Current Password")}
         type="password"
         value={currentPassword}
         onChange={(e) => setCurrentPassword(e.target.value)}
@@ -48,7 +50,7 @@ export default function ChangePasswordForm({ onClose }) {
         required
       />
       <TextField
-        label="New Password"
+        label={t("New Password")}
         type="password"
         value={newPassword}
         onChange={(e) => setNewPassword(e.target.value)}
@@ -56,7 +58,7 @@ export default function ChangePasswordForm({ onClose }) {
         required
       />
       <TextField
-        label="Confirm New Password"
+        label={t("Confirm New Password")}
         type="password"
         value={confirmNewPassword}
         onChange={(e) => setConfirmNewPassword(e.target.value)}
@@ -69,7 +71,7 @@ export default function ChangePasswordForm({ onClose }) {
         type="submit"
         disabled={changePassword.isPending}
       >
-        Change Password
+        {t("Change Password")}
       </Button>
     </Stack>
   );

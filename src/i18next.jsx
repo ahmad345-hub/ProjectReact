@@ -290,7 +290,21 @@ i18n
       "New Password": "كلمة المرور الجديدة",
       "Resetting...": "جاري إعادة التعيين...",
       "Reset Password": "إعادة تعيين كلمة المرور",
+"Current Password": "كلمة المرور الحالية",
+  "New Password": "كلمة المرور الجديدة",
+  "Confirm New Password": "تأكيد كلمة المرور الجديدة",
+  "Change Password": "تغيير كلمة المرور",
+  "Passwords do not match!": "كلمتا المرور غير متطابقتين!",
+  "Password changed successfully!": "تم تغيير كلمة المرور بنجاح!",
+  "New Email": "البريد الإلكتروني الجديد",
+  "Change Email": "تغيير البريد الإلكتروني",
+  "Email changed successfully!": "تم تغيير البريد الإلكتروني بنجاح!",
+  "Something went wrong": "حدث خطأ ما",
 
+  "Email": "البريد الإلكتروني",
+  "Update": "تحديث",
+  "Profile updated successfully!": "تم تحديث الملف الشخصي بنجاح!",
+  "Something went wrong": "حدث خطأ ما",
 
   
 
