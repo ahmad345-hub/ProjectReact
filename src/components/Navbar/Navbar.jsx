@@ -117,57 +117,66 @@ const Navbar = () => {
           {/* Desktop Right Section */}
           {!isMobile && (
             <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+              {/* Cart يظهر فقط إذا كان مسجل دخول */}
               {token && (
-                <>
-                  {/* Cart */}
-                  <IconButton component={Link} to="/cart" sx={{ color: "text.primary", ...hoverStyle }}>
-                    <Badge badgeContent={cartCount} color="error">
-                      <ShoppingCartIcon />
-                    </Badge>
-                  </IconButton>
-
-                  {/* Theme */}
-                  <IconButton
-                    onClick={toggleTheme}
-                    sx={{ color: "text.primary", backgroundColor: "action.hover", "&:hover": { backgroundColor: "action.selected" }, borderRadius: "8px" }}
-                  >
-                    {mode === "dark" ? <LightModeIcon /> : <DarkModeIcon />}
-                  </IconButton>
-
-                  {/* Language */}
-                  <Select
-                    value={i18n.language}
-                    onChange={(e) => changeLanguage(e.target.value)}
-                    size="small"
-                    sx={{
-                      color: "text.primary",
-                      minWidth: 100,
-                      ".MuiOutlinedInput-notchedOutline": { borderColor: "divider" },
-                      "& .MuiSvgIcon-root": { color: "text.primary" },
-                      backgroundColor: "action.hover",
-                      borderRadius: "8px",
-                    }}
-                  >
-                    <MenuItem value="en">English</MenuItem>
-                    <MenuItem value="ar">العربية</MenuItem>
-                  </Select>
-
-                  <Button onClick={handleLogout} sx={{ color: "text.primary", ...hoverStyle }}>
-                    {t("Logout")}
-                  </Button>
-                </>
+                <IconButton component={Link} to="/cart" sx={{ color: "text.primary", ...hoverStyle }}>
+                  <Badge badgeContent={cartCount} color="error">
+                    <ShoppingCartIcon />
+                  </Badge>
+                </IconButton>
               )}
+
+              {/* Theme toggle يظهر دائمًا */}
+              <IconButton
+                onClick={toggleTheme}
+                sx={{ color: "text.primary", backgroundColor: "action.hover", "&:hover": { backgroundColor: "action.selected" }, borderRadius: "8px" }}
+              >
+                {mode === "dark" ? <LightModeIcon /> : <DarkModeIcon />}
+              </IconButton>
+
+              {/* Language select يظهر دائمًا */}
+              <Select
+                value={i18n.language}
+                onChange={(e) => changeLanguage(e.target.value)}
+                size="small"
+                sx={{
+                  color: "text.primary",
+                  minWidth: 100,
+                  ".MuiOutlinedInput-notchedOutline": { borderColor: "divider" },
+                  "& .MuiSvgIcon-root": { color: "text.primary" },
+                  backgroundColor: "action.hover",
+                  borderRadius: "8px",
+                }}
+              >
+                <MenuItem value="en">English</MenuItem>
+                <MenuItem value="ar">العربية</MenuItem>
+              </Select>
+
+              {/* Logout يظهر دائمًا */}
+              <Button onClick={handleLogout} sx={{ color: "text.primary", ...hoverStyle }}>
+                {t("Logout")}
+              </Button>
             </Box>
           )}
 
           {/* Mobile Section */}
           {isMobile && (
             <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+              {/* Cart يظهر فقط إذا كان مسجل دخول */}
               {token && (
-                <Button onClick={handleLogout} sx={{ color: "text.primary" }}>
-                  {t("Logout")}
-                </Button>
+                <IconButton component={Link} to="/cart">
+                  <Badge badgeContent={cartCount} color="error">
+                    <ShoppingCartIcon />
+                  </Badge>
+                </IconButton>
               )}
+
+              {/* Logout يظهر دائمًا */}
+              <Button onClick={handleLogout} sx={{ color: "text.primary" }}>
+                {t("Logout")}
+              </Button>
+
+              {/* زر القائمة */}
               <IconButton
                 onClick={() => setOpenDrawer(true)}
                 sx={{ color: "text.primary", backgroundColor: "action.hover", "&:hover": { backgroundColor: "action.selected" }, borderRadius: "8px" }}
@@ -197,26 +206,34 @@ const Navbar = () => {
 
             <Divider sx={{ my: 1 }} />
 
+            {/* Cart يظهر فقط إذا كان مسجل دخول */}
             {token && (
-              <>
-                <ListItem component={Link} to="/cart" onClick={() => setOpenDrawer(false)}>
-                  <ListItemText primary={t("Cart")} />
-                </ListItem>
-
-                <ListItem>
-                  <IconButton onClick={toggleTheme} sx={{ width: "100%" }}>
-                    {mode === "dark" ? <LightModeIcon /> : <DarkModeIcon />}
-                  </IconButton>
-                </ListItem>
-
-                <ListItem>
-                  <Select value={i18n.language} onChange={(e) => changeLanguage(e.target.value)} fullWidth size="small">
-                    <MenuItem value="en">English</MenuItem>
-                    <MenuItem value="ar">العربية</MenuItem>
-                  </Select>
-                </ListItem>
-              </>
+              <ListItem component={Link} to="/cart" onClick={() => setOpenDrawer(false)}>
+                <ListItemText primary={t("Cart")} />
+              </ListItem>
             )}
+
+            {/* Theme toggle يظهر دائمًا */}
+            <ListItem>
+              <IconButton onClick={toggleTheme} sx={{ width: "100%" }}>
+                {mode === "dark" ? <LightModeIcon /> : <DarkModeIcon />}
+              </IconButton>
+            </ListItem>
+
+            {/* Language select يظهر دائمًا */}
+            <ListItem>
+              <Select value={i18n.language} onChange={(e) => changeLanguage(e.target.value)} fullWidth size="small">
+                <MenuItem value="en">English</MenuItem>
+                <MenuItem value="ar">العربية</MenuItem>
+              </Select>
+            </ListItem>
+
+            {/* Logout يظهر دائمًا */}
+            <ListItem>
+              <Button onClick={handleLogout} sx={{ width: "100%", color: "text.primary" }}>
+                {t("Logout")}
+              </Button>
+            </ListItem>
           </List>
         </Box>
       </Drawer>
