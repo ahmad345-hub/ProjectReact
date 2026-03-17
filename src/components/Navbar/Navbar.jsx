@@ -38,13 +38,13 @@ const Navbar = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  const token = useAuthStore((state) => state.token);
+  const token = useAuthStore((state) => state.token); // reactive token
   const logout = useAuthStore((state) => state.logout);
 
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const { data } = usecart();
+  const { data } = usecart(token); // refresh cart when token changes
   const cartCount = data?.items?.reduce((total, item) => total + item.count, 0) || 0;
 
   const navLinks = [

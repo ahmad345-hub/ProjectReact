@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axiosinstance from "../../../api/axiosinstance.js";
 import { useTranslation } from "react-i18next";
+import useAuthStore from "../../../store/useAuthStore";
 
 const schema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
@@ -25,6 +26,9 @@ const Login = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
 
+  // 🔹 استدعاء setToken من store
+  const setToken = useAuthStore((state) => state.setToken);
+
   const onSubmit = async (values) => {
     try {
       setErrorMsg("");
@@ -34,6 +38,11 @@ const Login = () => {
 
       if (response.status === 200) {
         const token = response.data.accessToken;
+
+        // 🔹 حفظ token في Zustand
+        setToken(token);
+
+        // 🔹 حفظ token في localStorage (اختياري)
         localStorage.setItem("token", token);
 
         setSuccessMsg(t("Login successful 👁️ Redirecting..."));
