@@ -15,16 +15,32 @@ import {
 import { Link } from "react-router-dom";
 import useProductsOperation from "../../hooks/useProductsOperation";
 import useAddReview from "../../hooks/useAddReview";
+import useAuthStore from "../../store/useAuthStore";
+import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 
-function ProductCard({ product }) {
+// ====== ProductCard Component ======
+function ProductCard({ product = {} }) {
   const { t } = useTranslation();
   const [reviews, setReviews] = useState([]);
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
   const [showForm, setShowForm] = useState(false);
 
-  const addReview = useAddReview(product.id);
+  const addReview = useAddReview(product.id || 0);
+  const token = useAuthStore((state) => state.token);
+
+  // عند الضغط على زر "Add Review"
+  const handleAddReviewClick = () => {
+    if (!token) {
+      return Swal.fire({
+        title: t("You must login first"),
+        icon: "warning",
+        confirmButtonText: t("OK"),
+      });
+    }
+    setShowForm(true);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -34,13 +50,15 @@ function ProductCard({ product }) {
       { rating, comment },
       {
         onSuccess: () => {
-          setReviews((prev) => [
-            ...prev,
-            { id: Date.now(), rating, comment },
-          ]);
+          setReviews((prev) => [...prev, { id: Date.now(), rating, comment }]);
           setComment("");
           setRating(5);
           setShowForm(false);
+          Swal.fire({
+            title: t("Review submitted successfully"),
+            icon: "success",
+            confirmButtonText: t("OK"),
+          });
         },
       }
     );
@@ -66,39 +84,36 @@ function ProductCard({ product }) {
         >
           <img
             src={product.image || "https://via.placeholder.com/120"}
-            alt={product.name}
+            alt={product.name || t("No Name")}
             style={{ maxHeight: "100%" }}
           />
         </Box>
 
         <CardContent>
-          <Typography variant="h6">{product.name}</Typography>
+          <Typography variant="h6">{product.name || t("No Name")}</Typography>
           <Rating value={product.rate || 0} readOnly />
           <Typography color="error.main" fontWeight="bold">
-            ${product.price}
+            ${product.price || 0}
           </Typography>
         </CardContent>
 
         <Box sx={{ p: 2, display: "flex", gap: 1 }}>
           <Button
             component={Link}
-            to={`/product/${product.id}`}
+            to={`/product/${product.id || 0}`}
             variant="contained"
             fullWidth
           >
             {t("View Details")}
           </Button>
 
-          <Button
-            variant="outlined"
-            onClick={() => setShowForm(!showForm)}
-          >
+          <Button variant="outlined" onClick={handleAddReviewClick}>
             {t("Add Review")}
           </Button>
         </Box>
       </Card>
 
-      {showForm && (
+      {showForm && token && (
         <Box sx={{ mt: 2, p: 2, bgcolor: "#fafafa", borderRadius: 2 }}>
           <form onSubmit={handleSubmit}>
             <Rating
@@ -145,14 +160,12 @@ function ProductCard({ product }) {
   );
 }
 
+// ====== Shop Page ======
 export default function Shop() {
   const { t } = useTranslation();
-  const {
-    data: products = [],
-    isLoading,
-    isError,
-    error,
-  } = useProductsOperation();
+  const { data: products = [], isLoading, isError, error } =
+    useProductsOperation();
+  const token = useAuthStore((state) => state.token);
 
   const [category, setCategory] = useState("all");
   const [sortBy, setSortBy] = useState("price");
@@ -161,8 +174,12 @@ export default function Shop() {
 
   const displayedProducts = useMemo(() => {
     let result = [...products];
-    if (search) result = result.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()));
-    if (category !== "all") result = result.filter((p) => p.category === category);
+    if (search)
+      result = result.filter((p) =>
+        p.name.toLowerCase().includes(search.toLowerCase())
+      );
+    if (category !== "all")
+      result = result.filter((p) => p.category === category);
     result.sort((a, b) => {
       if (sortBy === "price") return ascending ? a.price - b.price : b.price - a.price;
       if (sortBy === "rate") return ascending ? a.rate - b.rate : b.rate - a.rate;
@@ -171,8 +188,18 @@ export default function Shop() {
     return result;
   }, [products, category, sortBy, ascending, search]);
 
-  if (isLoading) return <Typography textAlign="center" mt={10}>{t("Loading products...")}</Typography>;
-  if (isError) return <Typography textAlign="center" mt={10} color="error">{error?.message || t("Error loading products")}</Typography>;
+  if (isLoading)
+    return (
+      <Typography textAlign="center" mt={10}>
+        {t("Loading products...")}
+      </Typography>
+    );
+  if (isError)
+    return (
+      <Typography textAlign="center" mt={10} color="error">
+        {error?.message || t("Error loading products")}
+      </Typography>
+    );
 
   return (
     <Box sx={{ px: 6, pt: 12, pb: 6, minHeight: "100vh" }}>
@@ -190,23 +217,43 @@ export default function Shop() {
       <Grid container spacing={4}>
         <Grid item xs={12} md={3}>
           <Paper sx={{ p: 3, borderRadius: 3 }}>
-            <Typography variant="h6" mb={2}>{t("Filters")}</Typography>
+            <Typography variant="h6" mb={2}>
+              {t("Filters")}
+            </Typography>
 
-            <Typography variant="subtitle2" mb={1}>{t("Categories")}</Typography>
-            <Select fullWidth value={category} onChange={(e) => setCategory(e.target.value)} sx={{ mb: 2 }}>
+            <Typography variant="subtitle2" mb={1}>
+              {t("Categories")}
+            </Typography>
+            <Select
+              fullWidth
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              sx={{ mb: 2 }}
+            >
               <MenuItem value="all">{t("All Categories")}</MenuItem>
               <MenuItem value="mobiles">{t("Mobiles")}</MenuItem>
               <MenuItem value="clothes">{t("Clothes")}</MenuItem>
               <MenuItem value="electronics">{t("Electronics")}</MenuItem>
             </Select>
 
-            <Typography variant="subtitle2" mb={1}>{t("Sort By")}</Typography>
-            <Select fullWidth value={sortBy} onChange={(e) => setSortBy(e.target.value)} sx={{ mb: 2 }}>
+            <Typography variant="subtitle2" mb={1}>
+              {t("Sort By")}
+            </Typography>
+            <Select
+              fullWidth
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              sx={{ mb: 2 }}
+            >
               <MenuItem value="price">{t("Price")}</MenuItem>
               <MenuItem value="rate">{t("Rating")}</MenuItem>
             </Select>
 
-            <Select fullWidth value={ascending} onChange={(e) => setAscending(e.target.value === "true")}>
+            <Select
+              fullWidth
+              value={ascending}
+              onChange={(e) => setAscending(e.target.value === "true")}
+            >
               <MenuItem value="true">{t("Ascending")}</MenuItem>
               <MenuItem value="false">{t("Descending")}</MenuItem>
             </Select>
@@ -215,7 +262,9 @@ export default function Shop() {
 
         <Grid item xs={12} md={9}>
           <Grid container spacing={3}>
-            {displayedProducts.length === 0 && <Typography mt={5}>{t("No products found")}</Typography>}
+            {displayedProducts.length === 0 && (
+              <Typography mt={5}>{t("No products found")}</Typography>
+            )}
             {displayedProducts.map((product) => (
               <Grid item xs={12} sm={6} md={4} key={product.id}>
                 <ProductCard product={product} />
