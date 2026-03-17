@@ -1,20 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import useProducts from "../../hooks/use Products";
-
-import {
-  Container,
-  Grid,
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-  Box,
-  CircularProgress,
-  Alert,
-} from "@mui/material";
+import { Container, Grid, Card, CardContent, CardMedia, Typography, Box, CircularProgress, Alert } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 export default function Products() {
+  const { t } = useTranslation();
   const { data, isLoading, isError, error } = useProducts();
 
   if (isLoading) {
@@ -29,7 +20,7 @@ export default function Products() {
     return (
       <Container sx={{ mt: 10 }}>
         <Alert severity="error">
-          {error.message || "Error loading products"}
+          {t("Error loading products")}
         </Alert>
       </Container>
     );
@@ -40,14 +31,10 @@ export default function Products() {
   return (
     <Container maxWidth="lg" sx={{ py: 6 }}>
       <Typography variant="h4" fontWeight="bold" align="center" mb={6}>
-        Our Products
+        {t("Our Products")}
       </Typography>
 
-      <Grid
-        container
-        spacing={4}
-        justifyContent="space-between"
-      >
+      <Grid container spacing={4} justifyContent="space-between">
         {products.map((product) => (
           <Grid item xs={12} sm={6} md={4} key={product.id}>
             <Card
@@ -92,19 +79,14 @@ export default function Products() {
 
               <CardContent>
                 <Typography variant="h6" fontWeight={600} noWrap gutterBottom>
-                  {product.name || "No Name"}
+                  {product.name || t("No Name")}
                 </Typography>
 
                 <Typography variant="body2" color="text.secondary">
                   ⭐ {product.rate}
                 </Typography>
 
-                <Typography
-                  variant="h6"
-                  color="success.main"
-                  fontWeight="bold"
-                  mt={1}
-                >
+                <Typography variant="h6" color="success.main" fontWeight="bold" mt={1}>
                   ${product.price}
                 </Typography>
               </CardContent>

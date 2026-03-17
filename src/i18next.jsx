@@ -24,7 +24,10 @@ i18n
           "Our Categories": "Our Categories",
           "Loading Categories": "Loading Categories...",
     "Server went wrong": "Server went wrong",
-    "Show More":"Show More"
+    "Show More":"Show More",
+    "Our Products": "Our Products",
+    "Error loading products": "Error loading products",
+    "No Name": "No Name"
         }
       },
       ar: {
@@ -44,7 +47,10 @@ i18n
           "Our Categories": "فئاتنا",
            "Loading Categories": "جاري تحميل الفئات...",
     "Server went wrong": "حدث خطأ في الخادم",
-    "Show More" :"اظهار المزيد"
+    "Show More" :"اظهار المزيد",
+    "Our Products" : "منتجاتنا",
+    "Error loading products": "خطأ في تحميل المنتجات",
+    "No Name": "بدون اسم"
         }
       }
     },
