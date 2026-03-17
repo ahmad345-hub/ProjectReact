@@ -219,6 +219,16 @@ i18n
   "Login Required": "تسجيل الدخول مطلوب",
   "You must login first to add items to cart": "يجب عليك تسجيل الدخول أولاً لإضافة منتجات إلى السلة",
   "Go to Login": "اذهب لتسجيل الدخول",
+  "Shopping Cart": "سلة التسوق",
+          "Price": "السعر",
+          "Remove": "إزالة",
+          "Total": "المجموع",
+          "Clear Cart": "حذف كل السلة",
+          "Process to Checkout": "الانتقال إلى الدفع",
+          "Continue Shopping": "تكملة التسوق",
+          "Loading...": "جاري التحميل...",
+          "Server went wrong": "حدث خطأ في الخادم",
+  
 
         }
       }
