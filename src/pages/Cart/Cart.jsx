@@ -23,6 +23,7 @@ export default function Cart() {
   if (isError)
     return <Typography variant="h4" textAlign="center" mt={10} color="error">{t("Server went wrong")}: {error.message}</Typography>;
 
+  // تأكيد حذف عنصر واحد
   const handleRemove = (productId) => {
     Swal.fire({
       title: t("Are you sure you want to remove this item?"),
@@ -36,6 +37,28 @@ export default function Cart() {
         Swal.fire({
           title: t("Removed!"),
           text: t("The item has been removed from your cart."),
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      }
+    });
+  };
+
+  // تأكيد مسح كل العربة
+  const handleClearCart = () => {
+    Swal.fire({
+      title: t("Are you sure you want to clear the cart?"),
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: t("Yes, clear it"),
+      cancelButtonText: t("Cancel"),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        clearCart();
+        Swal.fire({
+          title: t("Cleared!"),
+          text: t("All items have been removed from your cart."),
           icon: "success",
           timer: 1500,
           showConfirmButton: false,
@@ -112,7 +135,7 @@ export default function Cart() {
             variant="contained"
             color="secondary"
             disabled={isClearingCart}
-            onClick={() => clearCart()}
+            onClick={handleClearCart}
           >
             {t("Clear Cart")}
           </Button>
