@@ -34,7 +34,15 @@ i18n
           "Table Lamp": "Table Lamp",
           "Beige Table Lamp": "Beige Table Lamp",
           "Bamboo Basket": "Bamboo Basket",
-          "Twister": "Twister"
+          "Twister": "Twister",
+          "Free Shipping": "Free Shipping",
+      "Order above $200": "Order above $200",
+      "Money-back": "Money-back",
+      "30 days guarantee": "30 days guarantee",
+      "Secure Payments": "Secure Payments",
+      "Secured by Stripe": "Secured by Stripe",
+      "24/7 Support": "24/7 Support",
+      "Phone and Email support": "Phone and Email support",
         }
       },
       ar: {
@@ -64,7 +72,15 @@ i18n
           "Table Lamp": "مصباح طاولة",
           "Beige Table Lamp": "مصباح طاولة بيج",
           "Bamboo Basket": "سلة خيزران",
-          "Twister": "تويستر"
+          "Twister": "تويستر",
+           "Free Shipping": "شحن مجاني",
+      "Order above $200": "للطلبات فوق 200 دولار",
+      "Money-back": "استرجاع المال",
+      "30 days guarantee": "ضمان 30 يوم",
+      "Secure Payments": "دفعات آمنة",
+      "Secured by Stripe": "مؤمن بواسطة Stripe",
+      "24/7 Support": "دعم 24/7",
+      "Phone and Email support": "الدعم عبر الهاتف والبريد الإلكتروني"
         }
       }
     },

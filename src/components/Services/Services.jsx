@@ -1,8 +1,10 @@
 import React from "react";
 import { Box, Typography, useTheme } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 export default function Services() {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   const services = [
     { icon: "🚚", title: "Free Shipping", desc: "Order above $200" },
@@ -41,10 +43,10 @@ export default function Services() {
             <Typography variant="h3">{service.icon}</Typography>
             <Box>
               <Typography variant="h6" fontWeight={600} sx={{ color: "text.primary" }}>
-                {service.title}
+                {t(service.title)}
               </Typography>
               <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                {service.desc}
+                {t(service.desc)}
               </Typography>
             </Box>
           </Box>
