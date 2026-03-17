@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 import sof from "../../assets/sof.png";
 import lamp1 from "../../assets/lamp1.png";
@@ -9,6 +10,7 @@ import twister from "../../assets/twister.png";
 
 export default function NewArrival() {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   const products = [
     { id: 1, name: "Loveseat Sofa", price: 199, oldPrice: 400, image: sof },
@@ -52,7 +54,7 @@ export default function NewArrival() {
         mb={4}
         sx={{ color: "text.primary" }}
       >
-        New Arrivals
+        {t("New Arrivals")}
       </Typography>
 
       <Box
@@ -68,7 +70,7 @@ export default function NewArrival() {
             key={product.id}
             sx={{
               minWidth: { xs: 220, sm: 250, md: 260 },
-              backgroundColor: "background.paper", // يتغير حسب الثيم
+              backgroundColor: "background.paper",
               p: 2,
               borderRadius: 2,
               boxShadow: 3,
@@ -98,7 +100,7 @@ export default function NewArrival() {
                   fontSize: "0.7rem",
                 }}
               >
-                NEW
+                {t("NEW")}
               </Typography>
 
               {product.oldPrice && (
@@ -133,7 +135,7 @@ export default function NewArrival() {
               fontSize="0.9rem"
               sx={{ color: "text.primary" }}
             >
-              {product.name}
+              {t(product.name)}
             </Typography>
 
             <Typography sx={{ color: "#FFD700", fontSize: "0.8rem" }}>★★★★★</Typography>

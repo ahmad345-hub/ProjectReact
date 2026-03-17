@@ -23,11 +23,18 @@ i18n
           "Process to Checkout": "Process to Checkout",
           "Our Categories": "Our Categories",
           "Loading Categories": "Loading Categories...",
-    "Server went wrong": "Server went wrong",
-    "Show More":"Show More",
-    "Our Products": "Our Products",
-    "Error loading products": "Error loading products",
-    "No Name": "No Name"
+          "Server went wrong": "Server went wrong",
+          "Our Products": "Our Products",
+          "Error loading products": "Error loading products",
+          "No Name": "No Name",
+          "Show More": "Show More",
+          "New Arrivals": "New Arrivals",
+          "NEW": "NEW",
+          "Loveseat Sofa": "Loveseat Sofa",
+          "Table Lamp": "Table Lamp",
+          "Beige Table Lamp": "Beige Table Lamp",
+          "Bamboo Basket": "Bamboo Basket",
+          "Twister": "Twister"
         }
       },
       ar: {
@@ -45,12 +52,19 @@ i18n
           "Clear Cart": "حذف كل السلة",
           "Process to Checkout": "الانتقال إلى الدفع",
           "Our Categories": "فئاتنا",
-           "Loading Categories": "جاري تحميل الفئات...",
-    "Server went wrong": "حدث خطأ في الخادم",
-    "Show More" :"اظهار المزيد",
-    "Our Products" : "منتجاتنا",
-    "Error loading products": "خطأ في تحميل المنتجات",
-    "No Name": "بدون اسم"
+          "Loading Categories": "جاري تحميل الفئات...",
+          "Server went wrong": "حدث خطأ في الخادم",
+          "Our Products": "منتجاتنا",
+          "Error loading products": "خطأ في تحميل المنتجات",
+          "No Name": "بدون اسم",
+          "Show More": "اظهار المزيد",
+          "New Arrivals": "وصل حديثًا",
+          "NEW": "جديد",
+          "Loveseat Sofa": "أريكة لوف سيت",
+          "Table Lamp": "مصباح طاولة",
+          "Beige Table Lamp": "مصباح طاولة بيج",
+          "Bamboo Basket": "سلة خيزران",
+          "Twister": "تويستر"
         }
       }
     },
