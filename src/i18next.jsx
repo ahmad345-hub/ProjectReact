@@ -280,6 +280,16 @@ i18n
       "Code sent! Redirecting to verification...": "تم إرسال الرمز! جاري التحويل للتحقق...",
       "Remembered your password?": "هل تذكرت كلمة المرور؟",
       "© 2026 KA SHOP. All rights reserved.": "© 2026 KA SHOP. جميع الحقوق محفوظة.",
+      "Enter Verification Code": "أدخل رمز التحقق",
+      "Enter the 4-digit code sent to {{email}}.": "أدخل الرمز المكون من 4 أرقام المرسل إلى {{email}}.",
+      "Please enter the 4-digit code sent to your email.": "يرجى إدخال الرمز المكون من 4 أرقام المرسل إلى بريدك الإلكتروني.",
+      "Continue": "استمرار",
+      "© 2026 KA SHOP. All rights reserved.": "© 2026 KA SHOP. جميع الحقوق محفوظة.",
+      "Enter the code you received and set a new password.": "أدخل الكود الذي تلقيته وقم بتعيين كلمة مرور جديدة.",
+      "Code": "الكود",
+      "New Password": "كلمة المرور الجديدة",
+      "Resetting...": "جاري إعادة التعيين...",
+
   
 
         }

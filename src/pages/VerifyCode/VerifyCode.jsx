@@ -1,8 +1,11 @@
+// VerifyCode.jsx
 import React, { useState, useRef } from "react";
 import { Box, Button, Typography, Alert, AppBar, Toolbar, TextField } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function VerifyCode() {
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const email = location.state?.email || "";
@@ -18,7 +21,7 @@ export default function VerifyCode() {
     newCode[index] = value;
     setCode(newCode);
 
-    // الانتقال للحقل التالي
+    // الانتقال للحقل التالي تلقائي
     if (value && index < 3) {
       inputsRef.current[index + 1].focus();
     }
@@ -33,7 +36,7 @@ export default function VerifyCode() {
   const handleVerify = () => {
     const finalCode = code.join("");
     if (finalCode.length < 4) {
-      setErrorMsg("Please enter the 4-digit code sent to your email.");
+      setErrorMsg(t("Please enter the 4-digit code sent to your email."));
       return;
     }
     navigate("/reset-password", { state: { email, code: finalCode } });
@@ -41,6 +44,7 @@ export default function VerifyCode() {
 
   return (
     <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      {/* Navbar */}
       <AppBar position="static" sx={{ backgroundColor: "#111" }}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="h6">
@@ -49,11 +53,14 @@ export default function VerifyCode() {
         </Toolbar>
       </AppBar>
 
+      {/* Main Content */}
       <Box sx={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center", px: 2, py: 6 }}>
         <Box sx={{ width: 400, p: 4, boxShadow: 3, borderRadius: 3, bgcolor: "#fff", textAlign: "center" }}>
-          <Typography variant="h5" fontWeight="bold" mb={2}>Enter Verification Code</Typography>
+          <Typography variant="h5" fontWeight="bold" mb={2}>
+            {t("Enter Verification Code")}
+          </Typography>
           <Typography variant="body2" color="text.secondary" mb={3}>
-            Enter the 4-digit code sent to {email}.
+            {t("Enter the 4-digit code sent to {{email}}.", { email })}
           </Typography>
 
           {errorMsg && <Alert severity="error" sx={{ mb: 2 }}>{errorMsg}</Alert>}
@@ -78,14 +85,15 @@ export default function VerifyCode() {
             sx={{ mt: 2, py: 1.3, backgroundColor: "#111", "&:hover": { backgroundColor: "#000" } }}
             onClick={handleVerify}
           >
-            Continue
+            {t("Continue")}
           </Button>
         </Box>
       </Box>
 
+      {/* Footer */}
       <Box sx={{ bgcolor: "#f5f5f5", py: 3, textAlign: "center" }}>
         <Typography variant="body2" color="text.secondary">
-          © 2026 KA SHOP. All rights reserved.
+          {t("© 2026 KA SHOP. All rights reserved.")}
         </Typography>
       </Box>
     </Box>

@@ -1,9 +1,12 @@
+// ResetPassword.jsx
 import React, { useState, useEffect } from "react";
 import { Box, Button, TextField, Typography, Alert, AppBar, Toolbar } from "@mui/material";
-import useResetPassword from "../../hooks/useResetPassword.jsx";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import useResetPassword from "../../hooks/useResetPassword.jsx";
 
 export default function ResetPassword() {
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -28,10 +31,10 @@ export default function ResetPassword() {
       { email, code, newPassword },
       {
         onSuccess: () => {
-          setSuccessMsg("Password reset successful! Redirecting to login...");
+          setSuccessMsg(t("Password reset successful! Redirecting to login..."));
           setTimeout(() => navigate("/login"), 2000);
         },
-        onError: (err) => setErrorMsg(err.response?.data?.message || "Something went wrong"),
+        onError: (err) => setErrorMsg(err.response?.data?.message || t("Something went wrong")),
       }
     );
   };
@@ -45,8 +48,12 @@ export default function ResetPassword() {
             KA<Box component="span" sx={{ color: "#ffb703" }}>SHOP</Box>
           </Typography>
           <Box>
-            <Link to="/login" style={{ textDecoration: "none", color: "#fff", marginRight: 16 }}>Login</Link>
-            <Link to="/register" style={{ textDecoration: "none", color: "#fff" }}>Register</Link>
+            <Link to="/login" style={{ textDecoration: "none", color: "#fff", marginRight: 16 }}>
+              {t("Login")}
+            </Link>
+            <Link to="/register" style={{ textDecoration: "none", color: "#fff" }}>
+              {t("Register")}
+            </Link>
           </Box>
         </Toolbar>
       </AppBar>
@@ -54,9 +61,11 @@ export default function ResetPassword() {
       {/* Main Content */}
       <Box sx={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center", px: 2, py: 6 }}>
         <Box sx={{ width: 400, p: 4, boxShadow: 3, borderRadius: 3, bgcolor: "#fff" }}>
-          <Typography variant="h5" fontWeight="bold" mb={2}>Reset Password</Typography>
+          <Typography variant="h5" fontWeight="bold" mb={2}>
+            {t("Reset Password")}
+          </Typography>
           <Typography variant="body2" color="text.secondary" mb={3}>
-            Enter the code you received and set a new password.
+            {t("Enter the code you received and set a new password.")}
           </Typography>
 
           {errorMsg && <Alert severity="error" sx={{ mb: 2 }}>{errorMsg}</Alert>}
@@ -64,7 +73,7 @@ export default function ResetPassword() {
 
           {/* Email read-only */}
           <TextField
-            label="Email"
+            label={t("Email")}
             type="email"
             fullWidth
             margin="normal"
@@ -72,7 +81,7 @@ export default function ResetPassword() {
             InputProps={{ readOnly: true }}
           />
           <TextField
-            label="Code"
+            label={t("Code")}
             type="text"
             fullWidth
             margin="normal"
@@ -80,7 +89,7 @@ export default function ResetPassword() {
             onChange={(e) => setCode(e.target.value)}
           />
           <TextField
-            label="New Password"
+            label={t("New Password")}
             type="password"
             fullWidth
             margin="normal"
@@ -95,13 +104,13 @@ export default function ResetPassword() {
             onClick={handleResetPassword}
             disabled={resetPasswordMutation.isLoading}
           >
-            {resetPasswordMutation.isLoading ? "Resetting..." : "Reset Password"}
+            {resetPasswordMutation.isLoading ? t("Resetting...") : t("Reset Password")}
           </Button>
 
           <Typography variant="body2" sx={{ mt: 2, textAlign: "center" }}>
-            Remembered your password?{" "}
+            {t("Remembered your password?")}{" "}
             <Link to="/login" style={{ textDecoration: "none", fontWeight: 500 }}>
-              Login
+              {t("Login")}
             </Link>
           </Typography>
         </Box>
@@ -110,7 +119,7 @@ export default function ResetPassword() {
       {/* Footer */}
       <Box sx={{ bgcolor: "#f5f5f5", py: 3, textAlign: "center" }}>
         <Typography variant="body2" color="text.secondary">
-          © 2026 KA SHOP. All rights reserved.
+          {t("© 2026 KA SHOP. All rights reserved.")}
         </Typography>
       </Box>
     </Box>
