@@ -101,6 +101,7 @@ i18n
       "unpaid": "unpaid",
       "paid": "paid",
       "active": "active",
+      "ADD TO CART" :"ADD TO CART" ,
         }
       },
       ar: {
@@ -211,7 +212,14 @@ i18n
   "Send Message": "إرسال الرسالة",
   "Available for all orders": "متاح لجميع الطلبات",
   "3legant is a gift & decoration store focused on modern lifestyle and comfort with high quality products.": "3legant هو متجر للهدايا والديكور يركز على أسلوب حياة حديث وراحة مع منتجات عالية الجودة.",
-  
+  "Loading...": "جاري التحميل...",
+  "No Name": "بدون اسم",
+  "No Image": "لا توجد صورة",
+  "Add to Cart": "أضف إلى السلة",
+  "Login Required": "تسجيل الدخول مطلوب",
+  "You must login first to add items to cart": "يجب عليك تسجيل الدخول أولاً لإضافة منتجات إلى السلة",
+  "Go to Login": "اذهب لتسجيل الدخول",
+
         }
       }
     },

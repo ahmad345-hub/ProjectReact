@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import useProduct from "../../hooks/useproduct";
 import useAddtoCart from "../../hooks/useAddtoCart";
 import Swal from "sweetalert2";
+import { useTranslation } from "react-i18next";
 import {
   Box,
   Typography,
@@ -12,6 +13,7 @@ import {
 } from "@mui/material";
 
 export default function ProductDetails() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const theme = useTheme();
   const navigate = useNavigate();
@@ -26,7 +28,7 @@ export default function ProductDetails() {
         align="center"
         sx={{ mt: 10, color: theme.palette.text.primary }}
       >
-        Loading...
+        {t("Loading...")}
       </Typography>
     );
 
@@ -49,9 +51,9 @@ export default function ProductDetails() {
     if (!token) {
       Swal.fire({
         icon: "warning",
-        title: "Login Required",
-        text: "You must login first to add items to cart",
-        confirmButtonText: "Go to Login",
+        title: t("Login Required"),
+        text: t("You must login first to add items to cart"),
+        confirmButtonText: t("Go to Login"),
         confirmButtonColor: "#1976d2",
       }).then((result) => {
         if (result.isConfirmed) {
@@ -71,7 +73,7 @@ export default function ProductDetails() {
         px: { xs: 3, md: 6 },
         py: { xs: 6, md: 10 },
         backgroundColor: theme.palette.background.default,
-        minHeight: "calc(100vh - 64px)", // تحت الناف بار
+        minHeight: "calc(100vh - 64px)",
         color: theme.palette.text.primary,
       }}
     >
@@ -84,7 +86,7 @@ export default function ProductDetails() {
           mx: "auto",
         }}
       >
-        {/* Image */}
+        {/* الصورة */}
         <Box
           sx={{
             flex: 1,
@@ -104,7 +106,7 @@ export default function ProductDetails() {
           <Box
             component="img"
             src={product.image}
-            alt={product.name || "Product"}
+            alt={product.name || t("No Name")}
             sx={{
               maxHeight: 400,
               maxWidth: "100%",
@@ -112,15 +114,15 @@ export default function ProductDetails() {
             }}
             onError={(e) =>
               (e.target.src =
-                "https://via.placeholder.com/400x400?text=No+Image")
+                "https://via.placeholder.com/400x400?text=" + t("No Image"))
             }
           />
         </Box>
 
-        {/* Info */}
+        {/* المعلومات */}
         <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
           <Typography variant="h4" fontWeight="bold" mb={2}>
-            {product.name || "No Name"}
+            {product.name || t("No Name")}
           </Typography>
 
           <Typography variant="body1" mb={1}>
@@ -154,7 +156,7 @@ export default function ProductDetails() {
             {isPending ? (
               <CircularProgress size={22} sx={{ color: "#fff" }} />
             ) : (
-              "Add to Cart"
+              t("Add to Cart")
             )}
           </Button>
         </Box>
