@@ -107,7 +107,12 @@ const Navbar = () => {
           {!isMobile && (
             <Box sx={{ display: "flex", gap: 2, flexGrow: 1, justifyContent: "center" }}>
               {navLinks.map((link) => (
-                <Button key={link.title} component={Link} to={link.path} sx={{ color: "text.primary", textTransform: "none", ...hoverStyle }}>
+                <Button
+                  key={link.title}
+                  component={Link}
+                  to={link.path}
+                  sx={{ color: "text.primary", textTransform: "none", ...hoverStyle }}
+                >
                   {link.title}
                 </Button>
               ))}
@@ -117,7 +122,7 @@ const Navbar = () => {
           {/* Desktop Right Section */}
           {!isMobile && (
             <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-              {/* Cart يظهر فقط إذا كان مسجل دخول */}
+              {/* Cart يظهر فقط إذا مسجل دخول */}
               {token && (
                 <IconButton component={Link} to="/cart" sx={{ color: "text.primary", ...hoverStyle }}>
                   <Badge badgeContent={cartCount} color="error">
@@ -129,7 +134,12 @@ const Navbar = () => {
               {/* Theme toggle يظهر دائمًا */}
               <IconButton
                 onClick={toggleTheme}
-                sx={{ color: "text.primary", backgroundColor: "action.hover", "&:hover": { backgroundColor: "action.selected" }, borderRadius: "8px" }}
+                sx={{
+                  color: "text.primary",
+                  backgroundColor: "action.hover",
+                  "&:hover": { backgroundColor: "action.selected" },
+                  borderRadius: "8px",
+                }}
               >
                 {mode === "dark" ? <LightModeIcon /> : <DarkModeIcon />}
               </IconButton>
@@ -152,9 +162,15 @@ const Navbar = () => {
                 <MenuItem value="ar">العربية</MenuItem>
               </Select>
 
-              {/* Logout يظهر دائمًا */}
-              <Button onClick={handleLogout} sx={{ color: "text.primary", ...hoverStyle }}>
-                {t("Logout")}
+              {/* زر Login / Logout */}
+              <Button
+                onClick={() => {
+                  if (token) handleLogout();
+                  else navigate("/login");
+                }}
+                sx={{ color: "text.primary", ...hoverStyle }}
+              >
+                {token ? t("Logout") : t("Login")}
               </Button>
             </Box>
           )}
@@ -162,7 +178,7 @@ const Navbar = () => {
           {/* Mobile Section */}
           {isMobile && (
             <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-              {/* Cart يظهر فقط إذا كان مسجل دخول */}
+              {/* Cart يظهر فقط إذا مسجل دخول */}
               {token && (
                 <IconButton component={Link} to="/cart">
                   <Badge badgeContent={cartCount} color="error">
@@ -171,15 +187,26 @@ const Navbar = () => {
                 </IconButton>
               )}
 
-              {/* Logout يظهر دائمًا */}
-              <Button onClick={handleLogout} sx={{ color: "text.primary" }}>
-                {t("Logout")}
+              {/* زر Login / Logout */}
+              <Button
+                onClick={() => {
+                  if (token) handleLogout();
+                  else navigate("/login");
+                }}
+                sx={{ color: "text.primary" }}
+              >
+                {token ? t("Logout") : t("Login")}
               </Button>
 
               {/* زر القائمة */}
               <IconButton
                 onClick={() => setOpenDrawer(true)}
-                sx={{ color: "text.primary", backgroundColor: "action.hover", "&:hover": { backgroundColor: "action.selected" }, borderRadius: "8px" }}
+                sx={{
+                  color: "text.primary",
+                  backgroundColor: "action.hover",
+                  "&:hover": { backgroundColor: "action.selected" },
+                  borderRadius: "8px",
+                }}
               >
                 <MenuIcon />
               </IconButton>
@@ -189,7 +216,12 @@ const Navbar = () => {
       </AppBar>
 
       {/* Drawer */}
-      <Drawer anchor="right" open={openDrawer} onClose={() => setOpenDrawer(false)} PaperProps={{ sx: { backgroundColor: "background.paper", color: "text.primary" } }}>
+      <Drawer
+        anchor="right"
+        open={openDrawer}
+        onClose={() => setOpenDrawer(false)}
+        PaperProps={{ sx: { backgroundColor: "background.paper", color: "text.primary" } }}
+      >
         <Box sx={{ width: 250, mt: 2 }}>
           <List>
             {navLinks.map((link) => (
@@ -206,7 +238,7 @@ const Navbar = () => {
 
             <Divider sx={{ my: 1 }} />
 
-            {/* Cart يظهر فقط إذا كان مسجل دخول */}
+            {/* Cart يظهر فقط إذا مسجل دخول */}
             {token && (
               <ListItem component={Link} to="/cart" onClick={() => setOpenDrawer(false)}>
                 <ListItemText primary={t("Cart")} />
@@ -228,10 +260,16 @@ const Navbar = () => {
               </Select>
             </ListItem>
 
-            {/* Logout يظهر دائمًا */}
+            {/* زر Login / Logout */}
             <ListItem>
-              <Button onClick={handleLogout} sx={{ width: "100%", color: "text.primary" }}>
-                {t("Logout")}
+              <Button
+                onClick={() => {
+                  if (token) handleLogout();
+                  else navigate("/login");
+                }}
+                sx={{ width: "100%", color: "text.primary" }}
+              >
+                {token ? t("Logout") : t("Login")}
               </Button>
             </ListItem>
           </List>
@@ -241,4 +279,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Navbar;ؤاشى
