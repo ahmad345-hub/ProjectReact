@@ -19,7 +19,7 @@ import { useTranslation } from "react-i18next";
 import useAddReview from "../../hooks/useAddReview";
 import useAuthStore from "../../store/useAuthStore";
 
-import useCatagories from "../../hooks/useCatagories";
+import usecatagories from "../../hooks/usecatagories";
 import useProductsByCategory from "../../hooks/useProductsByCategory";
 
 // ====== ProductCard Component ======
