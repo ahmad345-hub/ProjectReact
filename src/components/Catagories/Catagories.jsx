@@ -2,10 +2,8 @@ import React from "react";
 import { Box, Typography, CircularProgress } from "@mui/material";
 import usecatagories from "../../hooks/usecatagories";
 import Catagory from "../../UI/Category/Category.jsx";
-import { useTranslation } from "react-i18next";
 
 export default function Categories({ showMore = false }) {
-  const { t } = useTranslation();
   const { data, isLoading, isError } = usecatagories();
 
   if (isLoading)
@@ -22,7 +20,7 @@ export default function Categories({ showMore = false }) {
       >
         <CircularProgress color="inherit" />
         <Typography variant="h6" fontWeight={600} color="text.primary">
-          {t("Loading Categories")}
+          Loading Categories...
         </Typography>
       </Box>
     );
@@ -40,7 +38,7 @@ export default function Categories({ showMore = false }) {
         }}
       >
         <Typography variant="h6" fontWeight={700} color="error">
-          {t("Server went wrong")}
+          Server went wrong
         </Typography>
       </Box>
     );

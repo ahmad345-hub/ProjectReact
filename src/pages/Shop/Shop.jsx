@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -13,11 +13,13 @@ import {
   Rating,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import useProductsOperation from "../../hooks/useProductsOperation";
 import useAddReview from "../../hooks/useAddReview";
 import useAuthStore from "../../store/useAuthStore";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
+
+import useCatagories from "../../hooks/useCatagories"; 
+import useProductsByCategory from "../../hooks/useProductsByCategory"; 
 
 // ====== ProductCard Component ======
 function ProductCard({ product = {} }) {
@@ -26,11 +28,9 @@ function ProductCard({ product = {} }) {
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
   const [showForm, setShowForm] = useState(false);
-
   const addReview = useAddReview(product.id || 0);
   const token = useAuthStore((state) => state.token);
 
-  // عند الضغط على زر "Add Review"
   const handleAddReviewClick = () => {
     if (!token) {
       return Swal.fire({
@@ -45,7 +45,6 @@ function ProductCard({ product = {} }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!comment) return;
-
     addReview.mutate(
       { rating, comment },
       {
@@ -88,7 +87,6 @@ function ProductCard({ product = {} }) {
             style={{ maxHeight: "100%" }}
           />
         </Box>
-
         <CardContent>
           <Typography variant="h6">{product.name || t("No Name")}</Typography>
           <Rating value={product.rate || 0} readOnly />
@@ -96,7 +94,6 @@ function ProductCard({ product = {} }) {
             ${product.price || 0}
           </Typography>
         </CardContent>
-
         <Box sx={{ p: 2, display: "flex", gap: 1 }}>
           <Button
             component={Link}
@@ -106,7 +103,6 @@ function ProductCard({ product = {} }) {
           >
             {t("View Details")}
           </Button>
-
           <Button variant="outlined" onClick={handleAddReviewClick}>
             {t("Add Review")}
           </Button>
@@ -120,7 +116,6 @@ function ProductCard({ product = {} }) {
               value={rating}
               onChange={(e, newValue) => setRating(newValue)}
             />
-
             <TextField
               label={t("Comment")}
               value={comment}
@@ -129,7 +124,6 @@ function ProductCard({ product = {} }) {
               fullWidth
               sx={{ my: 1 }}
             />
-
             <Button
               type="submit"
               variant="contained"
@@ -147,7 +141,6 @@ function ProductCard({ product = {} }) {
           <Typography variant="subtitle1" mb={1}>
             {t("Reviews")}
           </Typography>
-
           {reviews.map((r) => (
             <Box key={r.id} sx={{ mb: 1 }}>
               <Rating value={r.rating} readOnly size="small" />
@@ -163,41 +156,54 @@ function ProductCard({ product = {} }) {
 // ====== Shop Page ======
 export default function Shop() {
   const { t } = useTranslation();
-  const { data: products = [], isLoading, isError, error } =
-    useProductsOperation();
-  const token = useAuthStore((state) => state.token);
 
-  const [category, setCategory] = useState("all");
+  // Categories
+  const { data: categoriesData = [], isLoading: categoriesLoading } = useCatagories(10);
+  const categoriesArray = categoriesData?.response?.data || [];
+
+  // الكاتيجوري الافتراضي (أول واحدة)
+  const [categoryId, setCategoryId] = useState(
+    categoriesArray.length > 0 ? categoriesArray[0].id : null
+  );
+
+  // Products for selected category
+  const { data: products = [], isLoading: productsLoading } = useProductsByCategory(categoryId);
+
+  // Search + Sort
+  const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("price");
   const [ascending, setAscending] = useState(false);
-  const [search, setSearch] = useState("");
 
+  // فلترة + ترتيب المنتجات
   const displayedProducts = useMemo(() => {
     let result = [...products];
-    if (search)
+
+    if (search) {
       result = result.filter((p) =>
         p.name.toLowerCase().includes(search.toLowerCase())
       );
-    if (category !== "all")
-      result = result.filter((p) => p.category === category);
+    }
+
     result.sort((a, b) => {
       if (sortBy === "price") return ascending ? a.price - b.price : b.price - a.price;
       if (sortBy === "rate") return ascending ? a.rate - b.rate : b.rate - a.rate;
       return 0;
     });
-    return result;
-  }, [products, category, sortBy, ascending, search]);
 
-  if (isLoading)
+    return result;
+  }, [products, search, sortBy, ascending]);
+
+  if (categoriesLoading || !categoryId)
+    return (
+      <Typography textAlign="center" mt={10}>
+        {t("Loading categories...")}
+      </Typography>
+    );
+
+  if (productsLoading)
     return (
       <Typography textAlign="center" mt={10}>
         {t("Loading products...")}
-      </Typography>
-    );
-  if (isError)
-    return (
-      <Typography textAlign="center" mt={10} color="error">
-        {error?.message || t("Error loading products")}
       </Typography>
     );
 
@@ -226,14 +232,15 @@ export default function Shop() {
             </Typography>
             <Select
               fullWidth
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              value={categoryId}
+              onChange={(e) => setCategoryId(e.target.value)}
               sx={{ mb: 2 }}
             >
-              <MenuItem value="all">{t("All Categories")}</MenuItem>
-              <MenuItem value="mobiles">{t("Mobiles")}</MenuItem>
-              <MenuItem value="clothes">{t("Clothes")}</MenuItem>
-              <MenuItem value="electronics">{t("Electronics")}</MenuItem>
+              {categoriesArray.map((c) => (
+                <MenuItem key={c.id} value={c.id}>
+                  {c.name}
+                </MenuItem>
+              ))}
             </Select>
 
             <Typography variant="subtitle2" mb={1}>
