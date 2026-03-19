@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import {
   Box,
   Typography,
@@ -13,29 +13,32 @@ import {
   Rating,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import useAddReview from "../../hooks/useAddReview";
-import useAuthStore from "../../store/useAuthStore";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 
-import useCatagories from "../../hooks/useCatagories"; 
-import useProductsByCategory from "../../hooks/useProductsByCategory"; 
+import useAddReview from "../../hooks/useAddReview";
+import useAuthStore from "../../store/useAuthStore";
+
+import useCatagories from "../../hooks/useCatagories";
+import useProductsByCategory from "../../hooks/useProductsByCategory";
 
 // ====== ProductCard Component ======
-function ProductCard({ product = {} }) {
+function ProductCard({ product = {}, token }) {
   const { t } = useTranslation();
   const [reviews, setReviews] = useState([]);
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
   const [showForm, setShowForm] = useState(false);
-  const addReview = useAddReview(product.id || 0);
-  const token = useAuthStore((state) => state.token);
 
+  const addReview = useAddReview(product.id || 0);
+
+  // عند الضغط على Add Review
   const handleAddReviewClick = () => {
     if (!token) {
       return Swal.fire({
-        title: t("You must login first"),
         icon: "warning",
+        title: t("You must login first"),
+        text: t("Please login to add a review"),
         confirmButtonText: t("OK"),
       });
     }
@@ -45,6 +48,7 @@ function ProductCard({ product = {} }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!comment) return;
+
     addReview.mutate(
       { rating, comment },
       {
@@ -156,6 +160,7 @@ function ProductCard({ product = {} }) {
 // ====== Shop Page ======
 export default function Shop() {
   const { t } = useTranslation();
+  const token = useAuthStore((state) => state.token);
 
   // Categories
   const { data: categoriesData = [], isLoading: categoriesLoading } = useCatagories(10);
@@ -173,6 +178,31 @@ export default function Shop() {
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("price");
   const [ascending, setAscending] = useState(false);
+
+  // ======= Handlers مع Check تسجيل الدخول =======
+  const handleCategoryChange = (id) => {
+    if (!token) {
+      return Swal.fire({
+        icon: "warning",
+        title: t("You must login first"),
+        text: t("Please login to filter products by category"),
+        confirmButtonText: t("OK"),
+      });
+    }
+    setCategoryId(id);
+  };
+
+  const handleSearchChange = (value) => {
+    if (!token) {
+      return Swal.fire({
+        icon: "warning",
+        title: t("You must login first"),
+        text: t("Please login to search products"),
+        confirmButtonText: t("OK"),
+      });
+    }
+    setSearch(value);
+  };
 
   // فلترة + ترتيب المنتجات
   const displayedProducts = useMemo(() => {
@@ -217,7 +247,7 @@ export default function Shop() {
         label={t("Search product...")}
         sx={{ width: "50%", mb: 4 }}
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={(e) => handleSearchChange(e.target.value)}
       />
 
       <Grid container spacing={4}>
@@ -233,7 +263,7 @@ export default function Shop() {
             <Select
               fullWidth
               value={categoryId}
-              onChange={(e) => setCategoryId(e.target.value)}
+              onChange={(e) => handleCategoryChange(e.target.value)}
               sx={{ mb: 2 }}
             >
               {categoriesArray.map((c) => (
@@ -274,7 +304,7 @@ export default function Shop() {
             )}
             {displayedProducts.map((product) => (
               <Grid item xs={12} sm={6} md={4} key={product.id}>
-                <ProductCard product={product} />
+                <ProductCard product={product} token={token} />
               </Grid>
             ))}
           </Grid>
