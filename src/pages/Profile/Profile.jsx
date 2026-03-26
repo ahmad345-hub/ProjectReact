@@ -1,100 +1,85 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import {
   Box,
   Container,
   Typography,
-  List,
   ListItemButton,
   ListItemText,
-  Drawer,
-  IconButton,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
 import { useTranslation } from "react-i18next";
 
 export default function Profile() {
-  const { t } = useTranslation(); // ✅ استدعاء الترجمة
+  const { t } = useTranslation();
   const location = useLocation();
-  const [mobileOpen, setMobileOpen] = useState(false);
 
-  const sidebarWidth = 250; // عرض الشريط الجانبي
+  const sidebarWidth = 250;
 
   const sidebarItems = [
-    { label: t("Info"), to: "" }, // ترجمة Info
-    { label: t("Orders"), to: "ProfileOrders" }, // ترجمة Orders
+    { label: t("Info"), to: "" },
+    { label: t("Orders"), to: "ProfileOrders" },
   ];
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
-  const drawer = (
-    <Box sx={{ width: sidebarWidth }}>
-      <Typography variant="h6" sx={{ p: 2 }}>
-        {t("My Profile")} {/* ترجمة My Profile */}
-      </Typography>
-      <List>
-        {sidebarItems.map((item) => (
-          <ListItemButton
-            key={item.to}
-            component={Link}
-            to={item.to}
-            selected={location.pathname.includes(item.to)}
-          >
-            <ListItemText primary={item.label} />
-          </ListItemButton>
-        ))}
-      </List>
-    </Box>
-  );
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <Container maxWidth="lg" sx={{ mt: 6, mb: 6, flexGrow: 1 }}>
-        {/* زر القائمة للجوال */}
-        <IconButton
-          color="inherit"
-          edge="start"
-          onClick={handleDrawerToggle}
-          sx={{ display: { md: "none" }, mb: 2 }}
-        >
-          <MenuIcon />
-        </IconButton>
-
-        <Box sx={{ display: "flex" }}>
-          {/* Sidebar لأجهزة سطح المكتب */}
+        <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" } }}>
+          
+          {/* Sidebar / Top Menu */}
           <Box
             sx={{
-              display: { xs: "none", md: "block" },
-              width: sidebarWidth,
+              width: { xs: "100%", md: sidebarWidth },
               flexShrink: 0,
+              mb: { xs: 2, md: 0 },
             }}
           >
-            {drawer}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "row", md: "column" },
+                gap: 1,
+                p: 2,
+                bgcolor: "background.paper",
+                borderRadius: 2,
+                boxShadow: 1,
+              }}
+            >
+              {/* Title يظهر فقط بالديسكتوب */}
+              <Typography
+                variant="h6"
+                sx={{ display: { xs: "none", md: "block" }, mb: 1 }}
+              >
+                {t("My Profile")}
+              </Typography>
+
+              {sidebarItems.map((item) => (
+                <ListItemButton
+                  key={item.to}
+                  component={Link}
+                  to={item.to}
+                  selected={location.pathname.includes(item.to)}
+                  sx={{
+                    borderRadius: 2,
+                    justifyContent: "center",
+                    flex: { xs: 1, md: "unset" },
+                  }}
+                >
+                  <ListItemText
+                    primary={item.label}
+                    sx={{ textAlign: "center" }}
+                  />
+                </ListItemButton>
+              ))}
+            </Box>
           </Box>
 
-          {/* Sidebar Drawer للجوال */}
-          <Drawer
-            variant="temporary"
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            ModalProps={{ keepMounted: true }}
-            sx={{
-              display: { xs: "block", md: "none" },
-              "& .MuiDrawer-paper": { width: sidebarWidth },
-            }}
-          >
-            {drawer}
-          </Drawer>
-
-          {/* المحتوى الرئيسي */}
+          {/* Main Content */}
           <Box
             component="main"
             sx={{
               flexGrow: 1,
               p: 3,
-              ml: { md: 3 }, // مسافة عن الشريط الجانبي
+              ml: { md: 3 },
               bgcolor: "background.paper",
               borderRadius: 2,
               boxShadow: 2,
