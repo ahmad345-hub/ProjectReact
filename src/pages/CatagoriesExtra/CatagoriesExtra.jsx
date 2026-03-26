@@ -34,17 +34,18 @@ export default function Categories() {
     return (
       <Box
         sx={{
-          minHeight: "40vh",
+          minHeight: "calc(100vh - 64px)", // طول الصفحة كامل ناقص ارتفاع Navbar
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
           gap: 2,
+          bgcolor: "background.default",
+          color: "text.primary",
         }}
       >
         <CircularProgress color="inherit" />
-
-        <Typography variant="h6" fontWeight={600} color="text.primary">
+        <Typography variant="h6" fontWeight={600}>
           Loading Categories...
         </Typography>
       </Box>
@@ -54,12 +55,14 @@ export default function Categories() {
     return (
       <Box
         sx={{
-          minHeight: "40vh",
+          minHeight: "calc(100vh - 64px)",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
           gap: 2,
+          bgcolor: "background.default",
+          color: "text.primary",
         }}
       >
         <Typography variant="h6" fontWeight={700} color="error">
@@ -73,9 +76,10 @@ export default function Categories() {
   return (
     <Box
       sx={{
-        mt: 18,
-      
+        pt: 2, // بدل mt: 18, حط padding-top صغير
+        minHeight: "calc(100vh - 64px)",
         bgcolor: "background.default",
+        color: "text.primary",
       }}
     >
       <Catagory categoriesArray={categoriesArray} />
