@@ -1,16 +1,14 @@
-# React + Vite
+E-Commerce Web Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+•	Developed a full-featured e-commerce web application using React.js, Material UI, and Zustand. 
+•	Integrated a complete REST API system including authentication, products, categories, cart, checkout, orders, and user profile management. 
+•	Implemented user authentication flow (login, register, password reset, token refresh). 
+•	Implemented multi-language support (Arabic & English) using i18n for a better global user experience. 
 
-Currently, two official plugins are available:
+•	 Built a dark/light mode system to enhance usability and accessibility. 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+•	Built dynamic shopping cart functionality (add, update quantity, remove, clear cart). 
+•	Developed checkout and order management system, including admin and user roles. 
+•	Managed global state efficiently using Zustand to ensure smooth interaction between components. 
+•	Handled API requests with proper error handling, loading states, and data synchronization. 
+•	Improved performance by reducing unnecessary re-renders and optimizing component structure. 
